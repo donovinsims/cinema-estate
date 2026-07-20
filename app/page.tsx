@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { ComparisonExperience } from "./ComparisonExperience";
-import { WaitlistForm } from "./WaitlistForm";
+import { EarlyAccessButton } from "./EarlyAccessButton";
+import { EarlyAccessModal } from "./EarlyAccessModal";
 
 export const metadata: Metadata = {
   title: "Cinema Estate — Real listing photos, cinematic marketing",
@@ -29,13 +30,13 @@ export default function Home() {
         <div className="hero-scrim" />
         <header className="site-header section-shell">
           <a className="wordmark" href="#top" aria-label="Cinema Estate home">CINEMA ESTATE<span>™</span></a>
-          <a className="header-link" href="#early-access">Early access <span aria-hidden="true">↘</span></a>
+          <EarlyAccessButton className="header-link" source="header">Early access <span aria-hidden="true">↘</span></EarlyAccessButton>
         </header>
         <div className="hero-content section-shell" id="top">
           <p className="eyebrow hero-label">A real completed package · 255 Eldon Ave, Columbus</p>
           <h1 id="hero-title">Turn your real listing photos into cinematic marketing.</h1>
           <p className="hero-deck">Video tours, narration, a listing page, and a final film—built from the property you are already marketing.</p>
-          <a className="button button-primary" href="#early-access">Get early access <span aria-hidden="true">↘</span></a>
+          <EarlyAccessButton className="button button-primary" source="hero">Get early access <span aria-hidden="true">↘</span></EarlyAccessButton>
           <p className="hero-price">Plans from <strong>$99</strong> per listing</p>
         </div>
       </section>
@@ -104,14 +105,16 @@ export default function Home() {
       <section className="waitlist-section" id="early-access" aria-labelledby="waitlist-title">
         <div className="section-shell waitlist-grid">
           <div><p className="eyebrow">Launching next week</p><h2 id="waitlist-title">Be first to turn a listing into a film.</h2></div>
-          <div><p>For individual agents ready to give their approved listing photos a stronger next move.</p><WaitlistForm /></div>
+          <div><p>For individual agents ready to give their approved listing photos a stronger next move.</p><EarlyAccessButton className="button button-dark" source="final-cta">Get the launch invite <span aria-hidden="true">↗</span></EarlyAccessButton></div>
         </div>
       </section>
 
       <footer className="site-footer section-shell">
         <span>CINEMA ESTATE™</span><span>Built from real listing media.</span>
+        <a href="/privacy">Privacy</a>
         <a href="https://www.nar.realtor/about-nar/policies/mls-policy/use-of-photographs-in-a-multiple-listing-service">MLS policy reference ↗</a>
       </footer>
+      <EarlyAccessModal />
     </main>
   );
 }

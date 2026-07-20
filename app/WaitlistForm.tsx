@@ -1,13 +1,19 @@
 "use client";
 
-import { FormEvent, useState } from "react";
+import { FormEvent, useId, useState } from "react";
+import { track } from "./analytics";
 
 const successMessage = "You’re on the early-access list. Look for your launch invite next week.";
-const endpoint = process.env.NEXT_PUBLIC_SEQUENZY_FORM_ENDPOINT;
 
-export function WaitlistForm() {
+type WaitlistFormProps = {
+  onSuccess?: () => void;
+  variant?: "inline" | "modal";
+};
+
+export function WaitlistForm({ onSuccess, variant = "inline" }: WaitlistFormProps) {
   const [status, setStatus] = useState<"idle" | "sending" | "success" | "error">("idle");
   const [message, setMessage] = useState("");
+  const formId = useId();
 
   async function submit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
@@ -16,46 +22,48 @@ export function WaitlistForm() {
     const email = String(formData.get("email") ?? "").trim();
 
     if (!email) {
+      track("early_access_submit_failed", { reason: "missing_email", placement: variant });
       setStatus("error");
       setMessage("Enter an email address to get early access.");
       return;
     }
 
-    if (!endpoint) {
-      setStatus("error");
-      setMessage("Early access is being connected. Please try again shortly.");
-      return;
-    }
-
     setStatus("sending");
     setMessage("");
+    track("early_access_submit_attempted", { placement: variant });
     try {
-      const response = await fetch(endpoint, { method: "POST", body: formData });
-      if (!response.ok) throw new Error("Sequenzy signup failed");
+      const response = await fetch("/api/early-access", { method: "POST", body: formData });
+      if (!response.ok) {
+        const payload = await response.json().catch(() => ({}));
+        throw new Error(payload.error ?? "Sequenzy signup failed");
+      }
       setStatus("success");
       setMessage(successMessage);
       form.reset();
+      onSuccess?.();
+      track("early_access_submit_succeeded", { placement: variant });
     } catch {
       setStatus("error");
       setMessage("We couldn’t add you yet. Please try again.");
+      track("early_access_submit_failed", { reason: "server_error", placement: variant });
     }
   }
 
   return (
     <form
-      className="waitlist-form"
+      className={`waitlist-form waitlist-form-${variant}`}
       onSubmit={submit}
       noValidate
       data-success-message={successMessage}
-      aria-describedby="waitlist-status"
+      aria-describedby={`${formId}-status`}
     >
-      <label className="sr-only" htmlFor="email">Email address</label>
-      <input id="email" name="email" type="email" inputMode="email" autoComplete="email" placeholder="you@agency.com" required />
+      <label className="sr-only" htmlFor={`${formId}-email`}>Email address</label>
+      <input id={`${formId}-email`} name="email" type="email" inputMode="email" autoComplete="email" placeholder="you@agency.com" required />
       <input className="honeypot" name="website" type="text" tabIndex={-1} autoComplete="off" aria-hidden="true" />
       <button type="submit" disabled={status === "sending"}>
-        {status === "sending" ? "Joining…" : "Get early access"}
+        {status === "sending" ? "Joining…" : variant === "modal" ? "Send my launch invite" : "Get early access"}
       </button>
-      <p id="waitlist-status" className={`form-status ${status}`} aria-live="polite">
+      <p id={`${formId}-status`} className={`form-status ${status}`} aria-live="polite">
         {message}
       </p>
     </form>

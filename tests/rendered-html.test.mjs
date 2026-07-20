@@ -35,6 +35,7 @@ test("server-renders Cinema Estate with an accessible comparison and waitlist", 
   assert.match(html, /AFTER\s*\/\s*ONE SLOW CAMERA MOVE/i);
   assert.match(html, /Drag to compare/i);
   assert.match(html, /Watch the transformation/i);
+  assert.match(html, /Get the launch invite/i);
   assert.match(html, /data-comparison-slider/i);
   assert.match(html, /aria-label="Reveal cinematic marketing"/i);
   assert.match(html, /<button[^>]*>Before<\/button>/i);
