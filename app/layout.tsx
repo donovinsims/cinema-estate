@@ -7,7 +7,7 @@ const inter = Inter({ variable: "--font-inter", subsets: ["latin"] });
 const mono = Roboto_Mono({ variable: "--font-mono", subsets: ["latin"] });
 
 export const metadata: Metadata = {
-  metadataBase: new URL("https://ce.sequenzy.com"),
+  metadataBase: new URL("https://cinema-estate.vercel.app"),
   title: "Cinema Estate — Real listing photos, cinematic marketing",
   description: "Cinema Estate turns real listing photography into a cinematic marketing package for agents.",
   openGraph: { title: "Cinema Estate", description: "Real listing photos, cinematic marketing.", images: ["/og.png"] },
