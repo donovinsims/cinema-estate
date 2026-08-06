@@ -41,6 +41,7 @@ test("server-renders Cinema Estate with an accessible comparison and waitlist", 
   assert.match(html, /<title>Cinema Estate/i);
   assert.match(html, /Turn your real listing photos into cinematic marketing\./i);
   assert.match(html, /A real completed package · 255 Eldon Ave, Columbus/i);
+  assert.match(html, /Not another photo shoot\. Not another crew to book\. A third option, built entirely from the listing photos you’ve already approved\./i);
   assert.match(html, /One real photo\. One cinematic move\./i);
   assert.match(html, /One cinematic move is one component of the complete package\./i);
   assert.match(html, /Four deliverables for your next listing launch\./i);
