@@ -16,10 +16,10 @@ const proofClips = [
 ];
 
 const deliverables = [
-  ["01", "Video tours", "Slow cinematic sequences from the photos you approve."],
-  ["02", "Narration", "A clear listing story shaped around the real property."],
-  ["03", "Listing page", "One focused destination to share with prospective buyers."],
-  ["04", "Final film", "A complete, ready-to-review marketing package."],
+  ["01", "Video tours", "Slow cinematic sequences from the photos you approve—so your listing shows motion, not just a static frame."],
+  ["02", "Narration", "A clear listing story shaped around the real property—so buyers understand what makes it worth seeing in person."],
+  ["03", "Listing page", "One focused destination to share with prospective buyers, instead of splitting attention across scattered photo links."],
+  ["04", "Final film", "A complete, ready-to-review marketing package—one link that covers the whole story of the listing."],
 ];
 
 export default function Home() {

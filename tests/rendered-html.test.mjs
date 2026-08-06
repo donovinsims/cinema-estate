@@ -45,6 +45,10 @@ test("server-renders Cinema Estate with an accessible comparison and waitlist", 
   assert.match(html, /One real photo\. One cinematic move\./i);
   assert.match(html, /One cinematic move is one component of the complete package\./i);
   assert.match(html, /Four deliverables for your next listing launch\./i);
+  assert.match(html, /so your listing shows motion, not just a static frame/i);
+  assert.match(html, /so buyers understand what makes it worth seeing in person/i);
+  assert.match(html, /instead of splitting attention across scattered photo links/i);
+  assert.match(html, /one link that covers the whole story of the listing/i);
   assert.match(html, /Reviewed with you before anything is published\./i);
   assert.match(html, /Send the listing photos you.{1,2}ve already approved\./i);
   assert.match(html, /Cinema Estate builds the four-part package around them\./i);
