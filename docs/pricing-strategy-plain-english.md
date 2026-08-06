@@ -2,6 +2,8 @@
 
 *A rewrite of this session's pricing work in simple terms, ending with what I'll actually build next.*
 
+> **Status — live as of 2026-08-06.** Everything below was a proposal when this doc was written; the owner approved it and it's now implemented and live on the site, including real Polar checkout. Two details changed on implementation, corrected inline below: turnaround is **24 hours**, not 48, and checkout does **not** include a free-preview-before-paying step — the agent pays first, then submits photos, per the guarantee flow described in "What's live now" at the bottom. See `HANDOFF.md`'s "Pricing launch closeout" and "Polar checkout wired" sections for full implementation detail; see `docs/PRODUCT.md` for the current one-page summary.
+
 ---
 
 ## The one-liner
@@ -67,7 +69,7 @@ So at checkout, the agent has to confirm they're allowed to use their photos thi
 
 ---
 
-## How it works (three steps)
+## How it works (as originally proposed — see correction below)
 
 1. **Drop in your listing URL or photos.**
 2. **Review a free preview before you pay anything.**
@@ -75,15 +77,17 @@ So at checkout, the agent has to confirm they're allowed to use their photos thi
 
 That's the whole process. No production appointment, no waiting on a crew's schedule.
 
+**This is not exactly what shipped.** The free-preview-before-paying step wasn't built — Polar checkout doesn't support that flow, and building a custom preview-then-pay system was out of scope for the launch. What's actually live: the agent pays first (real Polar checkout), submits approved photos, gets the package within 24 hours, and reviews every asset before anything publishes — with a full refund within 7 days if the result doesn't match the submitted photos (the Review-First Guarantee, published in full at `/terms`). The risk this step was meant to cover — "will it look fake before I've paid" — ended up covered by the refund guarantee instead of a pre-payment preview.
+
 ---
 
-## How I plan to implement this
+## What's live now (2026-08-06)
 
-The live site right now is a waitlist page, not a working checkout — so "implementing this" means updating what the page says, not building payments. Concretely, here's what I'd do next, as a separate follow-up once you sign off:
+Everything in "How I plan to implement this" (the original version of this section) has shipped:
 
-1. **Fix the price mismatch.** The live site currently says "Plans from $99 per listing" in two places (`app/page.tsx` hero line and the pricing section). That number predates this whole conversation and needs to change to reflect the $149 / $299 / $549 structure.
-2. **Rewrite the pricing section** to introduce the three tiers, using the one-liner and three-step plan above instead of the current single price line.
-3. **Add the rights-confirmation line to the FAQ.** The page already has a compliance-focused FAQ block (source photos, who approves what, how AI use is disclosed) — a rights-attestation question fits right in next to those.
-4. **Update the existing "quality gate" section** ("Reviewed for the details that change trust") to state the finalized guarantee wording above, instead of its current vaguer language.
-5. **Nothing here touches payment logic.** The form still just collects emails for the waitlist (via Sequenzy) — this is a content update, not a checkout build.
-6. I'll hold off on making any of these edits until you've reviewed this document and given the go-ahead — that's a normal follow-up turn, not something to do inside this planning pass.
+1. ~~Fix the price mismatch~~ — done. The site now shows the real $149 / $299 / $549 tiers in the hero and a dedicated pricing section, not the old placeholder $99 line.
+2. ~~Rewrite the pricing section~~ — done. Three tier cards (Proof, Story, Signature) with what's included, each with a real "Buy" button.
+3. **Rights confirmation didn't become an FAQ question** — instead it's covered in `/terms`' "Your responsibilities" section, which the customer agrees to by paying. No separate checkout-flow checkbox exists (Polar's hosted checkout doesn't expose a custom-checkbox field we've configured) — worth revisiting if this turns out to need to be more explicit than "covered in the terms you agreed to."
+4. ~~Update the guarantee wording~~ — done, and named: "The Review-First Guarantee," with concrete refund terms, live at `/terms` and linked from the pricing section.
+5. ~~Nothing here touches payment logic~~ — superseded. Real Polar checkout is now wired (`app/CheckoutButton.tsx`); this was a deliberate later phase, not part of the original pricing-copy launch. See `HANDOFF.md`'s "Polar checkout wired" section — payments work end-to-end except settlement, since no payout account is connected yet.
+6. Turnaround shipped as **24 hours**, not the 48 hours floated above — the owner approved the faster number when giving the go-ahead.

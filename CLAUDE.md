@@ -77,6 +77,17 @@ plus a few client islands:
 - `WaitlistForm.tsx` — posts the email to `NEXT_PUBLIC_SEQUENZY_FORM_ENDPOINT` (a Sequenzy
   form endpoint set via env var; without it, the form fails gracefully with an inline
   error rather than throwing).
+- `CheckoutButton.tsx` — thin client wrapper around a plain `<a>`; fires a
+  `checkout_cta_clicked` PostHog event (`track()` from `app/analytics.ts`) with `tier`/`price`
+  before navigating. Used by the three pricing-tier CTAs (`tiers` array in `app/page.tsx`),
+  each linking directly to a real, live Polar checkout URL — these are real purchase buttons,
+  not lead capture. See `HANDOFF.md`'s "Polar checkout wired" section for the product IDs and
+  the outstanding payout-account caveat before treating checkout as safe for real customers.
+
+`app/terms/page.tsx` is a second top-level route (alongside `app/privacy/page.tsx`), reusing
+the same `.policy-page` CSS pattern. It publishes the Terms & refund policy — delivery
+timeline, revision limits, the Review-First Guarantee's refund terms, and liability — and is
+linked from the footer and the pricing section's guarantee line.
 
 ### Tests (`tests/*.test.mjs`, run with Node's built-in test runner)
 
