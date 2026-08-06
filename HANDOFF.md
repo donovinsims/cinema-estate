@@ -144,8 +144,8 @@ Ship a real offer and point every CTA at it: finalize pricing → wire Polar che
 
 Nothing in this list can be implemented correctly without the owner supplying the fact or decision — do not guess or draft final copy for these:
 
-1. **Final pricing and packaging** — single price vs. tiers, what's included at each tier. Blocks checkout, any on-page price display, and the final CTA-copy swap from "Get early access" to a purchase verb. **Partially unblocked 2026-08-06**: the Polar org and product now exist so pricing can be dropped in the moment it's decided; see "Polar organization and product setup" below. The real number itself is still owner-supplied.
-2. **Polar product and checkout link(s)**, plus success/cancel redirect targets — blocks wiring the checkout itself. **In progress 2026-08-06**: org and a draft product now exist in Polar (see below), but no checkout link has been generated yet and nothing is wired into the site — still blocked on real pricing plus the payout account.
+1. **Final pricing and packaging** — single price vs. tiers, what's included at each tier. Blocks checkout, any on-page price display, and the final CTA-copy swap from "Get early access" to a purchase verb. **Resolved 2026-08-06 (later same day)**: owner approved the drafted three-tier pricing (Proof $149 / Story $299 / Signature $549); all three now exist as real Polar products with real prices. See "Three real pricing-tier products and checkout links" below. Nothing left blocked here.
+2. **Polar product and checkout link(s)**, plus success/cancel redirect targets — blocks wiring the checkout itself. **Resolved 2026-08-06 (later same day)**: all three tier products have real hosted checkout links (`buy.polar.sh/...`) with Success/Return URLs set to placeholder query-param redirects on the live domain. See "Three real pricing-tier products and checkout links" below. Still blocked on the payout account before real money can settle, and on the actual code change to wire these links into `app/`.
 3. **Guarantee terms beyond the existing review-before-publish policy** — e.g., refund conditions, revision limits, how long the guarantee window is. (The plan does include naming and elevating the *existing* review-before-publish policy as a guarantee, since that requires no new commitment — this item is for anything stronger.)
 4. **Turnaround-time commitment** — how many days per listing. Needed to close the Value Equation's Time Delay gap and to make a "how it works" timeline concrete.
 5. **Real client testimonials or case studies**, once real client work exists — nothing actionable here until then; do not fabricate or imply proof that doesn't exist.
@@ -174,12 +174,12 @@ Done entirely through Kimi WebBridge browser automation against the owner's live
 
 ### What's left before this can go live
 
-1. Owner supplies the real price (item 1 above) → update the product's price in Polar (trivial edit, same form).
-2. Connect a real payout account in Polar (Finance → Account) — needs owner banking details.
-3. Generate a checkout link for the product and get real success/cancel redirect URLs.
-4. Wire that checkout link into `app/` (currently every CTA posts to the Sequenzy waitlist form only — see "The core gap" above) — this is the actual code change, not yet started.
-5. Flip product visibility from Private to Public once ready to be listed, and submit the org for Polar's review.
-6. Optional cleanup: Polar's Account Review flags the support email as "Business email is preferred" / "domain does not match your organization website" — cosmetic-only until a real business email/domain exists.
+1. ~~Owner supplies the real price~~ — done later 2026-08-06; see "Three real pricing-tier products and checkout links" below. This `$1` "Cinema Estate" product itself is now superseded by the three real tier products — candidate for archiving in Polar so it doesn't show up in the catalogue as clutter, but it's Private and harmless if left alone.
+2. Connect a real payout account in Polar (Finance → Account) — needs owner banking details. **Still open.**
+3. ~~Generate a checkout link for the product~~ — done later 2026-08-06 for all three real tier products; this placeholder product itself was never given a checkout link and doesn't need one now.
+4. Wire the three real checkout links into `app/` (currently every CTA posts to the Sequenzy waitlist form only — see "The core gap" above) — this is the actual code change, **not yet started**. Links and product IDs are in "Three real pricing-tier products and checkout links" below.
+5. Flip product visibility from Private to Public once ready to be listed, and submit the org for Polar's review. **Still open** for all three real products.
+6. Optional cleanup: Polar's Account Review flags the support email as "Business email is preferred" / "domain does not match your organization website" — cosmetic-only until a real business email/domain exists. **Still open.**
 
 ## Pricing strategy and ICP research drafted — 2026-08-06 (awaiting owner go-ahead)
 
@@ -190,3 +190,34 @@ Done entirely through Kimi WebBridge browser automation against the owner's live
 - New requirement the pricing doc surfaces: MLS listing permission doesn't automatically grant photo-reuse rights (the photographer usually retains them), so a rights-confirmation checkbox at checkout is needed. Not yet designed or built.
 - **Factual correction:** the pricing doc's implementation section claims the live site "currently says 'Plans from $99 per listing' in two places (hero line and pricing section)." Verified against `app/page.tsx` on `origin/main` and the live production HTML at `https://cinema-estate.vercel.app` on 2026-08-06 — this is not accurate. No price appears anywhere on the current site or in the current repo; the `TODO(pricing)` comment and the orphaned `.price-section` CSS are untouched. Do not treat that claim as fact in a future session.
 - Items 1 and 4 in "Blocked on owner input" above are now **drafted, not blocked on missing information** — they're blocked on the owner's go-ahead to implement the specific numbers above, a smaller ask than "we don't know the numbers yet."
+
+## Three real pricing-tier products and checkout links — 2026-08-06 (later same day)
+
+Owner approved the drafted pricing from the section above. Created via Kimi WebBridge browser automation against the owner's live Polar session (same method as the earlier placeholder product; still no API keys, still no code changes in this repo). **This is the real catalogue** — the `$1.00` "Cinema Estate" placeholder product documented earlier in this file is now superseded; see item 1 in that section's "What's left" list.
+
+All three are **one-time purchase** (not subscriptions), USD, **Private visibility** (purchasable only via the direct checkout link below, not listed in any public Polar storefront), org `cinema-estate`.
+
+| Tier | Price | Product ID | Checkout link |
+|---|---|---|---|
+| Cinema Estate — Proof | $149.00 | `d277e3be-ad51-4aee-b278-2ea73d25c49d` | `https://buy.polar.sh/polar_cl_r6UPLdTbK0UNuL4QCNH0sfQFdgcpi5DXVWLYn1W4pgw` |
+| Cinema Estate — Story | $299.00 | `e581549a-7ce7-4ab7-8d96-b683512c7ced` | `https://buy.polar.sh/polar_cl_2qd3HGz4AhmpQCLcqKpYXzVFsWmyoM39lwg3s4BXGZi` |
+| Cinema Estate — Signature | $549.00 | `2c13ef9f-09b1-49da-b61b-c8ca78a52c66` | `https://buy.polar.sh/polar_cl_5JvCDNNcFwSW9ZwYaAORoOxJqHucSEY7IuziO0bL3h7` |
+
+Each product's description field (Polar's Markdown-format "Checkout Page" description, shown to the customer during checkout) is the owner-approved deliverable copy for that tier — not repeated here verbatim to avoid drift; read it from Polar directly (`https://polar.sh/dashboard/cinema-estate/products/{id}`) if it needs to be echoed on-site, rather than re-deriving it from memory.
+
+### Checkout link configuration (same for all three)
+
+- **Success URL**: `https://cinema-estate.vercel.app/?checkout=success`
+- **Return URL**: `https://cinema-estate.vercel.app/?checkout=cancelled`
+- Both are **explicit placeholders** per owner instruction — likely to be swapped for dedicated success/cancel pages later. Whoever wires the buy buttons should treat these query params (`?checkout=success` / `?checkout=cancelled`) as the integration point on the Next.js side (e.g. read `searchParams` on the root page to show a confirmation/cancellation state), unless/until dedicated routes replace them.
+
+### Important terminology note for whoever wires this in
+
+Polar's checkout-link form has a field literally labeled **"Return URL"**, not "Cancel URL" — its actual behavior is "when set, a back button is shown in the checkout to return to this URL." It is **not** a true post-cancellation webhook-style redirect, just the closest available field to what "cancel redirect" means in most checkout UIs. Don't assume it fires on every abandonment path (e.g. closing the tab); it only fires if the customer clicks that in-checkout back button.
+
+### What's still not done (unchanged from the section above, restated for clarity since this supersedes the placeholder product)
+
+- No payout account connected in Polar — real payments cannot settle yet even though checkout links are live and functional.
+- Nothing in `app/` has been touched — no buy buttons point at these links yet. That wiring is a real code change for a future session, not done here.
+- All three products are Private and none have been submitted for Polar's account review.
+- No real banking, tax, or identity data was entered anywhere; none of that was fabricated.
