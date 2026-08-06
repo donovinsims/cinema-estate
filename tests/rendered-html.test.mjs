@@ -109,6 +109,9 @@ test("server-renders Cinema Estate with an accessible comparison and waitlist", 
   assert.match(html, /\$299/);
   assert.match(html, /\$549/);
   assert.match(html, /Reserved for luxury, architecturally distinctive, or high-stakes listings/i);
+  assert.match(html, /<a href="https:\/\/buy\.polar\.sh\/polar_cl_r6UPLdTbK0UNuL4QCNH0sfQFdgcpi5DXVWLYn1W4pgw"[^>]*>Buy Proof/i);
+  assert.match(html, /<a href="https:\/\/buy\.polar\.sh\/polar_cl_2qd3HGz4AhmpQCLcqKpYXzVFsWmyoM39lwg3s4BXGZi"[^>]*>Buy Story/i);
+  assert.match(html, /<a href="https:\/\/buy\.polar\.sh\/polar_cl_5JvCDNNcFwSW9ZwYaAORoOxJqHucSEY7IuziO0bL3h7"[^>]*>Buy Signature/i);
   assert.doesNotMatch(html, /codex-preview|Your site is taking shape|react-loading-skeleton/i);
 });
 
