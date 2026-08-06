@@ -42,8 +42,17 @@ export function WaitlistForm({ intent = "early-access", onSuccess, variant = "in
     try {
       const response = await fetch("/api/early-access", { method: "POST", body: formData });
       if (!response.ok) {
-        const payload = await response.json().catch(() => ({}));
-        throw new Error(payload.error ?? "Sequenzy signup failed");
+        const payload: unknown = await response.json().catch(() => null);
+        const error = typeof payload === "object" && payload && "error" in payload && typeof payload.error === "string"
+          ? payload.error.trim()
+          : "";
+        if (error) {
+          setStatus("error");
+          setMessage(error);
+          track("early_access_submit_failed", { intent, reason: "server_error", placement: variant });
+          return;
+        }
+        throw new Error("Malformed early-access response");
       }
       setStatus("success");
       setMessage(presentation.success);
