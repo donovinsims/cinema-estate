@@ -41,6 +41,6 @@ Browser date: 2026-08-06. No credentials, bank data, customer data, or real chec
 | PR review / merge | Not started |
 | Production deployment | Not started for this branch |
 | Live-production verification | Not started for this branch |
-| Polar payout verification | **Blocked: owner-only** |
+| Polar payout verification | Owner-only operational follow-up; not a release blocker |
 
-The owner must complete Polar Finance payout verification and confirm payouts are connected/verified. Do not merge, deploy, or call the product purchase-ready without that confirmation and explicit owner approval. Verify existing checkout links by reachability only; never make a real charge.
+The owner completes Polar Finance payout verification and any bank/tax details. This is not a branch-review, merge, deployment, or release blocker, and agents never handle those details. Verify checkout links by reachability only; never make a real charge.

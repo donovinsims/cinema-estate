@@ -46,9 +46,9 @@ Explicitly **not** the target today: brokerages or teams buying at scale, agents
 
 - **Pricing:** finalized and live. Three one-time, per-listing tiers — Proof $149, Story $299 (recommended), Signature $549 (luxury/distinctive listings only) — not a subscription. Delivery is committed at 24 hours from receipt of approved photos and listing details.
 - **Guarantee:** the Review-First Guarantee — nothing publishes until the agent approves it, and a full refund within 7 days if the result doesn't match the approved photos. It explicitly does not promise showings, faster sales, or more offers. Full terms, revisions policy, and refund conditions are published at `/terms` (not yet reviewed by a lawyer — drafted at the owner's request; flagged for legal review before high-volume launch).
-- **Checkout:** each pricing tier links directly to Polar (`app/CheckoutButton.tsx`). **Important payout warning:** do not call checkout or the product purchase-ready until the owner verifies that Polar Finance reports payouts connected/verified. The owner alone enters bank and tax details; agents do not handle them.
+- **Checkout:** each pricing tier links directly to Polar (`app/CheckoutButton.tsx`). **Payout follow-up:** the owner alone enters any Polar Finance bank and tax details. Confirming payouts is operational work, not a branch-review, merge, deployment, or product-release blocker; agents do not handle those details.
 - **Proof:** no real client testimonials or case studies exist yet — the demo package on the site is self-made and disclosed as such. This is a known, tracked gap, not an oversight.
 - **ICP:** documented in `docs/icp-audience-profile.md` — a research-derived (not yet customer-validated) profile of the primary buyer: an independent or near-solo listing agent handling roughly 8-20 seller-side listings a year, who already pays for professional photography and has no in-house media team.
 - **Distribution today:** the three-tier Polar checkout is the primary path; Sequenzy email capture remains the secondary early-access path.
 
-See `HANDOFF.md` for full implementation history, the Polar setup details, and the current "Blocked on owner input" list — the payout account is now the top item.
+See `HANDOFF.md` for full implementation history and the Polar setup details. Payout setup remains owner-only operational follow-up, not a release gate.

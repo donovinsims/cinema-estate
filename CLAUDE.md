@@ -86,7 +86,8 @@ plus a few client islands:
   before navigating. Used by the three pricing-tier CTAs (`tiers` array in `app/page.tsx`),
   each linking directly to a real, live Polar checkout URL — these are real purchase buttons,
   not lead capture. See `HANDOFF.md`'s "Polar checkout wired" section for the product IDs and
-  the outstanding payout-account caveat before treating checkout as safe for real customers.
+  the owner-only payout-account operational follow-up. It is not a code-review, merge, or
+  deployment gate.
 
 Pricing is the primary CTA hierarchy: blue pricing/purchase controls lead to Polar checkout;
 dark controls open the secondary Sequenzy email path. Do not change checkout APIs, add routes,

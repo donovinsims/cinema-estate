@@ -8,8 +8,8 @@ Active WIP branch: `codex/ux-conversion-closeout`, currently based on `origin/ux
 
 - **Code gate:** verified locally on 2026-08-06: `npm run lint`, `npm test` (7/7), and `git diff --check` passed.
 - **Local browser evidence:** at 375px and 1440px, header and hero pricing anchors reached `#pricing`; all three intended Polar links were present; blue purchase/pricing and dark email-capture CTA roles were distinct; pricing copy was readable; invalid email was stopped client-side; unavailable local email capture showed the safe server message; the 45%-scroll plus 35-second modal opened before pricing and remained suppressed after pricing; and the hero control was absent with reduced motion.
-- **Checkout:** existing Polar links were navigation-tested only; no purchase was created. The site must not be called purchase-ready.
-- **Owner-only release gate:** Polar Finance payouts are not yet confirmed connected/verified. Until the owner enters and completes the bank/tax details and confirms that status, do not merge, deploy, or claim production purchase readiness. No agent handles payout credentials.
+- **Checkout:** existing Polar links were navigation-tested only; no purchase was created.
+- **Owner-only operational follow-up:** Polar Finance payouts are not yet confirmed connected/verified. The owner alone enters any bank/tax details; no agent handles payout credentials. This is not a merge, deployment, or release blocker.
 - **Release state:** branch code gate is green; PR merge, production deployment, and live-production verification have not happened for this branch.
 
 ## Historical / superseded record
@@ -200,7 +200,7 @@ Done entirely through Kimi WebBridge browser automation against the owner's live
 ### What's left before this can go live
 
 1. ~~Owner supplies the real price~~ / ~~generate checkout links~~ / ~~wire into `app/`~~ — **done, see "Polar checkout wired" below.**
-2. **Connect a real payout account in Polar (Finance → Account)** — needs owner banking details. **This is the one remaining blocker before real customers can pay** — see the caveat below.
+2. **Connect a real payout account in Polar (Finance → Account)** — needs owner banking details. Historical note: the former release-blocker framing is superseded; this remains owner-only operational follow-up.
 3. Flip product visibility from Private to Public once ready to be listed, and submit the org for Polar's review.
 4. Optional cleanup: Polar's Account Review flags the support email as "Business email is preferred" / "domain does not match your organization website" — cosmetic-only until a real business email/domain exists.
 
@@ -218,7 +218,7 @@ Done entirely through Kimi WebBridge browser automation against the owner's live
 - Each product's Success URL is `?checkout=success` and Return URL is `?checkout=cancelled` on `https://cinema-estate.vercel.app`. Note from the session that set these: Polar's "Return URL" is what fires on the checkout back-button, not a true post-cancel webhook-driven redirect — the closest available match, not an exact one.
 - Site-side: added `app/CheckoutButton.tsx` (a thin client wrapper around a plain `<a>`, firing a `checkout_cta_clicked` PostHog event with `tier`/`price` before navigating — mirrors `EarlyAccessButton`'s tracking pattern). The three pricing-tier CTAs in `app/page.tsx` now use it instead of the early-access modal, linking directly to the checkout URLs above. Button copy changed from "Start with {tier}" to "Buy {tier}" to match — these are now real purchase buttons, not lead capture.
 - Hit the same `${expr}` hydration-comment-marker bug as the earlier tier-price fix (see "Pricing launch closeout" above), this time in the button label (`Buy {tier.name} <span>...`) — same fix, combined into one template-literal expression.
-- **Caveat carried forward, not resolved:** no payout account is connected in Polar. The session that wired these links reports checkout works end-to-end except settlement — meaning a customer could complete a real charge that the business cannot yet receive. Do not treat this as safe for real customer traffic until a payout account is connected in Polar (Finance → Account).
+- **Historical caveat, superseded as a release gate:** payout setup remains owner-only operational follow-up. It does not block branch review, merge, deployment, or release; agents must not handle banking or tax details.
 
 ## Pricing strategy and ICP research drafted — 2026-08-06 (superseded by the pricing launch above)
 

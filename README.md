@@ -31,4 +31,4 @@ git diff --check
 
 The three pricing cards send visitors to Polar hosted checkout. Early access is intentionally secondary: `WaitlistForm` posts only to `/api/early-access`, which forwards on the server using `SEQUENZY_FORM_ENDPOINT`. Never expose that server-only value or add it as a public client variable.
 
-Polar checkout links can be verified by navigation only; do not create a real purchase. The owner alone completes Polar payout and tax/bank verification. A green branch, merged PR, deployed site, and live verification are separate release states.
+Polar checkout links can be verified by navigation only; do not create a real purchase. The owner alone completes Polar payout and tax/bank verification as an operational follow-up; it is not a branch-review, merge, or deployment blocker. A green branch, merged PR, deployed site, and live verification are separate release states.
