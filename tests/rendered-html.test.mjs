@@ -84,6 +84,8 @@ test("server-renders Cinema Estate with an accessible comparison and waitlist", 
   assert.match(html, /You’re on the early-access list\. We’ll be in touch when there’s an update\./i);
   assert.doesNotMatch(html, /\$99|next week|Unsubscribe anytime|privacy@sequenzy\.com/i);
   assert.match(html, /local MLS and brokerage rules apply/i);
+  assert.match(html, /Will this look fake or gimmicky\?/i);
+  assert.match(html, /Will AI-enhanced visualization cause MLS or disclosure trouble\?/i);
   assert.doesNotMatch(html, /codex-preview|Your site is taking shape|react-loading-skeleton/i);
 });
 

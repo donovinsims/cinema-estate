@@ -122,9 +122,9 @@ export default function Home() {
         <p className="eyebrow">06 / Clear answers</p>
         <h2 id="answers-title">Marketing with the right guardrails.</h2>
         <div className="answer-list">
-          <details open><summary>Does Cinema Estate redesign the property?</summary><p>No. The real listing images remain the source. Cinema Estate adds motion, narration, and a complete marketing package.</p></details>
+          <details open><summary>Will this look fake or gimmicky?</summary><p>No. The real listing images remain the source. Cinema Estate adds motion, narration, and a complete marketing package.</p></details>
           <details><summary>Who approves what goes live?</summary><p>You do. Agents approve their assets before anything is published or shared.</p></details>
-          <details><summary>How is AI-enhanced visualization handled?</summary><p>AI-enhanced visualization is disclosed. Local MLS and brokerage rules apply, and agents remain responsible for their listing requirements.</p></details>
+          <details><summary>Will AI-enhanced visualization cause MLS or disclosure trouble?</summary><p>AI-enhanced visualization is disclosed. Local MLS and brokerage rules apply, and agents remain responsible for their listing requirements.</p></details>
         </div>
       </section>
 
