@@ -4,15 +4,17 @@ Last updated: 2026-08-06
 
 ## Current state (read this first)
 
-This doc is a chronological log — everything below is historical record, oldest first. Start here instead of at "Active implementation checkpoint," which describes a 2026-08-05 plan that's long since superseded.
+Active WIP branch: `codex/ux-conversion-closeout`, currently based on `origin/ux-review/conversion-fixes-wip` (`a1979e063d81ba2722a7983ded7cf21a6034416d`). Code commits: `88db72e` (copy contracts) and `57edea6` (safe form and motion safeguards).
 
-- **The site sells three real, live packages**: Proof $149, Story $299 (recommended), Signature $549 — one-time, per-listing, not a subscription. Delivery is committed at 24 hours from receipt of approved photos.
-- **Checkout is real.** Each tier's "Buy" button links to a live Polar checkout page (`app/CheckoutButton.tsx`, see "Polar checkout wired" below for the exact product IDs/links).
-- **The single most urgent open item: no payout account is connected in Polar.** A customer can complete a real charge today; the business cannot yet receive that money. Connect one in Polar (Finance → Account) before driving real traffic.
-- **Guarantee and refund terms are published** at `/terms` (`app/terms/page.tsx`) — the Review-First Guarantee, a 7-day accuracy-based refund window, per-tier revision limits. Not lawyer-reviewed; drafted at the owner's request.
-- **Still open, no urgency yet**: real client testimonials/case studies (none exist), sending-domain verification, welcome-email automation, a monitored privacy contact, email-preference handling, and flipping the Polar org from Private visibility to Public once ready to be listed.
-- Canonical docs: `docs/PRODUCT.md` (what/why/who), `docs/icp-audience-profile.md` (target buyer research), `docs/pricing-strategy-plain-english.md` (pricing rationale — now describes the live state, see its own status note). This file is the detailed implementation history behind all of it.
-- **IN PROGRESS, NOT YET SHIPPED (2026-08-06 session): a conversion-focused UX overhaul is mid-implementation, uncommitted, in the working tree right now.** See "UX overhaul session — 2026-08-06 (in progress)" at the bottom of this file for the full picture, exact file list, and the precise resume point. Do not assume the CTA/copy behavior described in earlier sections above is still current — it is being actively changed by this session.
+- **Code gate:** verified locally on 2026-08-06: `npm run lint`, `npm test` (7/7), and `git diff --check` passed.
+- **Local browser evidence:** at 375px and 1440px, header and hero pricing anchors reached `#pricing`; all three intended Polar links were present; blue purchase/pricing and dark email-capture CTA roles were distinct; pricing copy was readable; invalid email was stopped client-side; unavailable local email capture showed the safe server message; the 45%-scroll plus 35-second modal opened before pricing and remained suppressed after pricing; and the hero control was absent with reduced motion.
+- **Checkout:** existing Polar links were navigation-tested only; no purchase was created. The site must not be called purchase-ready.
+- **Owner-only release gate:** Polar Finance payouts are not yet confirmed connected/verified. Until the owner enters and completes the bank/tax details and confirms that status, do not merge, deploy, or claim production purchase readiness. No agent handles payout credentials.
+- **Release state:** branch code gate is green; PR merge, production deployment, and live-production verification have not happened for this branch.
+
+## Historical / superseded record
+
+Everything below is retained for context. Earlier no-checkout, pre-pricing, uncommitted-WIP, and earlier test-count statements are historical only and must not override the current state above.
 
 ## Active implementation checkpoint
 
