@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { CheckoutButton } from "./CheckoutButton";
 import { ComparisonExperience } from "./ComparisonExperience";
 import { EarlyAccessButton } from "./EarlyAccessButton";
 import { EarlyAccessModal } from "./EarlyAccessModal";
@@ -13,6 +14,31 @@ const proofClips = [
   { title: "Living room", file: "eldon-living-room", note: "One room, one slow move" },
   { title: "Kitchen", file: "eldon-kitchen", note: "Light, texture, and context" },
   { title: "Ravine", file: "eldon-ravine", note: "The neighborhood story" },
+];
+
+const tiers = [
+  {
+    name: "Proof",
+    price: "149",
+    note: "For a standard listing that needs to look sharp.",
+    items: ["Up to 12 approved photos", "Short cinematic film, branded and unbranded", "Hosted listing page", "1 round of revisions", "Delivered in 24 hours"],
+    checkoutUrl: "https://buy.polar.sh/polar_cl_r6UPLdTbK0UNuL4QCNH0sfQFdgcpi5DXVWLYn1W4pgw",
+  },
+  {
+    name: "Story",
+    price: "299",
+    note: "The complete package for most listings.",
+    items: ["Up to 25 approved photos", "Narrated film with a script from your listing's facts", "Social teaser cut plus the full listing page", "1 round of revisions", "Delivered in 24 hours"],
+    recommended: true,
+    checkoutUrl: "https://buy.polar.sh/polar_cl_2qd3HGz4AhmpQCLcqKpYXzVFsWmyoM39lwg3s4BXGZi",
+  },
+  {
+    name: "Signature",
+    price: "549",
+    note: "Reserved for luxury, architecturally distinctive, or high-stakes listings.",
+    items: ["Up to 40 approved photos", "Custom narrative direction and voice option", "Multiple social cuts plus the listing page", "2 rounds of revisions", "Delivered in 24 hours"],
+    checkoutUrl: "https://buy.polar.sh/polar_cl_5JvCDNNcFwSW9ZwYaAORoOxJqHucSEY7IuziO0bL3h7",
+  },
 ];
 
 const deliverables = [
@@ -35,8 +61,9 @@ export default function Home() {
         <div className="hero-content section-shell" id="top">
           <p className="eyebrow hero-label">A real completed package · 255 Eldon Ave, Columbus</p>
           <h1 id="hero-title">Turn your real listing photos into cinematic marketing.</h1>
-          <p className="hero-deck">Video tours, narration, a listing page, and a final film—built from the property you are already marketing.</p>
+          <p className="hero-deck">Video tours, narration, a listing page, and a final film—so buyers don&rsquo;t scroll past your listing.</p>
           <p className="hero-alt">Not another photo shoot. Not another crew to book. A third option, built entirely from the listing photos you&rsquo;ve already approved.</p>
+          <p className="hero-price">Plans from <strong>$149</strong> per listing — delivered in 24 hours.</p>
           <EarlyAccessButton className="button button-primary" source="hero">Get early access <span aria-hidden="true">↘</span></EarlyAccessButton>
         </div>
       </section>
@@ -90,7 +117,35 @@ export default function Home() {
         </div>
       </section>
 
-      {/* TODO(pricing): Revisit public pricing in a dedicated pricing-skill session once the offer and delivery economics are confirmed. */}
+      <section className="price-section" aria-labelledby="price-title">
+        <div className="section-shell">
+          <div className="price-grid">
+            <div>
+              <p className="eyebrow">07 / Pricing</p>
+              <h2 id="price-title">Plans from <span>$149</span> per listing.</h2>
+            </div>
+            <div>
+              <p>Delivered within 24 hours from your approved photos. Reviewed by you before anything publishes, and backed by the Review-First Guarantee.</p>
+            </div>
+          </div>
+          <div className="tier-grid">
+            {tiers.map((tier) => (
+              <article className={tier.recommended ? "tier-card is-recommended" : "tier-card"} key={tier.name}>
+                {tier.recommended && <p className="tier-flag">Most listings choose this</p>}
+                <h3>{tier.name}</h3>
+                <p className="tier-price">{`$${tier.price}`}</p>
+                <p className="tier-note">{tier.note}</p>
+                <ul>
+                  {tier.items.map((item) => (
+                    <li key={item}>{item}</li>
+                  ))}
+                </ul>
+                <CheckoutButton className="button button-primary tier-cta" href={tier.checkoutUrl} tier={tier.name} price={tier.price}>{`Buy ${tier.name} `}<span aria-hidden="true">→</span></CheckoutButton>
+              </article>
+            ))}
+          </div>
+        </div>
+      </section>
 
       <section className="about-section" aria-labelledby="about-title">
         <div className="section-shell about-grid">
@@ -135,7 +190,7 @@ export default function Home() {
 
       <section className="waitlist-section" id="early-access" aria-labelledby="waitlist-title">
         <div className="section-shell waitlist-grid">
-          <div><p className="eyebrow">Early access</p><h2 id="waitlist-title">Give your next listing a stronger next move.</h2><p className="guarantee-line"><strong>The Review-First Guarantee:</strong> nothing publishes to your listing until you&rsquo;ve reviewed and approved every asset yourself.</p></div>
+          <div><p className="eyebrow">Early access</p><h2 id="waitlist-title">Give your next listing a stronger next move.</h2><p className="guarantee-line"><strong>The Review-First Guarantee:</strong> nothing publishes to your listing until you&rsquo;ve reviewed and approved every asset yourself. If it doesn&rsquo;t match your approved photos, you get a full refund within 7 days. <a href="/terms">Full terms</a>.</p></div>
           <div><p>For individual agents ready to turn approved listing photos into a cinematic marketing package.</p><EarlyAccessButton className="button button-dark" source="final-cta">Get early access <span aria-hidden="true">↗</span></EarlyAccessButton></div>
         </div>
       </section>
@@ -143,6 +198,7 @@ export default function Home() {
       <footer className="site-footer section-shell">
         <span>CINEMA ESTATE™</span><span>Built from real listing media.</span>
         <a href="/privacy">Privacy</a>
+        <a href="/terms">Terms</a>
         <a href="https://www.nar.realtor/about-nar/policies/mls-policy/use-of-photographs-in-a-multiple-listing-service">MLS policy reference ↗</a>
       </footer>
       <EarlyAccessModal />

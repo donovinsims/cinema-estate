@@ -41,7 +41,9 @@ test("server-renders Cinema Estate with an accessible comparison and waitlist", 
   assert.match(html, /<title>Cinema Estate/i);
   assert.match(html, /Turn your real listing photos into cinematic marketing\./i);
   assert.match(html, /A real completed package · 255 Eldon Ave, Columbus/i);
+  assert.match(html, /so buyers don’t scroll past your listing/i);
   assert.match(html, /Not another photo shoot\. Not another crew to book\. A third option, built entirely from the listing photos you’ve already approved\./i);
+  assert.match(html, /Plans from <strong>\$149<\/strong> per listing — delivered in 24 hours\./i);
   assert.match(html, /One real photo\. One cinematic move\./i);
   assert.match(html, /One cinematic move is one component of the complete package\./i);
   assert.match(html, /Four deliverables for your next listing launch\./i);
@@ -79,6 +81,9 @@ test("server-renders Cinema Estate with an accessible comparison and waitlist", 
   assert.match(html, /Give your next listing a stronger next move\./i);
   assert.match(html, /The Review-First Guarantee/i);
   assert.match(html, /nothing publishes to your listing until you.{1,2}ve reviewed and approved every asset yourself/i);
+  assert.match(html, /If it doesn.{1,2}t match your approved photos, you get a full refund within 7 days\./i);
+  assert.match(html, /<a href="\/terms">Full terms<\/a>/i);
+  assert.match(html, /<a href="\/terms">Terms<\/a>/i);
   assert.match(html, /BEFORE\s*\/\s*STATIC LISTING IMAGE/i);
   assert.match(html, /AFTER\s*\/\s*ONE SLOW CAMERA MOVE/i);
   assert.match(html, /Drag to compare/i);
@@ -95,6 +100,18 @@ test("server-renders Cinema Estate with an accessible comparison and waitlist", 
   assert.match(html, /local MLS and brokerage rules apply/i);
   assert.match(html, /Will this look fake or gimmicky\?/i);
   assert.match(html, /Will AI-enhanced visualization cause MLS or disclosure trouble\?/i);
+  assert.match(html, /Plans from <span>\$149<\/span> per listing\./i);
+  assert.match(html, /Delivered within 24 hours from your approved photos/i);
+  assert.match(html, />Proof</);
+  assert.match(html, />Story</);
+  assert.match(html, />Signature</);
+  assert.match(html, /\$149/);
+  assert.match(html, /\$299/);
+  assert.match(html, /\$549/);
+  assert.match(html, /Reserved for luxury, architecturally distinctive, or high-stakes listings/i);
+  assert.match(html, /<a href="https:\/\/buy\.polar\.sh\/polar_cl_r6UPLdTbK0UNuL4QCNH0sfQFdgcpi5DXVWLYn1W4pgw"[^>]*>Buy Proof/i);
+  assert.match(html, /<a href="https:\/\/buy\.polar\.sh\/polar_cl_2qd3HGz4AhmpQCLcqKpYXzVFsWmyoM39lwg3s4BXGZi"[^>]*>Buy Story/i);
+  assert.match(html, /<a href="https:\/\/buy\.polar\.sh\/polar_cl_5JvCDNNcFwSW9ZwYaAORoOxJqHucSEY7IuziO0bL3h7"[^>]*>Buy Signature/i);
   assert.doesNotMatch(html, /codex-preview|Your site is taking shape|react-loading-skeleton/i);
 });
 
@@ -106,4 +123,16 @@ test("renders accurate analytics and privacy disclosures", async () => {
   assert.match(html, /Vercel Analytics and Speed Insights are rendered on this site/i);
   assert.match(html, /PostHog analytics are optional and start only if you choose to allow them/i);
   assert.doesNotMatch(html, /privacy@sequenzy\.com|unsubscribe from marketing emails at any time/i);
+});
+
+test("renders terms with the Review-First Guarantee and delivery/refund commitments", async () => {
+  const response = await render("/terms");
+  assert.equal(response.status, 200);
+  const html = await response.text();
+
+  assert.match(html, /Terms &amp; refund policy\./i);
+  assert.match(html, /within 24 hours of receiving your approved photos/i);
+  assert.match(html, /one round for Proof and Story, two rounds for Signature/i);
+  assert.match(html, /tell us within 7 days of delivery and we will refund your payment in full/i);
+  assert.match(html, /payments are non-refundable once final assets have been delivered and approved/i);
 });
