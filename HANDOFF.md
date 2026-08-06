@@ -4,13 +4,14 @@ Last updated: 2026-08-06
 
 ## Current state (read this first)
 
-Active WIP branch: `codex/ux-conversion-closeout`, currently based on `origin/ux-review/conversion-fixes-wip` (`a1979e063d81ba2722a7983ded7cf21a6034416d`). Code commits: `88db72e` (copy contracts) and `57edea6` (safe form and motion safeguards).
+UX closeout branch: `codex/ux-conversion-closeout`, based on `origin/ux-review/conversion-fixes-wip` (`a1979e063d81ba2722a7983ded7cf21a6034416d`). It was merged by [PR #10](https://github.com/donovinsims/cinema-estate/pull/10) into `main` as `0da04c36d22ecf77ee3536d2e7cef9dfbad14cee` on 2026-08-06. Key commits include `88db72e` (copy contracts), `57edea6` (safe form and motion safeguards), and `844e921` (non-blocking payout follow-up).
 
 - **Code gate:** verified locally on 2026-08-06: `npm run lint`, `npm test` (7/7), and `git diff --check` passed.
 - **Local browser evidence:** at 375px and 1440px, header and hero pricing anchors reached `#pricing`; all three intended Polar links were present; blue purchase/pricing and dark email-capture CTA roles were distinct; pricing copy was readable; invalid email was stopped client-side; unavailable local email capture showed the safe server message; the 45%-scroll plus 35-second modal opened before pricing and remained suppressed after pricing; and the hero control was absent with reduced motion.
 - **Checkout:** existing Polar links were navigation-tested only; no purchase was created.
 - **Owner-only operational follow-up:** Polar Finance payouts are not yet confirmed connected/verified. The owner alone enters any bank/tax details; no agent handles payout credentials. This is not a merge, deployment, or release blocker.
-- **Release state:** branch code gate is green; PR merge, production deployment, and live-production verification have not happened for this branch.
+- **Production deployment:** Vercel deployment `dpl_EqVSxHvSJKg9xoEDaNADivV5SoQC` is Ready at [cinema-estate-rhhfytwjx-teamdonovin.vercel.app](https://cinema-estate-rhhfytwjx-teamdonovin.vercel.app), with the canonical [cinema-estate.vercel.app](https://cinema-estate.vercel.app) alias attached.
+- **Live verification (2026-08-06):** the canonical site returned HTTP 200. At 1440px, the header and hero pricing links reached `#pricing` and all three intended Polar links rendered. At 375px, pricing was single-column and reduced motion hid the hero video control. After viewing pricing, the 35-second automatic-modal rule remained suppressed. No email was submitted and no checkout was opened.
 
 ## Historical / superseded record
 
