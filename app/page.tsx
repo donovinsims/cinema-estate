@@ -15,6 +15,28 @@ const proofClips = [
   { title: "Ravine", file: "eldon-ravine", note: "The neighborhood story" },
 ];
 
+const tiers = [
+  {
+    name: "Proof",
+    price: "149",
+    note: "For a standard listing that needs to look sharp.",
+    items: ["Up to 12 approved photos", "Short cinematic film, branded and unbranded", "Hosted listing page", "1 round of revisions", "Delivered in 24 hours"],
+  },
+  {
+    name: "Story",
+    price: "299",
+    note: "The complete package for most listings.",
+    items: ["Up to 25 approved photos", "Narrated film with a script from your listing's facts", "Social teaser cut plus the full listing page", "1 round of revisions", "Delivered in 24 hours"],
+    recommended: true,
+  },
+  {
+    name: "Signature",
+    price: "549",
+    note: "Reserved for luxury, architecturally distinctive, or high-stakes listings.",
+    items: ["Up to 40 approved photos", "Custom narrative direction and voice option", "Multiple social cuts plus the listing page", "2 rounds of revisions", "Delivered in 24 hours"],
+  },
+];
+
 const deliverables = [
   ["01", "Video tours", "Slow cinematic sequences from the photos you approve—so your listing shows motion, not just a static frame."],
   ["02", "Narration", "A clear listing story shaped around the real property—so buyers understand what makes it worth seeing in person."],
@@ -90,7 +112,36 @@ export default function Home() {
         </div>
       </section>
 
-      {/* TODO(pricing): Revisit public pricing in a dedicated pricing-skill session once the offer and delivery economics are confirmed. */}
+      <section className="price-section" aria-labelledby="price-title">
+        <div className="section-shell">
+          <div className="price-grid">
+            <div>
+              <p className="eyebrow">07 / Pricing</p>
+              <h2 id="price-title">Plans from <span>$149</span> per listing.</h2>
+            </div>
+            <div>
+              <p>Delivered within 24 hours from your approved photos. Reviewed by you before anything publishes, and backed by the Review-First Guarantee.</p>
+            </div>
+          </div>
+          <div className="tier-grid">
+            {tiers.map((tier) => (
+              <article className={tier.recommended ? "tier-card is-recommended" : "tier-card"} key={tier.name}>
+                {tier.recommended && <p className="tier-flag">Most listings choose this</p>}
+                <h3>{tier.name}</h3>
+                <p className="tier-price">{`$${tier.price}`}</p>
+                <p className="tier-note">{tier.note}</p>
+                <ul>
+                  {tier.items.map((item) => (
+                    <li key={item}>{item}</li>
+                  ))}
+                </ul>
+                {/* TODO(checkout): swap for a real Polar checkout link once product/checkout IDs exist. */}
+                <EarlyAccessButton className="button button-primary tier-cta" intent="listing" source={`pricing-${tier.name.toLowerCase()}`}>Start with {tier.name} <span aria-hidden="true">→</span></EarlyAccessButton>
+              </article>
+            ))}
+          </div>
+        </div>
+      </section>
 
       <section className="about-section" aria-labelledby="about-title">
         <div className="section-shell about-grid">

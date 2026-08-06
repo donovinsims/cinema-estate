@@ -95,6 +95,15 @@ test("server-renders Cinema Estate with an accessible comparison and waitlist", 
   assert.match(html, /local MLS and brokerage rules apply/i);
   assert.match(html, /Will this look fake or gimmicky\?/i);
   assert.match(html, /Will AI-enhanced visualization cause MLS or disclosure trouble\?/i);
+  assert.match(html, /Plans from <span>\$149<\/span> per listing\./i);
+  assert.match(html, /Delivered within 24 hours from your approved photos/i);
+  assert.match(html, />Proof</);
+  assert.match(html, />Story</);
+  assert.match(html, />Signature</);
+  assert.match(html, /\$149/);
+  assert.match(html, /\$299/);
+  assert.match(html, /\$549/);
+  assert.match(html, /Reserved for luxury, architecturally distinctive, or high-stakes listings/i);
   assert.doesNotMatch(html, /codex-preview|Your site is taking shape|react-loading-skeleton/i);
 });
 
