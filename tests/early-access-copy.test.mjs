@@ -9,7 +9,7 @@ test("returns the exact evergreen early-access presentation", () => {
     title: "Get early access.",
     description: "See how your next approved listing can become a cinematic marketing package.",
     submit: "Get early access",
-    success: "You’re on the early-access list. I’ll personally follow up as pricing and onboarding are ready.",
+    success: "You’re on the early-access list. I’ll personally follow up with next steps — or see pricing and buy now below.",
   });
 });
 
