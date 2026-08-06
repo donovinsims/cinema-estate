@@ -107,3 +107,15 @@ test("renders accurate analytics and privacy disclosures", async () => {
   assert.match(html, /PostHog analytics are optional and start only if you choose to allow them/i);
   assert.doesNotMatch(html, /privacy@sequenzy\.com|unsubscribe from marketing emails at any time/i);
 });
+
+test("renders terms with the Review-First Guarantee and delivery/refund commitments", async () => {
+  const response = await render("/terms");
+  assert.equal(response.status, 200);
+  const html = await response.text();
+
+  assert.match(html, /Terms &amp; refund policy\./i);
+  assert.match(html, /within 24 hours of receiving your approved photos/i);
+  assert.match(html, /one round for Proof and Story, two rounds for Signature/i);
+  assert.match(html, /tell us within 7 days of delivery and we will refund your payment in full/i);
+  assert.match(html, /payments are non-refundable once final assets have been delivered and approved/i);
+});
