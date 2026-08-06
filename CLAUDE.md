@@ -119,3 +119,16 @@ linked from the footer and the pricing section's guarantee line.
 
 `dist/`, `.wrangler/`, `.vinext/`, `outputs/`, `work/` are build artifacts or scratch
 output and are gitignored — don't hand-edit them.
+
+## Sales-page upgrade workflow
+
+For a comprehensive Cinema Estate sales-page audit or upgrade, invoke the project-local workflow
+manually: `/sales-page-upgrade [audit|plan|implement|review|full]` (default: `full`). Read
+`.claude/skills/sales-page-upgrade/SKILL.md` first, then its `references/product-guardrails.md` and
+`references/output-contracts.md` before changing product-facing work.
+
+The workflow requires repository inspection, three parallel read-only audits, lead synthesis,
+bounded implementation with non-overlapping file ownership, copy finishing, visual QA, and
+engineering review/verification. It must preflight every mapped global skill and transparently mark
+invalid dependencies rather than silently skipping or replacing them. A `full` run may open a pull
+request for manual review, but must never change `main` directly or merge/auto-merge the PR.
