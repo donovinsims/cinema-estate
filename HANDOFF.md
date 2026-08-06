@@ -155,11 +155,46 @@ Ship a real offer and point every CTA at it: finalize pricing → wire Polar che
 
 Items 1, 3, 4, 6, and 7 were resolved by the owner on 2026-08-06 and implemented in the pricing launch below. Items 2, 5, and 8 remain open.
 
-1. ~~Final pricing and packaging~~ — **resolved.** Three one-time, per-listing tiers: Proof $149, Story $299 (recommended), Signature $549 (luxury/distinctive listings only). Live in the pricing section (`app/page.tsx`).
-2. **Polar product and checkout link(s)**, plus success/cancel redirect targets — still open. Tier CTAs currently route to the existing "listing" early-access flow with a `TODO(checkout)` comment in `app/page.tsx` marking where each becomes a real Polar checkout link once product IDs exist.
+1. ~~Final pricing and packaging~~ — **resolved.** Three one-time, per-listing tiers: Proof $149, Story $299 (recommended), Signature $549 (luxury/distinctive listings only). Live in the pricing section (`app/page.tsx`). The Polar product created below should have its placeholder $1.00 price updated to match.
+2. **Polar product and checkout link(s)**, plus success/cancel redirect targets — still open. A Polar org and a **private, $1.00-placeholder** product already exist (see "Polar organization and product setup" below) — still need: the price corrected to the real tiers (or split into three products, one per tier), a connected payout account, and a generated checkout link. Tier CTAs currently route to the existing "listing" early-access flow with a `TODO(checkout)` comment in `app/page.tsx` marking where each becomes a real Polar checkout link once that exists.
 3. ~~Guarantee terms beyond the existing review-before-publish policy~~ — **resolved.** The Review-First Guarantee now includes a 7-day, accuracy-based full-refund window and per-tier revision limits (1 round for Proof/Story, 2 for Signature), documented in full at `/terms` (`app/terms/page.tsx`).
-4. ~~Turnaround-time commitment~~ — **resolved.** 24 hours from receipt of approved photos and required listing details. Stated in the hero, the pricing section, and `/terms`.
+4. ~~Turnaround-time commitment~~ — **resolved.** 24 hours from receipt of approved photos and required listing details (supersedes the 48-hour figure floated in the pre-approval pricing draft below). Stated in the hero, the pricing section, and `/terms`.
 5. **Real client testimonials or case studies** — still open; nothing actionable until real client work exists.
 6. ~~Terms of Service / refund policy text~~ — **resolved.** Published at `/terms`, covering delivery timeline, revisions, the refund guarantee, client responsibilities (photo rights, MLS/Fair Housing compliance), AI-assisted production disclosure, limitation of liability, and governing law (Illinois — flagged to the owner as a reasonable default tied to the founder's Northern Illinois base, not a confirmed registered-entity state). **Not reviewed by a lawyer** — drafted at the owner's explicit request; recommend legal review before high-volume launch.
 7. ~~Confirmation on outcome language~~ — **resolved.** Owner approved stronger, outcome-oriented framing. Hero deck now reads "so buyers don't scroll past your listing" (the exact candidate phrase this document proposed).
 8. Carried forward from the prior checkpoint, still open: sending-domain verification, welcome-email automation, a monitored privacy contact, and email-preference handling (see "External operational work outside this plan" above).
+
+## Polar organization and product setup — 2026-08-06
+
+Done entirely through Kimi WebBridge browser automation against the owner's live, logged-in Polar session (no API keys, no code changes in this repo). This directly unblocks part of item 2 above but does **not** wire anything into the site yet — no code in `app/` was touched.
+
+### What was created
+
+- **Organization**: "Cinema Estate", slug `cinema-estate`, dashboard at `https://polar.sh/dashboard/cinema-estate`.
+- **Organization profile**: Website set to `https://cinema-estate.vercel.app`; Support Email set to `emaildonovin@gmail.com` (a personal address — no dedicated business domain/work email exists yet, this was an explicit owner instruction, not a guess).
+- **Product**: "Cinema Estate", one-time purchase, at `https://polar.sh/dashboard/cinema-estate/products/a4fc8817-ecea-4093-aa83-528495cd36c8`.
+  - Price is **$1.00 USD — a placeholder, not the real price**. Polar's product form hard-rejects `$0.00` ("Price must be greater than 0"); there is no draft/blank-price state in the product model. $1.00 was chosen live, with the owner's explicit sign-off, specifically so the product record could exist ahead of real pricing.
+  - Visibility is **Private** ("only purchasable via a direct checkout link") — the closest equivalent Polar has to a draft/unpublished state. It is not listed in any customer-facing portal. No checkout link has been generated for it, so it is not reachable by anyone yet.
+
+### What was intentionally not touched
+
+- No real banking, tax ID, or identity documents were entered anywhere — none exist yet, and none were fabricated.
+- "Connect a payout account" (Stripe Connect) in Polar's Account Review checklist is still unstarted — needs owner-supplied banking info.
+- "Submit for review" was not clicked — Polar's review requires the payout account step first.
+- No checkout link was generated (Products → Checkout Links in Polar), so nothing here is purchasable by a customer today.
+
+### What's left before this can go live
+
+1. Owner supplies the real price (item 1 above) → update the product's price in Polar (trivial edit, same form).
+2. Connect a real payout account in Polar (Finance → Account) — needs owner banking details.
+3. Generate a checkout link for the product and get real success/cancel redirect URLs.
+4. Wire that checkout link into `app/` (currently every CTA posts to the Sequenzy waitlist form only — see "The core gap" above) — this is the actual code change, not yet started.
+5. Flip product visibility from Private to Public once ready to be listed, and submit the org for Polar's review.
+6. Optional cleanup: Polar's Account Review flags the support email as "Business email is preferred" / "domain does not match your organization website" — cosmetic-only until a real business email/domain exists.
+
+## Pricing strategy and ICP research drafted — 2026-08-06 (superseded by the pricing launch above)
+
+- `docs/pricing-strategy-plain-english.md` and `docs/icp-audience-profile.md` landed via PR #3, drafting the same three tiers (Proof $149 / Story $299 / Signature $549) later approved and implemented in "Pricing launch closeout" above. **This section is a historical record of the draft, not the current state** — the owner has since given the go-ahead and the tiers are live.
+- One number changed on implementation: the draft floated a 48-hour turnaround; the owner approved 24 hours instead, and 24 hours is what's live in the hero, pricing section, and `/terms`.
+- The photo-rights gap this draft flagged (MLS permission doesn't grant photo-reuse rights) is addressed in `/terms`' "Your responsibilities" section as a confirmation the customer agrees to by paying — not yet a separate checkout-flow checkbox, which would need real checkout to exist first.
+- Still true: no rights-confirmation checkbox exists in the (nonexistent) checkout flow itself yet — revisit once Polar checkout is wired (item 2 above).
