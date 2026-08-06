@@ -135,7 +135,7 @@ export default function Home() {
 
       <section className="waitlist-section" id="early-access" aria-labelledby="waitlist-title">
         <div className="section-shell waitlist-grid">
-          <div><p className="eyebrow">Early access</p><h2 id="waitlist-title">Give your next listing a stronger next move.</h2></div>
+          <div><p className="eyebrow">Early access</p><h2 id="waitlist-title">Give your next listing a stronger next move.</h2><p className="guarantee-line"><strong>The Review-First Guarantee:</strong> nothing publishes to your listing until you&rsquo;ve reviewed and approved every asset yourself.</p></div>
           <div><p>For individual agents ready to turn approved listing photos into a cinematic marketing package.</p><EarlyAccessButton className="button button-dark" source="final-cta">Get early access <span aria-hidden="true">↗</span></EarlyAccessButton></div>
         </div>
       </section>

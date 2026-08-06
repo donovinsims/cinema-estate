@@ -73,6 +73,8 @@ test("server-renders Cinema Estate with an accessible comparison and waitlist", 
   assert.ok(qualityPosition >= 0 && qualityPosition < aboutPosition, "Quality must render before About");
   assert.ok(aboutPosition < answersPosition, "About must render before FAQ");
   assert.match(html, /Give your next listing a stronger next move\./i);
+  assert.match(html, /The Review-First Guarantee/i);
+  assert.match(html, /nothing publishes to your listing until you.{1,2}ve reviewed and approved every asset yourself/i);
   assert.match(html, /BEFORE\s*\/\s*STATIC LISTING IMAGE/i);
   assert.match(html, /AFTER\s*\/\s*ONE SLOW CAMERA MOVE/i);
   assert.match(html, /Drag to compare/i);
