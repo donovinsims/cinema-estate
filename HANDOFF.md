@@ -135,6 +135,17 @@ Ship a real offer and point every CTA at it: finalize pricing → wire Polar che
 - The honest disclosure that the 255 Eldon package is a demo, not client work (`app/page.tsx:113`) — protects trust; do not let sales pressure erode this before real client proof exists.
 - The `early-access-copy.mjs` / `EarlyAccessButton` intent-dispatch architecture — built so the CTA target can be swapped to a real purchase action later without a rewrite.
 
+## Pricing launch closeout — 2026-08-06
+
+- Branch: `pricing/launch-real-offer`. Owner approved implementing real pricing, stronger hero framing, and drafting the guarantee/ToS content directly (items 1, 3, 4, 6, 7 above).
+- Added a three-tier pricing section (`app/page.tsx`, reusing the previously-reserved `.price-section`/`.price-grid` CSS plus new `.tier-grid`/`.tier-card` rules): Proof $149, Story $299 (recommended), Signature $549.
+- Added `app/terms/page.tsx` — Terms & refund policy, covering delivery timeline (24 hours), revisions, the Review-First Guarantee's refund terms, client responsibilities, AI-disclosure, liability, and governing law. Linked from the footer and from the waitlist section's guarantee line.
+- Strengthened hero copy per owner approval and added a price line using the reserved `.hero-price` rule.
+- CTAs on the new pricing tiers intentionally still route to the existing "listing" early-access capture flow, not a real purchase — marked with `TODO(checkout)` in `app/page.tsx`. Swap these for real Polar checkout links once product IDs/links exist (item 2 above).
+- Each change followed the established red/green pattern in `tests/rendered-html.test.mjs`; a new test also locks the `/terms` content.
+- Found and fixed a JSX rendering bug while writing tests: `${expr}` (literal `$` immediately followed by a JS expression) renders as `$<!-- -->149` in React's server output, not `$149` — the hydration comment marker between adjacent static/dynamic text nodes. Fixed by combining into a single template-literal expression (`` {`$${tier.price}`} ``); worth remembering for any future `$`-prefixed dynamic value.
+- Final `npm ci --include=dev`, `npm run lint`, `npm test`: all clean, 7/7 tests passing. No `package-lock.json` drift this run.
+
 ### New reference docs
 
 - `docs/PRODUCT.md` — canonical product overview (what it is, why it exists, who it's for), for onboarding future sessions without re-deriving this from the source.
@@ -142,13 +153,13 @@ Ship a real offer and point every CTA at it: finalize pricing → wire Polar che
 
 ### Blocked on owner input
 
-Nothing in this list can be implemented correctly without the owner supplying the fact or decision — do not guess or draft final copy for these:
+Items 1, 3, 4, 6, and 7 were resolved by the owner on 2026-08-06 and implemented in the pricing launch below. Items 2, 5, and 8 remain open.
 
-1. **Final pricing and packaging** — single price vs. tiers, what's included at each tier. Blocks checkout, any on-page price display, and the final CTA-copy swap from "Get early access" to a purchase verb.
-2. **Polar product and checkout link(s)**, plus success/cancel redirect targets — blocks wiring the checkout itself.
-3. **Guarantee terms beyond the existing review-before-publish policy** — e.g., refund conditions, revision limits, how long the guarantee window is. (The plan does include naming and elevating the *existing* review-before-publish policy as a guarantee, since that requires no new commitment — this item is for anything stronger.)
-4. **Turnaround-time commitment** — how many days per listing. Needed to close the Value Equation's Time Delay gap and to make a "how it works" timeline concrete.
-5. **Real client testimonials or case studies**, once real client work exists — nothing actionable here until then; do not fabricate or imply proof that doesn't exist.
-6. **Terms of Service / refund policy text** the owner is comfortable publishing — required before Polar checkout can credibly go live, and before item 3's guarantee is legally meaningful.
-7. **Confirmation on outcome language** for the hero/headline beyond what's already approved (e.g., is he comfortable with output-outcome framing like "so buyers don't scroll past your listing," or does he want to hold the line on process-only language until there's data to back an outcome claim).
+1. ~~Final pricing and packaging~~ — **resolved.** Three one-time, per-listing tiers: Proof $149, Story $299 (recommended), Signature $549 (luxury/distinctive listings only). Live in the pricing section (`app/page.tsx`).
+2. **Polar product and checkout link(s)**, plus success/cancel redirect targets — still open. Tier CTAs currently route to the existing "listing" early-access flow with a `TODO(checkout)` comment in `app/page.tsx` marking where each becomes a real Polar checkout link once product IDs exist.
+3. ~~Guarantee terms beyond the existing review-before-publish policy~~ — **resolved.** The Review-First Guarantee now includes a 7-day, accuracy-based full-refund window and per-tier revision limits (1 round for Proof/Story, 2 for Signature), documented in full at `/terms` (`app/terms/page.tsx`).
+4. ~~Turnaround-time commitment~~ — **resolved.** 24 hours from receipt of approved photos and required listing details. Stated in the hero, the pricing section, and `/terms`.
+5. **Real client testimonials or case studies** — still open; nothing actionable until real client work exists.
+6. ~~Terms of Service / refund policy text~~ — **resolved.** Published at `/terms`, covering delivery timeline, revisions, the refund guarantee, client responsibilities (photo rights, MLS/Fair Housing compliance), AI-assisted production disclosure, limitation of liability, and governing law (Illinois — flagged to the owner as a reasonable default tied to the founder's Northern Illinois base, not a confirmed registered-entity state). **Not reviewed by a lawyer** — drafted at the owner's explicit request; recommend legal review before high-volume launch.
+7. ~~Confirmation on outcome language~~ — **resolved.** Owner approved stronger, outcome-oriented framing. Hero deck now reads "so buyers don't scroll past your listing" (the exact candidate phrase this document proposed).
 8. Carried forward from the prior checkpoint, still open: sending-domain verification, welcome-email automation, a monitored privacy contact, and email-preference handling (see "External operational work outside this plan" above).
