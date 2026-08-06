@@ -57,8 +57,9 @@ export default function Home() {
         <div className="hero-content section-shell" id="top">
           <p className="eyebrow hero-label">A real completed package · 255 Eldon Ave, Columbus</p>
           <h1 id="hero-title">Turn your real listing photos into cinematic marketing.</h1>
-          <p className="hero-deck">Video tours, narration, a listing page, and a final film—built from the property you are already marketing.</p>
+          <p className="hero-deck">Video tours, narration, a listing page, and a final film—so buyers don&rsquo;t scroll past your listing.</p>
           <p className="hero-alt">Not another photo shoot. Not another crew to book. A third option, built entirely from the listing photos you&rsquo;ve already approved.</p>
+          <p className="hero-price">Plans from <strong>$149</strong> per listing — delivered in 24 hours.</p>
           <EarlyAccessButton className="button button-primary" source="hero">Get early access <span aria-hidden="true">↘</span></EarlyAccessButton>
         </div>
       </section>
