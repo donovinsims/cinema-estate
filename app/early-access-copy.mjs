@@ -4,7 +4,7 @@ const earlyAccessPresentations = Object.freeze({
     title: "Get early access.",
     description: "See how your next approved listing can become a cinematic marketing package.",
     submit: "Get early access",
-    success: "You’re on the early-access list. We’ll be in touch when there’s an update.",
+    success: "You’re on the early-access list. I’ll personally follow up as pricing and onboarding are ready.",
   }),
   listing: Object.freeze({
     eyebrow: "Cinema Estate / Listing handoff",

@@ -16,10 +16,10 @@ const proofClips = [
 ];
 
 const deliverables = [
-  ["01", "Video tours", "Slow cinematic sequences from the photos you approve."],
-  ["02", "Narration", "A clear listing story shaped around the real property."],
-  ["03", "Listing page", "One focused destination to share with prospective buyers."],
-  ["04", "Final film", "A complete, ready-to-review marketing package."],
+  ["01", "Video tours", "Slow cinematic sequences from the photos you approve—so your listing shows motion, not just a static frame."],
+  ["02", "Narration", "A clear listing story shaped around the real property—so buyers understand what makes it worth seeing in person."],
+  ["03", "Listing page", "One focused destination to share with prospective buyers, instead of splitting attention across scattered photo links."],
+  ["04", "Final film", "A complete, ready-to-review marketing package—one link that covers the whole story of the listing."],
 ];
 
 export default function Home() {
@@ -36,6 +36,7 @@ export default function Home() {
           <p className="eyebrow hero-label">A real completed package · 255 Eldon Ave, Columbus</p>
           <h1 id="hero-title">Turn your real listing photos into cinematic marketing.</h1>
           <p className="hero-deck">Video tours, narration, a listing page, and a final film—built from the property you are already marketing.</p>
+          <p className="hero-alt">Not another photo shoot. Not another crew to book. A third option, built entirely from the listing photos you&rsquo;ve already approved.</p>
           <EarlyAccessButton className="button button-primary" source="hero">Get early access <span aria-hidden="true">↘</span></EarlyAccessButton>
         </div>
       </section>
@@ -79,6 +80,11 @@ export default function Home() {
           <h2 id="quality-title">Reviewed with you before anything is published.</h2>
           <div>
             <p>You review the package before anything is published or shared. That review keeps the supplied imagery, required deliverables, disclosure language, and publishing details aligned with the listing.</p>
+            <ol className="how-it-works">
+              <li>Send the listing photos you&rsquo;ve already approved.</li>
+              <li>Cinema Estate builds the four-part package around them.</li>
+              <li>You review every asset before anything is published or shared.</li>
+            </ol>
             <ul><li>Agent approval before publishing</li><li>Real listing imagery remains the source</li><li>Disclosure and delivery review</li></ul>
           </div>
         </div>
@@ -121,15 +127,15 @@ export default function Home() {
         <p className="eyebrow">06 / Clear answers</p>
         <h2 id="answers-title">Marketing with the right guardrails.</h2>
         <div className="answer-list">
-          <details open><summary>Does Cinema Estate redesign the property?</summary><p>No. The real listing images remain the source. Cinema Estate adds motion, narration, and a complete marketing package.</p></details>
+          <details open><summary>Will this look fake or gimmicky?</summary><p>No. The real listing images remain the source. Cinema Estate adds motion, narration, and a complete marketing package.</p></details>
           <details><summary>Who approves what goes live?</summary><p>You do. Agents approve their assets before anything is published or shared.</p></details>
-          <details><summary>How is AI-enhanced visualization handled?</summary><p>AI-enhanced visualization is disclosed. Local MLS and brokerage rules apply, and agents remain responsible for their listing requirements.</p></details>
+          <details><summary>Will AI-enhanced visualization cause MLS or disclosure trouble?</summary><p>AI-enhanced visualization is disclosed. Local MLS and brokerage rules apply, and agents remain responsible for their listing requirements.</p></details>
         </div>
       </section>
 
       <section className="waitlist-section" id="early-access" aria-labelledby="waitlist-title">
         <div className="section-shell waitlist-grid">
-          <div><p className="eyebrow">Early access</p><h2 id="waitlist-title">Give your next listing a stronger next move.</h2></div>
+          <div><p className="eyebrow">Early access</p><h2 id="waitlist-title">Give your next listing a stronger next move.</h2><p className="guarantee-line"><strong>The Review-First Guarantee:</strong> nothing publishes to your listing until you&rsquo;ve reviewed and approved every asset yourself.</p></div>
           <div><p>For individual agents ready to turn approved listing photos into a cinematic marketing package.</p><EarlyAccessButton className="button button-dark" source="final-cta">Get early access <span aria-hidden="true">↗</span></EarlyAccessButton></div>
         </div>
       </section>

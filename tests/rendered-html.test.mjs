@@ -41,10 +41,18 @@ test("server-renders Cinema Estate with an accessible comparison and waitlist", 
   assert.match(html, /<title>Cinema Estate/i);
   assert.match(html, /Turn your real listing photos into cinematic marketing\./i);
   assert.match(html, /A real completed package · 255 Eldon Ave, Columbus/i);
+  assert.match(html, /Not another photo shoot\. Not another crew to book\. A third option, built entirely from the listing photos you’ve already approved\./i);
   assert.match(html, /One real photo\. One cinematic move\./i);
   assert.match(html, /One cinematic move is one component of the complete package\./i);
   assert.match(html, /Four deliverables for your next listing launch\./i);
+  assert.match(html, /so your listing shows motion, not just a static frame/i);
+  assert.match(html, /so buyers understand what makes it worth seeing in person/i);
+  assert.match(html, /instead of splitting attention across scattered photo links/i);
+  assert.match(html, /one link that covers the whole story of the listing/i);
   assert.match(html, /Reviewed with you before anything is published\./i);
+  assert.match(html, /Send the listing photos you.{1,2}ve already approved\./i);
+  assert.match(html, /Cinema Estate builds the four-part package around them\./i);
+  assert.match(html, /You review every asset before anything is published or shared\./i);
   const aboutSection = html.match(/<section class="about-section"[\s\S]*?<\/section>/);
   assert.ok(aboutSection, "About section must render");
   assert.ok(
@@ -69,6 +77,8 @@ test("server-renders Cinema Estate with an accessible comparison and waitlist", 
   assert.ok(qualityPosition >= 0 && qualityPosition < aboutPosition, "Quality must render before About");
   assert.ok(aboutPosition < answersPosition, "About must render before FAQ");
   assert.match(html, /Give your next listing a stronger next move\./i);
+  assert.match(html, /The Review-First Guarantee/i);
+  assert.match(html, /nothing publishes to your listing until you.{1,2}ve reviewed and approved every asset yourself/i);
   assert.match(html, /BEFORE\s*\/\s*STATIC LISTING IMAGE/i);
   assert.match(html, /AFTER\s*\/\s*ONE SLOW CAMERA MOVE/i);
   assert.match(html, /Drag to compare/i);
@@ -80,9 +90,11 @@ test("server-renders Cinema Estate with an accessible comparison and waitlist", 
   assert.match(html, /<button[^>]*>After<\/button>/i);
   assert.match(html, /name="email"/i);
   assert.match(html, /name="website"/i);
-  assert.match(html, /You’re on the early-access list\. We’ll be in touch when there’s an update\./i);
+  assert.match(html, /You’re on the early-access list\. I’ll personally follow up as pricing and onboarding are ready\./i);
   assert.doesNotMatch(html, /\$99|next week|Unsubscribe anytime|privacy@sequenzy\.com/i);
   assert.match(html, /local MLS and brokerage rules apply/i);
+  assert.match(html, /Will this look fake or gimmicky\?/i);
+  assert.match(html, /Will AI-enhanced visualization cause MLS or disclosure trouble\?/i);
   assert.doesNotMatch(html, /codex-preview|Your site is taking shape|react-loading-skeleton/i);
 });
 
