@@ -5,7 +5,7 @@ import { EarlyAccessModal } from "./EarlyAccessModal";
 
 export const metadata: Metadata = {
   title: "Cinema Estate — Real listing photos, cinematic marketing",
-  description: "Cinema Estate turns approved listing photography into a cinematic marketing package for real-estate agents.",
+  description: "Cinema Estate turns approved listing photography into video tours, narration, a listing page, and a final film for real-estate agents.",
 };
 
 const proofClips = [
@@ -37,7 +37,6 @@ export default function Home() {
           <h1 id="hero-title">Turn your real listing photos into cinematic marketing.</h1>
           <p className="hero-deck">Video tours, narration, a listing page, and a final film—built from the property you are already marketing.</p>
           <EarlyAccessButton className="button button-primary" source="hero">Get early access <span aria-hidden="true">↘</span></EarlyAccessButton>
-          <p className="hero-price">Plans from <strong>$99</strong> per listing</p>
         </div>
       </section>
 
@@ -63,7 +62,7 @@ export default function Home() {
         <div className="section-shell package-grid">
           <div className="section-intro">
             <p className="eyebrow">03 / The package</p>
-            <h2 id="package-title">Everything an agent needs to launch the story.</h2>
+            <h2 id="package-title">Four deliverables for your next listing launch.</h2>
             <p>One coherent package, reviewed by you before anything is published.</p>
           </div>
           <div className="deliverables">
@@ -77,18 +76,44 @@ export default function Home() {
       <section className="quality-section section-shell" aria-labelledby="quality-title">
         <p className="eyebrow">04 / Quality gate</p>
         <div className="quality-grid">
-          <h2 id="quality-title">Reviewed for the details that change trust.</h2>
+          <h2 id="quality-title">Reviewed with you before anything is published.</h2>
           <div>
-            <p>Internal validation checks the supplied imagery, required deliverables, disclosure language, and publishing readiness. It is a quality gate—not a public score or a promise of performance.</p>
+            <p>You review the package before anything is published or shared. That review keeps the supplied imagery, required deliverables, disclosure language, and publishing details aligned with the listing.</p>
             <ul><li>Agent approval before publishing</li><li>Real listing imagery remains the source</li><li>Disclosure and delivery review</li></ul>
           </div>
         </div>
       </section>
 
-      <section className="price-section">
-        <div className="section-shell price-grid">
-          <p className="eyebrow">05 / Simple start</p>
-          <div><h2>Plans from <span>$99</span> per listing.</h2><p>Start with one approved listing. Full tier pricing arrives with launch.</p></div>
+      {/* TODO(pricing): Revisit public pricing in a dedicated pricing-skill session once the offer and delivery economics are confirmed. */}
+
+      <section className="about-section" aria-labelledby="about-title">
+        <div className="section-shell about-grid">
+          <figure className="about-portrait">
+            {/* Native srcSet/sizes are intentional so the checked-in 320w and 640w assets remain explicit. */}
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img
+              src="/media/donovin-sims-640.webp"
+              srcSet="/media/donovin-sims-320.webp 320w, /media/donovin-sims-640.webp 640w"
+              sizes="(max-width: 720px) calc(100vw - 32px), (max-width: 1100px) 38vw, 420px"
+              width="640"
+              height="798"
+              loading="lazy"
+              decoding="async"
+              alt="Donovin Sims, founder of Cinema Estate."
+            />
+          </figure>
+          <div className="about-story">
+            <p className="eyebrow">05 / Why Cinema Estate</p>
+            <h2 id="about-title">Give your listing a cinematic story without another shoot.</h2>
+            <div className="about-copy">
+              <p>Your listing photos can be accurate, approved, and still feel flat on a screen. Static images show the rooms one frame at a time. Real video adds motion, but it also means finding a crew, coordinating property access, and managing another production schedule for every listing.</p>
+              <p>Cinema Estate uses AI to handle the repetitive production work behind the motion, narration, listing page, and final film. It does not invent rooms, move walls, replace finishes, or change what the property is. Your already-approved listing photos remain the source.</p>
+              <p>You send the photos you already have. Cinema Estate builds the four-part package, then you review every asset before anything is published. There is no reshoot, no crew to book, and no property-access schedule to coordinate.</p>
+              <p>I’m Donovin, from Northern Illinois. After talking with 15–20 individual agents over the past year, I kept hearing the same tradeoff: use static photos or add another production to an already busy listing. I started Cinema Estate to give agents a third option: a stronger visual story built from work they have already approved.</p>
+              <p>The 255 Eldon package on this page is a demo listing, not client work. It is here to show you a realistic example of what to expect and let you judge the source photos, the cinematic treatment, and the complete package for yourself. AI-enhanced visualization is disclosed, local MLS and brokerage rules still apply, and nothing is published until you approve it.</p>
+            </div>
+            <EarlyAccessButton className="button button-primary about-cta" intent="listing" source="about">Send me a listing <span aria-hidden="true">→</span></EarlyAccessButton>
+          </div>
         </div>
       </section>
 
@@ -104,8 +129,8 @@ export default function Home() {
 
       <section className="waitlist-section" id="early-access" aria-labelledby="waitlist-title">
         <div className="section-shell waitlist-grid">
-          <div><p className="eyebrow">Launching next week</p><h2 id="waitlist-title">Be first to turn a listing into a film.</h2></div>
-          <div><p>For individual agents ready to give their approved listing photos a stronger next move.</p><EarlyAccessButton className="button button-dark" source="final-cta">Get the launch invite <span aria-hidden="true">↗</span></EarlyAccessButton></div>
+          <div><p className="eyebrow">Early access</p><h2 id="waitlist-title">Give your next listing a stronger next move.</h2></div>
+          <div><p>For individual agents ready to turn approved listing photos into a cinematic marketing package.</p><EarlyAccessButton className="button button-dark" source="final-cta">Get early access <span aria-hidden="true">↗</span></EarlyAccessButton></div>
         </div>
       </section>
 

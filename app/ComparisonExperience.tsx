@@ -56,7 +56,7 @@ export function ComparisonExperience() {
       <div className="section-shell comparison-heading">
         <div>
           <p className="eyebrow">01 / The transformation</p>
-          <h2 id="comparison-title">One real photo. A complete marketing package.</h2>
+          <h2 id="comparison-title">One real photo. One cinematic move.</h2>
         </div>
         <button className="text-control" type="button" onClick={revealFully}>
           Watch the transformation <span aria-hidden="true">↗</span>
@@ -182,7 +182,7 @@ export function ComparisonExperience() {
       </div>
 
       <p className="comparison-caption section-shell">
-        The property is not redesigned. The real listing image is given motion, narration, and a complete marketing package.
+        One cinematic move is one component of the complete package. The real listing image remains the source.
       </p>
     </section>
   );

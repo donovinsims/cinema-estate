@@ -3,14 +3,18 @@
 import { FormEvent, useId, useState } from "react";
 import { track } from "./analytics";
 
-const successMessage = "You’re on the early-access list. Look for your launch invite next week.";
+const successMessages = {
+  "early-access": "You’re on the early-access list. We’ll be in touch when there’s an update.",
+  listing: "Thanks — I’ll follow up with the next step for sending the listing photos you already have.",
+} as const;
 
 type WaitlistFormProps = {
+  intent?: "early-access" | "listing";
   onSuccess?: () => void;
   variant?: "inline" | "modal";
 };
 
-export function WaitlistForm({ onSuccess, variant = "inline" }: WaitlistFormProps) {
+export function WaitlistForm({ intent = "early-access", onSuccess, variant = "inline" }: WaitlistFormProps) {
   const [status, setStatus] = useState<"idle" | "sending" | "success" | "error">("idle");
   const [message, setMessage] = useState("");
   const formId = useId();
@@ -22,7 +26,7 @@ export function WaitlistForm({ onSuccess, variant = "inline" }: WaitlistFormProp
     const email = String(formData.get("email") ?? "").trim();
 
     if (!email) {
-      track("early_access_submit_failed", { reason: "missing_email", placement: variant });
+      track("early_access_submit_failed", { intent, reason: "missing_email", placement: variant });
       setStatus("error");
       setMessage("Enter an email address to get early access.");
       return;
@@ -30,7 +34,7 @@ export function WaitlistForm({ onSuccess, variant = "inline" }: WaitlistFormProp
 
     setStatus("sending");
     setMessage("");
-    track("early_access_submit_attempted", { placement: variant });
+    track("early_access_submit_attempted", { intent, placement: variant });
     try {
       const response = await fetch("/api/early-access", { method: "POST", body: formData });
       if (!response.ok) {
@@ -38,14 +42,14 @@ export function WaitlistForm({ onSuccess, variant = "inline" }: WaitlistFormProp
         throw new Error(payload.error ?? "Sequenzy signup failed");
       }
       setStatus("success");
-      setMessage(successMessage);
+      setMessage(successMessages[intent]);
       form.reset();
       onSuccess?.();
-      track("early_access_submit_succeeded", { placement: variant });
+      track("early_access_submit_succeeded", { intent, placement: variant });
     } catch {
       setStatus("error");
       setMessage("We couldn’t add you yet. Please try again.");
-      track("early_access_submit_failed", { reason: "server_error", placement: variant });
+      track("early_access_submit_failed", { intent, reason: "server_error", placement: variant });
     }
   }
 
@@ -54,14 +58,14 @@ export function WaitlistForm({ onSuccess, variant = "inline" }: WaitlistFormProp
       className={`waitlist-form waitlist-form-${variant}`}
       onSubmit={submit}
       noValidate
-      data-success-message={successMessage}
+      data-success-message={successMessages[intent]}
       aria-describedby={`${formId}-status`}
     >
       <label className="sr-only" htmlFor={`${formId}-email`}>Email address</label>
       <input id={`${formId}-email`} name="email" type="email" inputMode="email" autoComplete="email" placeholder="you@agency.com" required />
       <input className="honeypot" name="website" type="text" tabIndex={-1} autoComplete="off" aria-hidden="true" />
       <button type="submit" disabled={status === "sending"}>
-        {status === "sending" ? "Joining…" : variant === "modal" ? "Send my launch invite" : "Get early access"}
+        {status === "sending" ? "Sending…" : intent === "listing" ? "Start the listing handoff" : "Get early access"}
       </button>
       <p id={`${formId}-status`} className={`form-status ${status}`} aria-live="polite">
         {message}

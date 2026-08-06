@@ -4,6 +4,8 @@ import { KeyboardEvent, MouseEvent, useEffect, useRef, useState } from "react";
 import { WaitlistForm } from "./WaitlistForm";
 import { track } from "./analytics";
 
+type PresentationIntent = "early-access" | "listing";
+
 const cooldownMs = 14 * 24 * 60 * 60 * 1000;
 const dismissalKey = "cinema-estate.waitlist-dismissed-at";
 const conversionKey = "cinema-estate.waitlist-converted";
@@ -21,6 +23,7 @@ function canShowAutomaticPopup() {
 export function EarlyAccessModal() {
   const [isOpen, setIsOpen] = useState(false);
   const [openedBy, setOpenedBy] = useState("cta");
+  const [presentationIntent, setPresentationIntent] = useState<PresentationIntent>("early-access");
   const dialogRef = useRef<HTMLDivElement>(null);
   const lastFocusedElement = useRef<HTMLElement | null>(null);
   const engagedRef = useRef(false);
@@ -28,12 +31,13 @@ export function EarlyAccessModal() {
   const autoOpenedRef = useRef(false);
   const hasInteractedRef = useRef(false);
 
-  function open(source: string) {
+  function open(source: string, intent: PresentationIntent = "early-access") {
     if (source !== "engaged") hasInteractedRef.current = true;
     lastFocusedElement.current = document.activeElement instanceof HTMLElement ? document.activeElement : null;
     setOpenedBy(source);
+    setPresentationIntent(intent);
     setIsOpen(true);
-    track("early_access_modal_viewed", { source });
+    track("early_access_modal_viewed", { intent, source });
   }
 
   function close(rememberDismissal = true) {
@@ -43,12 +47,15 @@ export function EarlyAccessModal() {
       } catch {}
     }
     setIsOpen(false);
-    track("early_access_modal_dismissed", { source: openedBy });
+    track("early_access_modal_dismissed", { intent: presentationIntent, source: openedBy });
     window.setTimeout(() => lastFocusedElement.current?.focus(), 0);
   }
 
   useEffect(() => {
-    const onOpen = (event: Event) => open((event as CustomEvent<{ source?: string }>).detail?.source ?? "cta");
+    const onOpen = (event: Event) => {
+      const detail = (event as CustomEvent<{ intent?: PresentationIntent; source?: string }>).detail;
+      open(detail?.source ?? "cta", detail?.intent ?? "early-access");
+    };
     window.addEventListener("cinemaestate:early-access", onOpen);
 
     if (!canShowAutomaticPopup()) {
@@ -118,15 +125,21 @@ export function EarlyAccessModal() {
     } catch {}
   }
 
+  const isListingHandoff = presentationIntent === "listing";
+  const title = isListingHandoff ? "Send me your listing." : "Get early access.";
+  const description = isListingHandoff
+    ? "Leave your email and I’ll follow up with the next step for sending the listing photos you already have."
+    : "See how your next approved listing can become a cinematic marketing package.";
+
   return (
-    <div className="early-access-backdrop" onMouseDown={closeFromBackdrop} hidden={!isOpen}>
-      <div ref={dialogRef} className="early-access-modal" role="dialog" aria-modal="true" aria-labelledby="early-access-modal-title" aria-describedby="early-access-modal-description" onKeyDown={trapFocus} data-opened-by={openedBy}>
+    <div className="early-access-backdrop" style={{ zIndex: 40 }} onMouseDown={closeFromBackdrop} hidden={!isOpen}>
+      <div ref={dialogRef} className="early-access-modal" role="dialog" aria-modal="true" aria-labelledby="early-access-modal-title" aria-describedby="early-access-modal-description" onKeyDown={trapFocus} data-opened-by={openedBy} data-presentation-intent={presentationIntent}>
         <button className="modal-close" type="button" onClick={() => close()} aria-label="Close early-access form">×</button>
-        <p className="eyebrow">Cinema Estate / Early access</p>
-        <h2 id="early-access-modal-title">Get the launch invite.</h2>
-        <p id="early-access-modal-description">See how your next approved listing can become a cinematic marketing package. We’ll send your invite next week.</p>
-        <WaitlistForm variant="modal" onSuccess={handleSuccess} />
-        <p className="modal-detail">Email only. No credit card. Unsubscribe anytime.</p>
+        <p className="eyebrow">Cinema Estate / {isListingHandoff ? "Listing handoff" : "Early access"}</p>
+        <h2 id="early-access-modal-title">{title}</h2>
+        <p id="early-access-modal-description">{description}</p>
+        <WaitlistForm variant="modal" intent={isListingHandoff ? "listing" : "early-access"} onSuccess={handleSuccess} />
+        <p className="modal-detail">Email only.</p>
         <button className="modal-decline" type="button" onClick={() => close()}>Maybe later</button>
       </div>
     </div>
