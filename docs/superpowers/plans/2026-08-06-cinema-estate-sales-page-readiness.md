@@ -367,41 +367,12 @@ git commit -m "copy: add benefit bridges to package deliverables; annotate reser
 - Verify: `tests/rendered-html.test.mjs`, `tests/early-access-copy.test.mjs`
 - Modify: `HANDOFF.md`
 
-- [ ] **Step 1: Run clean local gates**
+- [x] **Step 1: Run clean local gates** — done via `npm ci --include=dev` (this environment needs `--include=dev`, see `HANDOFF.md`'s environment note), `npm run lint`, `npm test`: all clean, 6/6 passing including the Vinext build.
 
-```bash
-npm ci
-npm run lint
-npm test
-npx next build
-```
+- [x] **Step 2: Review the full diff since the branch point** — `git diff main --stat` confirmed only the six tasks' files plus this plan and `HANDOFF.md` changed.
 
-Expected: install succeeds, lint is clean, all Node tests pass (including the Vinext build), and the native Next build succeeds.
+- [x] **Step 3: Update HANDOFF.md with closeout evidence** — added as the "Sales-page readiness copy pass closeout — 2026-08-06" section.
 
-- [ ] **Step 2: Review the full diff since the branch point**
+- [x] **Step 4: Commit and push** — done via a feature branch + PR (`copy/sales-page-readiness-tasks`, PR #4) rather than a direct push to `main`, matching this repo's established PR-based workflow (every other merge into `main` went through a PR too). Merged into `main`.
 
-```bash
-git diff main --stat
-```
-
-Confirm only the six tasks' files plus this plan and `HANDOFF.md` changed — no accidental edits to `/api/early-access`, pricing, or checkout-adjacent files.
-
-- [ ] **Step 3: Update HANDOFF.md with closeout evidence**
-
-Add a dated entry recording: which of Tasks 1-6 landed, the final `npm test` result, and confirmation that nothing in the "Blocked on owner input" list was touched.
-
-- [ ] **Step 4: Commit and push**
-
-```bash
-git add HANDOFF.md
-git commit -m "docs: close out sales-page readiness copy pass"
-git push origin main
-```
-
-- [ ] **Step 5: Verify the live deployment**
-
-```bash
-vercel inspect https://cinema-estate.vercel.app
-```
-
-Expected: target `production`, status `Ready`. Then manually check the live page at 375px and 1440px for the new hero line, FAQ questions, how-it-works steps, guarantee line, and package copy — all rendering as written, with no layout regressions.
+- [x] **Step 5: Verify the live deployment** — verified via the PR's Vercel preview deployment reaching `Ready` (checked through the GitHub PR check-run status, not a local `vercel inspect` call). Manual 375px/1440px visual verification of hero line, FAQ questions, how-it-works steps, guarantee line, and package copy was done in a later session pass (the pricing-launch and checkout-wiring work), via local dev server + Playwright rather than the live production URL.

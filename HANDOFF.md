@@ -2,6 +2,17 @@
 
 Last updated: 2026-08-06
 
+## Current state (read this first)
+
+This doc is a chronological log — everything below is historical record, oldest first. Start here instead of at "Active implementation checkpoint," which describes a 2026-08-05 plan that's long since superseded.
+
+- **The site sells three real, live packages**: Proof $149, Story $299 (recommended), Signature $549 — one-time, per-listing, not a subscription. Delivery is committed at 24 hours from receipt of approved photos.
+- **Checkout is real.** Each tier's "Buy" button links to a live Polar checkout page (`app/CheckoutButton.tsx`, see "Polar checkout wired" below for the exact product IDs/links).
+- **The single most urgent open item: no payout account is connected in Polar.** A customer can complete a real charge today; the business cannot yet receive that money. Connect one in Polar (Finance → Account) before driving real traffic.
+- **Guarantee and refund terms are published** at `/terms` (`app/terms/page.tsx`) — the Review-First Guarantee, a 7-day accuracy-based refund window, per-tier revision limits. Not lawyer-reviewed; drafted at the owner's request.
+- **Still open, no urgency yet**: real client testimonials/case studies (none exist), sending-domain verification, welcome-email automation, a monitored privacy contact, email-preference handling, and flipping the Polar org from Private visibility to Public once ready to be listed.
+- Canonical docs: `docs/PRODUCT.md` (what/why/who), `docs/icp-audience-profile.md` (target buyer research), `docs/pricing-strategy-plain-english.md` (pricing rationale — now describes the live state, see its own status note). This file is the detailed implementation history behind all of it.
+
 ## Active implementation checkpoint
 
 - Active plan: `docs/superpowers/plans/2026-08-05-cinema-estate-cro-closeout.md`.

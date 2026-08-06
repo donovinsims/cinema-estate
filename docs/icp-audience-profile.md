@@ -2,6 +2,8 @@
 
 *Built entirely from the desktop research report already provided — no new interviews or live research included, per instruction. Every claim below is labeled with a confidence level so this document doesn't overstate certainty the underlying research doesn't have.*
 
+> **Status — 2026-08-06.** The pricing this profile was drafted alongside ($149/$299/$549) is now live — see `docs/pricing-strategy-plain-english.md` and `HANDOFF.md`. The audience research itself is unchanged and still **not customer-validated**: no real purchase has happened yet, so every confidence label below still reflects desktop research, not observed buyer behavior. Revisit this doc once real orders start coming in through the live checkout.
+
 ## How to read the confidence labels
 
 | Label | What it means here |
