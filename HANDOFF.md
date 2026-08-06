@@ -78,6 +78,15 @@ Last updated: 2026-08-06
 - Verify but do not change: `app/page.tsx`, `app/EarlyAccessButton.tsx`, and `app/api/early-access/route.ts`.
 - Do not stage installer/user artifacts: `.agents/`, `conductor/`, `opencode.json`, or `skills-lock.json`.
 
+## Sales-page readiness copy pass closeout — 2026-08-06
+
+- Active plan: `docs/superpowers/plans/2026-08-06-cinema-estate-sales-page-readiness.md`.
+- Tasks 1-6 landed: hero third-option line, FAQ questions rewritten into explicit objection language, how-it-works steps added to the Quality section, the existing review-before-publish policy named as "The Review-First Guarantee," the early-access success message given a concrete next step, and benefit bridges added to the four package deliverables. The orphaned `.hero-price` / `.price-section` / `.price-grid` CSS was annotated as reserved, not dead code.
+- Each task followed the plan's red/green pattern: a failing assertion added to `tests/rendered-html.test.mjs` (or `tests/early-access-copy.test.mjs` for the success-message task), confirmed failing, then the copy change implemented and confirmed passing before commit.
+- Final `npm run lint`: clean. Final `npm test`: 6 tests, 0 failures, including the Vinext production build.
+- Confirmed nothing in the "Blocked on owner input" list above was touched: no pricing, no checkout, no turnaround-time claim, no guarantee terms beyond the existing review-before-publish policy, no testimonials, no scarcity/urgency language.
+- Environment note: this checkout's shell has `NODE_ENV=production` set, which makes `npm ci` silently omit `devDependencies` (including `vinext`, `vite`, `wrangler`, `typescript`, `eslint`) and breaks the build. Use `npm ci --include=dev` (or equivalent) in this environment. `package-lock.json` churn from a plain `npm install` in that environment was reverted before committing — it only stripped `"dev": true` flags on optional platform packages, not a real dependency change.
+
 ## External operational work outside this plan
 
 - Sequenzy company: `v26iblogat0kdfyw581h1hb1`.

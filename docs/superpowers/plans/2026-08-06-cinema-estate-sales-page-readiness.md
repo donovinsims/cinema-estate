@@ -31,7 +31,7 @@ The "third option" positioning (static photos vs. hiring a videographer vs. Cine
 - Modify: `app/globals.css` (add a `.hero-alt` rule near the existing `.hero-deck` rule)
 - Modify: `tests/rendered-html.test.mjs` (add an assertion for the new hero line)
 
-- [ ] **Step 1: Write the failing assertion**
+- [x] **Step 1: Write the failing assertion**
 
 In `tests/rendered-html.test.mjs`, add near the existing hero assertions:
 
@@ -47,7 +47,7 @@ npm test
 
 Expected: FAIL because this text does not yet exist in `app/page.tsx`.
 
-- [ ] **Step 2: Add the hero line**
+- [x] **Step 2: Add the hero line**
 
 In `app/page.tsx`, inside `.hero-content` (around line 38-39), add a new paragraph between the `hero-deck` paragraph and the `EarlyAccessButton`:
 
@@ -57,7 +57,7 @@ In `app/page.tsx`, inside `.hero-content` (around line 38-39), add a new paragra
 <EarlyAccessButton className="button button-primary" source="hero">Get early access <span aria-hidden="true">↘</span></EarlyAccessButton>
 ```
 
-- [ ] **Step 3: Style the new line**
+- [x] **Step 3: Style the new line**
 
 In `app/globals.css`, add a rule near `.hero-deck`:
 
@@ -65,7 +65,7 @@ In `app/globals.css`, add a rule near `.hero-deck`:
 .hero-alt { max-width: 560px; margin-bottom: 30px; color: #c7d2ff; font-size: clamp(.92rem, 1.3vw, 1.02rem); }
 ```
 
-- [ ] **Step 4: Run the full suite and verify green**
+- [x] **Step 4: Run the full suite and verify green**
 
 ```bash
 npm test
@@ -73,7 +73,7 @@ npm test
 
 Expected: all tests pass, including the new hero assertion.
 
-- [ ] **Step 5: Commit**
+- [x] **Step 5: Commit**
 
 ```bash
 git add app/page.tsx app/globals.css tests/rendered-html.test.mjs
@@ -91,7 +91,7 @@ The two buyer fears this product is built around — that the output looks fake/
 - Modify: `app/page.tsx:124,126`
 - Modify: `tests/rendered-html.test.mjs` (update the FAQ question assertions if present, or add them)
 
-- [ ] **Step 1: Write the failing assertion**
+- [x] **Step 1: Write the failing assertion**
 
 In `tests/rendered-html.test.mjs`, add:
 
@@ -108,7 +108,7 @@ npm test
 
 Expected: FAIL — the current questions read "Does Cinema Estate redesign the property?" and "How is AI-enhanced visualization handled?".
 
-- [ ] **Step 2: Update the two question strings**
+- [x] **Step 2: Update the two question strings**
 
 In `app/page.tsx`, change:
 
@@ -126,13 +126,13 @@ to:
 <details><summary>Will AI-enhanced visualization cause MLS or disclosure trouble?</summary><p>AI-enhanced visualization is disclosed. Local MLS and brokerage rules apply, and agents remain responsible for their listing requirements.</p></details>
 ```
 
-- [ ] **Step 3: Run the full suite and verify green**
+- [x] **Step 3: Run the full suite and verify green**
 
 ```bash
 npm test
 ```
 
-- [ ] **Step 4: Commit**
+- [x] **Step 4: Commit**
 
 ```bash
 git add app/page.tsx tests/rendered-html.test.mjs
@@ -151,7 +151,7 @@ The process (send approved photos → Cinema Estate builds the package → agent
 - Modify: `app/globals.css` (style for the new ordered list, reusing `.quality-grid` conventions)
 - Modify: `tests/rendered-html.test.mjs`
 
-- [ ] **Step 1: Write the failing assertion**
+- [x] **Step 1: Write the failing assertion**
 
 ```js
 assert.match(html, /Send the listing photos you.{1,2}ve already approved\./i);
@@ -161,7 +161,7 @@ assert.match(html, /You review every asset before anything is published or share
 
 Run `npm test`. Expected: FAIL — this ordered list does not exist yet.
 
-- [ ] **Step 2: Add the ordered list to the Quality section**
+- [x] **Step 2: Add the ordered list to the Quality section**
 
 In `app/page.tsx`, inside the `.quality-grid > div` (after the existing `<p>`, before the existing `<ul>`):
 
@@ -173,7 +173,7 @@ In `app/page.tsx`, inside the `.quality-grid > div` (after the existing `<p>`, b
 </ol>
 ```
 
-- [ ] **Step 3: Style the ordered list**
+- [x] **Step 3: Style the ordered list**
 
 In `app/globals.css`, add near `.quality-grid`:
 
@@ -182,13 +182,13 @@ In `app/globals.css`, add near `.quality-grid`:
 .how-it-works li { padding: 6px 0; }
 ```
 
-- [ ] **Step 4: Run the full suite and verify green**
+- [x] **Step 4: Run the full suite and verify green**
 
 ```bash
 npm test
 ```
 
-- [ ] **Step 5: Commit**
+- [x] **Step 5: Commit**
 
 ```bash
 git add app/page.tsx app/globals.css tests/rendered-html.test.mjs
@@ -207,7 +207,7 @@ The Quality section already states, in substance, a real risk-reversal policy: n
 - Modify: `app/globals.css`
 - Modify: `tests/rendered-html.test.mjs`
 
-- [ ] **Step 1: Write the failing assertion**
+- [x] **Step 1: Write the failing assertion**
 
 ```js
 assert.match(html, /The Review-First Guarantee/i);
@@ -216,7 +216,7 @@ assert.match(html, /nothing publishes to your listing until you.{1,2}ve reviewed
 
 Run `npm test`. Expected: FAIL.
 
-- [ ] **Step 2: Add the named guarantee to the waitlist section**
+- [x] **Step 2: Add the named guarantee to the waitlist section**
 
 In `app/page.tsx`, inside the waitlist section's first `<div>` (after the existing `<h2>`):
 
@@ -228,7 +228,7 @@ In `app/page.tsx`, inside the waitlist section's first `<div>` (after the existi
 </div>
 ```
 
-- [ ] **Step 3: Style the guarantee line**
+- [x] **Step 3: Style the guarantee line**
 
 In `app/globals.css`, add near `.waitlist-grid`:
 
@@ -237,13 +237,13 @@ In `app/globals.css`, add near `.waitlist-grid`:
 .guarantee-line strong { color: #0a0a0a; }
 ```
 
-- [ ] **Step 4: Run the full suite and verify green**
+- [x] **Step 4: Run the full suite and verify green**
 
 ```bash
 npm test
 ```
 
-- [ ] **Step 5: Commit**
+- [x] **Step 5: Commit**
 
 ```bash
 git add app/page.tsx app/globals.css tests/rendered-html.test.mjs
@@ -261,7 +261,7 @@ git commit -m "copy: name the existing review-before-publish policy as a guarant
 - Modify: `app/early-access-copy.mjs:7`
 - Modify: `tests/early-access-copy.test.mjs`
 
-- [ ] **Step 1: Write the failing assertion**
+- [x] **Step 1: Write the failing assertion**
 
 In `tests/early-access-copy.test.mjs`, update the expected `early-access` object's `success` field to:
 
@@ -277,23 +277,23 @@ node --test tests/early-access-copy.test.mjs
 
 Expected: FAIL — current text is "You're on the early-access list. We'll be in touch when there's an update."
 
-- [ ] **Step 2: Update the presentation object**
+- [x] **Step 2: Update the presentation object**
 
 In `app/early-access-copy.mjs`, change the `"early-access"` variant's `success` field to match the string above exactly.
 
-- [ ] **Step 3: Run the focused test and verify green**
+- [x] **Step 3: Run the focused test and verify green**
 
 ```bash
 node --test tests/early-access-copy.test.mjs
 ```
 
-- [ ] **Step 4: Run the full suite**
+- [x] **Step 4: Run the full suite**
 
 ```bash
 npm test
 ```
 
-- [ ] **Step 5: Commit**
+- [x] **Step 5: Commit**
 
 ```bash
 git add app/early-access-copy.mjs tests/early-access-copy.test.mjs
@@ -312,7 +312,7 @@ The four package deliverables (`app/page.tsx:18-23`) list what each item is, not
 - Modify: `app/globals.css` (comment only, no rule changes)
 - Modify: `tests/rendered-html.test.mjs`
 
-- [ ] **Step 1: Write the failing assertions**
+- [x] **Step 1: Write the failing assertions**
 
 ```js
 assert.match(html, /so your listing shows motion, not just a static frame/i);
@@ -323,7 +323,7 @@ assert.match(html, /one link that covers the whole story of the listing/i);
 
 Run `npm test`. Expected: FAIL.
 
-- [ ] **Step 2: Update the deliverables array**
+- [x] **Step 2: Update the deliverables array**
 
 In `app/page.tsx`, change the `deliverables` array to:
 
@@ -336,7 +336,7 @@ const deliverables = [
 ];
 ```
 
-- [ ] **Step 3: Annotate the orphaned pricing CSS**
+- [x] **Step 3: Annotate the orphaned pricing CSS**
 
 In `app/globals.css`, immediately above the `.hero-price` rule and immediately above the `.price-section, .price-grid` rules, add a one-line comment each:
 
@@ -344,13 +344,13 @@ In `app/globals.css`, immediately above the `.hero-price` rule and immediately a
 /* Reserved for the pricing section deferred by app/page.tsx's TODO(pricing) comment — not dead code. */
 ```
 
-- [ ] **Step 4: Run the full suite and verify green**
+- [x] **Step 4: Run the full suite and verify green**
 
 ```bash
 npm test
 ```
 
-- [ ] **Step 5: Commit**
+- [x] **Step 5: Commit**
 
 ```bash
 git add app/page.tsx app/globals.css tests/rendered-html.test.mjs
