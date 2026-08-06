@@ -81,6 +81,9 @@ test("server-renders Cinema Estate with an accessible comparison and waitlist", 
   assert.match(html, /Give your next listing a stronger next move\./i);
   assert.match(html, /The Review-First Guarantee/i);
   assert.match(html, /nothing publishes to your listing until you.{1,2}ve reviewed and approved every asset yourself/i);
+  assert.match(html, /If it doesn.{1,2}t match your approved photos, you get a full refund within 7 days\./i);
+  assert.match(html, /<a href="\/terms">Full terms<\/a>/i);
+  assert.match(html, /<a href="\/terms">Terms<\/a>/i);
   assert.match(html, /BEFORE\s*\/\s*STATIC LISTING IMAGE/i);
   assert.match(html, /AFTER\s*\/\s*ONE SLOW CAMERA MOVE/i);
   assert.match(html, /Drag to compare/i);

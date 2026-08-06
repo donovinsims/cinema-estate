@@ -187,7 +187,7 @@ export default function Home() {
 
       <section className="waitlist-section" id="early-access" aria-labelledby="waitlist-title">
         <div className="section-shell waitlist-grid">
-          <div><p className="eyebrow">Early access</p><h2 id="waitlist-title">Give your next listing a stronger next move.</h2><p className="guarantee-line"><strong>The Review-First Guarantee:</strong> nothing publishes to your listing until you&rsquo;ve reviewed and approved every asset yourself.</p></div>
+          <div><p className="eyebrow">Early access</p><h2 id="waitlist-title">Give your next listing a stronger next move.</h2><p className="guarantee-line"><strong>The Review-First Guarantee:</strong> nothing publishes to your listing until you&rsquo;ve reviewed and approved every asset yourself. If it doesn&rsquo;t match your approved photos, you get a full refund within 7 days. <a href="/terms">Full terms</a>.</p></div>
           <div><p>For individual agents ready to turn approved listing photos into a cinematic marketing package.</p><EarlyAccessButton className="button button-dark" source="final-cta">Get early access <span aria-hidden="true">↗</span></EarlyAccessButton></div>
         </div>
       </section>
@@ -195,6 +195,7 @@ export default function Home() {
       <footer className="site-footer section-shell">
         <span>CINEMA ESTATE™</span><span>Built from real listing media.</span>
         <a href="/privacy">Privacy</a>
+        <a href="/terms">Terms</a>
         <a href="https://www.nar.realtor/about-nar/policies/mls-policy/use-of-photographs-in-a-multiple-listing-service">MLS policy reference ↗</a>
       </footer>
       <EarlyAccessModal />
