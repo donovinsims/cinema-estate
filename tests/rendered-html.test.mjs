@@ -46,6 +46,9 @@ test("server-renders Cinema Estate with an accessible comparison and waitlist", 
   assert.match(html, /One cinematic move is one component of the complete package\./i);
   assert.match(html, /Four deliverables for your next listing launch\./i);
   assert.match(html, /Reviewed with you before anything is published\./i);
+  assert.match(html, /Send the listing photos you.{1,2}ve already approved\./i);
+  assert.match(html, /Cinema Estate builds the four-part package around them\./i);
+  assert.match(html, /You review every asset before anything is published or shared\./i);
   const aboutSection = html.match(/<section class="about-section"[\s\S]*?<\/section>/);
   assert.ok(aboutSection, "About section must render");
   assert.ok(

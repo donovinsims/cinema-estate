@@ -80,6 +80,11 @@ export default function Home() {
           <h2 id="quality-title">Reviewed with you before anything is published.</h2>
           <div>
             <p>You review the package before anything is published or shared. That review keeps the supplied imagery, required deliverables, disclosure language, and publishing details aligned with the listing.</p>
+            <ol className="how-it-works">
+              <li>Send the listing photos you&rsquo;ve already approved.</li>
+              <li>Cinema Estate builds the four-part package around them.</li>
+              <li>You review every asset before anything is published or shared.</li>
+            </ol>
             <ul><li>Agent approval before publishing</li><li>Real listing imagery remains the source</li><li>Disclosure and delivery review</li></ul>
           </div>
         </div>
