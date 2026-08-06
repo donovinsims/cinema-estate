@@ -9,7 +9,7 @@ const expectedAboutParagraphs = [
   "I’m Donovin, from Northern Illinois. After talking with 15–20 individual agents over the past year, I kept hearing the same tradeoff: use static photos or add another production to an already busy listing. I started Cinema Estate to give agents a third option: a stronger visual story built from work they have already approved.",
   "The 255 Eldon package on this page is a demo listing, not client work. It is here to show you a realistic example of what to expect and let you judge the source photos, the cinematic treatment, and the complete package for yourself. AI-enhanced visualization is disclosed, local MLS and brokerage rules still apply, and nothing is published until you approve it.",
 ];
-const expectedAboutCta = 'Send me a listing <span aria-hidden="true">→</span>';
+const expectedAboutCta = 'Start with your listing <span aria-hidden="true">→</span>';
 
 async function render(pathname = "/") {
   const workerUrl = new URL("../dist/server/index.js", import.meta.url);

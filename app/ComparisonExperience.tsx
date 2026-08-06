@@ -13,6 +13,7 @@ export function ComparisonExperience() {
   const [position, setPosition] = useState(initialPosition);
   const [dragging, setDragging] = useState(false);
   const [hasRevealed, setHasRevealed] = useState(false);
+  const [hasInteracted, setHasInteracted] = useState(false);
   const [mobileView, setMobileView] = useState<"before" | "after">("before");
   const comparisonRef = useRef<HTMLDivElement>(null);
   const afterVideoRef = useRef<HTMLVideoElement>(null);
@@ -47,6 +48,7 @@ export function ComparisonExperience() {
 
   const revealFully = () => {
     setHasRevealed(true);
+    setHasInteracted(true);
     setPosition(100);
     window.setTimeout(playAfter, 1200);
   };
@@ -59,14 +61,14 @@ export function ComparisonExperience() {
           <h2 id="comparison-title">One real photo. One cinematic move.</h2>
         </div>
         <button className="text-control" type="button" onClick={revealFully}>
-          Watch the transformation <span aria-hidden="true">↗</span>
+          Watch the transformation <span aria-hidden="true">→</span>
         </button>
       </div>
 
       <div className="comparison-desktop" aria-label="Before and after comparison">
         <div
           ref={comparisonRef}
-          className={`comparison-stage ${dragging ? "is-dragging" : ""} ${hasRevealed ? "has-revealed" : ""}`}
+          className={`comparison-stage ${dragging ? "is-dragging" : ""} ${hasInteracted ? "has-revealed" : ""}`}
           style={{ "--comparison-position": `${position}%` } as React.CSSProperties}
           onPointerMove={(event) => {
             if (dragging) setPositionFromPointer(event.clientX);
@@ -112,6 +114,7 @@ export function ComparisonExperience() {
                 // Synthetic and assistive pointer events do not always expose an active pointer to capture.
               }
               setDragging(true);
+              setHasInteracted(true);
               setPositionFromPointer(event.clientX);
             }}
             onPointerUp={() => {
@@ -123,6 +126,7 @@ export function ComparisonExperience() {
               if (nextPosition !== position) {
                 event.preventDefault();
                 setHasRevealed(true);
+                setHasInteracted(true);
                 setPosition(nextPosition);
                 playAfter();
               }

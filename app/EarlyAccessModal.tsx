@@ -25,18 +25,21 @@ export function EarlyAccessModal() {
   const [isOpen, setIsOpen] = useState(false);
   const [openedBy, setOpenedBy] = useState("cta");
   const [presentationIntent, setPresentationIntent] = useState<PresentationIntent>("early-access");
+  const [hasConverted, setHasConverted] = useState(false);
   const dialogRef = useRef<HTMLDivElement>(null);
   const lastFocusedElement = useRef<HTMLElement | null>(null);
   const engagedRef = useRef(false);
   const elapsedRef = useRef(false);
   const autoOpenedRef = useRef(false);
   const hasInteractedRef = useRef(false);
+  const sawPricingRef = useRef(false);
 
   function open(source: string, intent: PresentationIntent = "early-access") {
     if (source !== "engaged") hasInteractedRef.current = true;
     lastFocusedElement.current = document.activeElement instanceof HTMLElement ? document.activeElement : null;
     setOpenedBy(source);
     setPresentationIntent(intent);
+    setHasConverted(false);
     setIsOpen(true);
     track("early_access_modal_viewed", { intent, source });
   }
@@ -53,6 +56,19 @@ export function EarlyAccessModal() {
   }
 
   useEffect(() => {
+    const priceSection = document.getElementById("pricing");
+    if (!priceSection || typeof IntersectionObserver === "undefined") return;
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) sawPricingRef.current = true;
+      },
+      { threshold: 0.2 },
+    );
+    observer.observe(priceSection);
+    return () => observer.disconnect();
+  }, []);
+
+  useEffect(() => {
     const onOpen = (event: Event) => {
       const detail = (event as CustomEvent<{ intent?: PresentationIntent; source?: string }>).detail;
       open(detail?.source ?? "cta", detail?.intent ?? "early-access");
@@ -64,7 +80,7 @@ export function EarlyAccessModal() {
     }
 
     const tryOpen = () => {
-      if (elapsedRef.current && engagedRef.current && !autoOpenedRef.current && !hasInteractedRef.current) {
+      if (elapsedRef.current && engagedRef.current && !autoOpenedRef.current && !hasInteractedRef.current && !sawPricingRef.current) {
         autoOpenedRef.current = true;
         open("engaged");
       }
@@ -92,8 +108,9 @@ export function EarlyAccessModal() {
 
   useEffect(() => {
     if (!isOpen) return;
+    const emailInput = dialogRef.current?.querySelector<HTMLElement>('input[type="email"]');
     const firstFocusable = dialogRef.current?.querySelector<HTMLElement>("input, button, [href], select, textarea, [tabindex]:not([tabindex='-1'])");
-    firstFocusable?.focus();
+    (emailInput ?? firstFocusable)?.focus();
   }, [isOpen]);
 
   function trapFocus(event: KeyboardEvent<HTMLDivElement>) {
@@ -124,6 +141,7 @@ export function EarlyAccessModal() {
     try {
       localStorage.setItem(conversionKey, "true");
     } catch {}
+    setHasConverted(true);
   }
 
   const presentation = getEarlyAccessPresentation(presentationIntent);
@@ -137,7 +155,7 @@ export function EarlyAccessModal() {
         <p id="early-access-modal-description">{presentation.description}</p>
         <WaitlistForm variant="modal" intent={presentationIntent} onSuccess={handleSuccess} />
         <p className="modal-detail">Email only.</p>
-        <button className="modal-decline" type="button" onClick={() => close()}>Maybe later</button>
+        <button className="modal-decline" type="button" onClick={() => close()}>{hasConverted ? "Close" : "Maybe later"}</button>
       </div>
     </div>
   );

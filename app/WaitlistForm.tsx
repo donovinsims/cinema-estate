@@ -29,6 +29,13 @@ export function WaitlistForm({ intent = "early-access", onSuccess, variant = "in
       return;
     }
 
+    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+      track("early_access_submit_failed", { intent, reason: "invalid_email", placement: variant });
+      setStatus("error");
+      setMessage("Enter a valid email address to get early access.");
+      return;
+    }
+
     setStatus("sending");
     setMessage("");
     track("early_access_submit_attempted", { intent, placement: variant });
@@ -45,7 +52,7 @@ export function WaitlistForm({ intent = "early-access", onSuccess, variant = "in
       track("early_access_submit_succeeded", { intent, placement: variant });
     } catch {
       setStatus("error");
-      setMessage("We couldn’t add you yet. Please try again.");
+      setMessage("We couldn’t add you yet. Please try again, or buy directly from the pricing section.");
       track("early_access_submit_failed", { intent, reason: "server_error", placement: variant });
     }
   }

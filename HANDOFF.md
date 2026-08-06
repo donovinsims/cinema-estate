@@ -12,6 +12,7 @@ This doc is a chronological log — everything below is historical record, oldes
 - **Guarantee and refund terms are published** at `/terms` (`app/terms/page.tsx`) — the Review-First Guarantee, a 7-day accuracy-based refund window, per-tier revision limits. Not lawyer-reviewed; drafted at the owner's request.
 - **Still open, no urgency yet**: real client testimonials/case studies (none exist), sending-domain verification, welcome-email automation, a monitored privacy contact, email-preference handling, and flipping the Polar org from Private visibility to Public once ready to be listed.
 - Canonical docs: `docs/PRODUCT.md` (what/why/who), `docs/icp-audience-profile.md` (target buyer research), `docs/pricing-strategy-plain-english.md` (pricing rationale — now describes the live state, see its own status note). This file is the detailed implementation history behind all of it.
+- **IN PROGRESS, NOT YET SHIPPED (2026-08-06 session): a conversion-focused UX overhaul is mid-implementation, uncommitted, in the working tree right now.** See "UX overhaul session — 2026-08-06 (in progress)" at the bottom of this file for the full picture, exact file list, and the precise resume point. Do not assume the CTA/copy behavior described in earlier sections above is still current — it is being actively changed by this session.
 
 ## Active implementation checkpoint
 
@@ -223,3 +224,54 @@ Done entirely through Kimi WebBridge browser automation against the owner's live
 - One number changed on implementation: the draft floated a 48-hour turnaround; the owner approved 24 hours instead, and 24 hours is what's live in the hero, pricing section, and `/terms`.
 - The photo-rights gap this draft flagged (MLS permission doesn't grant photo-reuse rights) is addressed in `/terms`' "Your responsibilities" section as a confirmation the customer agrees to by paying — not yet a separate checkout-flow checkbox, which would need real checkout to exist first.
 - Still true: no rights-confirmation checkbox exists in the (nonexistent) checkout flow itself yet — revisit once Polar checkout is wired (item 2 above).
+
+## UX overhaul session — 2026-08-06 (in progress)
+
+### What this session was asked to do
+
+The owner ran `/ux-review` with the goal "maximize conversions and get users to buy with zero friction and ultimate clarity." Per that skill, a 10-expert panel (Dieter Rams, Jony Ive, Don Norman, Jakob Nielsen, Luke Wroblewski, Steve Krug, Irene Au, Jesse James Garrett, Erika Hall, Yael Levey) independently reviewed the full landing page source in Plan Mode. All 10 completed. The panel converged — unanimously on the #1 finding — on one root cause: **the page's CTA structure and copy still reflected its pre-revenue, waitlist-only era, even though real $149/$299/$549 pricing and working Polar checkout links already existed.** Every high-visibility CTA (header, hero, About, final section) routed to an email-capture modal instead of the purchase flow, and the modal's own copy told buyers pricing "isn't ready" while it was live two sections away.
+
+The synthesized report had 5 High, 8 Medium, and 9 Low impact findings (22 total). The owner reviewed the report and chose **"Everything (High + Medium + Low)"** — all 22 findings approved for implementation. A full implementation plan was written and approved via `ExitPlanMode`; the plan file (9 implementation groups, verification checklist) is saved locally at `/Users/forex/.claude/plans/the-goal-is-to-velvety-feather.md` (outside this repo — not guaranteed to survive on another machine, hence this summary being self-contained here).
+
+### What's been implemented (in the working tree, uncommitted)
+
+All 22 findings have been coded. `git status --short` currently shows:
+```
+ M app/CheckoutButton.tsx
+ M app/ComparisonExperience.tsx
+ M app/EarlyAccessModal.tsx
+ M app/WaitlistForm.tsx
+ M app/early-access-copy.mjs
+ M app/globals.css
+ M app/page.tsx
+ M tests/rendered-html.test.mjs
+?? app/HeroVideo.tsx
+```
+
+Key changes by finding, most important first:
+
+1. **CTA routing (the root-cause fix).** Header and hero primary CTAs no longer open the email modal — they're now plain anchors to `#pricing` (`See pricing` / `Pricing`), reusing existing `.button-primary`/`.header-link` classes. The pricing `<section>` got `id="pricing"` (`app/page.tsx`). The About and final-section CTAs still open the email modal (via `EarlyAccessButton`), which is now the correct, secondary use of that flow.
+2. **Button-style reassignment.** `.button-primary` (blue) is now reserved for the real purchase path (hero/header pricing anchors, tier `CheckoutButton`s). The About CTA moved from `.button-primary` to `.button-dark` to visually distinguish "email" from "buy."
+3. **Copy no longer contradicts live pricing.** `app/early-access-copy.mjs`'s `"early-access"` success string no longer says "as pricing and onboarding are ready" (rewritten to point back at pricing).
+4. **Auto-popup no longer ambushes near-buyers.** `EarlyAccessModal.tsx` now has an `IntersectionObserver` on `#pricing`; once seen, the 35s/45%-scroll auto-open is suppressed.
+5. **Section eyebrow numbering fixed** to match actual DOM order (was 01,02,03,04,**07**,**05**,**06**; now sequential 01–08, `app/page.tsx`).
+6. **Accessibility/contrast:** pricing-section text color changed `#102663` → `#06133c` (was 3.81:1 against the blue background, now 4.84:1, passes WCAG AA). Touch targets bumped to ≥44px: `.modal-close`, `.comparison-handle span`, `.comparison-toggle button`, `.analytics-consent button`, `.modal-decline`/`.text-control` padding. Modal focus-on-open now targets the email `<input>` specifically instead of whatever's first in DOM order (was the ✕ close button). New `app/HeroVideo.tsx` client component adds a pause/play toggle for the autoplaying hero background video (WCAG 2.2.2).
+7. **WaitlistForm robustness:** added client-side email-format validation (previously only checked non-empty); error message now points back to the pricing section as a fallback instead of a dead-end retry.
+8. **Design-system consolidation in `globals.css`:** `.tier-card h3` now has an explicit `font-weight: 550` (was silently falling back to browser-bold 700); collapsed near-duplicate font sizes (`.88/.91/.95rem` → `.92rem`; `.58/.59/.62rem` micro-labels → the shared `.69rem`); normalized section vertical padding (`.comparison-section` 112/108px → 130px to match the standard rhythm; `.price-section` 90px → 100px to match `.waitlist-section`). Removed two stale CSS comments referencing a nonexistent `TODO(pricing)`. Removed the now-unused `.hero-alt` CSS rule.
+9. **Remaining polish:** guarantee/refund text now also appears next to the pricing tier grid, not only in the final section three sections later. Hero's `hero-deck` and `hero-alt` paragraphs merged into one (removed the redundant "Not another photo shoot..." sentence — the "already-approved photos" idea survives in the merged sentence). Removed the redundant "Delivered in 24 hours" bullet from all three tier feature lists (still stated once in the pricing intro and hero). Standardized arrow glyphs: `→` for same-site/in-page actions (header, hero, About, final CTA, "Watch the transformation"), `↗` reserved for genuine external navigation (Buy buttons → Polar checkout, footer MLS link). `CheckoutButton` now shows a brief "Opening checkout…" state on click. Modal's "Maybe later" button becomes "Close" after a successful submission. `ComparisonExperience`'s drag-prompt now hides only after real user interaction (pointer/keyboard), not the automatic scroll-triggered reveal.
+
+### ⚠️ Operational risk hit mid-session — read before continuing
+
+Partway through implementation, every edit made via the Edit tool to `page.tsx`, `ComparisonExperience.tsx`, `EarlyAccessModal.tsx`, `WaitlistForm.tsx`, `CheckoutButton.tsx`, `early-access-copy.mjs`, and even a completed `globals.css` edit **silently reverted to the original git-HEAD content** — twice — for reasons that were not identified (not a git hook, not an obvious file watcher/formatter, not iCloud/Dropbox sync; a raw `echo >>` via Bash persisted fine when tested, so it was not a full-disk issue). All edits were redone as full-file `Write` calls (rather than incremental `Edit` calls) and immediately verified with `git diff --stat` after each one; all 8 files above are now confirmed present in the working tree as of this writing. **If you pick this up in a new session: run `git status --short` first and compare against the file list above before trusting anything in this repo matches what's described here.** If files have reverted again, the fix is straightforward — every change is re-described in detail above and in the plan file — but it needs to be reapplied and re-verified the same way (`Write` full file, then `git diff --stat` immediately).
+
+### What's left to do (exact resume point)
+
+1. **Finish updating `tests/rendered-html.test.mjs`.** Only the `expectedAboutCta` constant has been fixed so far (now `"Start with your listing <span aria-hidden=\"true\">→</span>"`). Still need to fix, in the same file:
+   - The assertion `assert.match(html, /Not another photo shoot\. Not another crew to book\. A third option, built entirely from the listing photos you’ve already approved\./i);` — this exact sentence no longer renders (merged into `hero-deck`). Replace with an assertion against the new merged sentence, e.g. matching `built from photos you.{1,2}ve already approved` within `hero-deck`.
+   - The assertion `assert.match(html, /You’re on the early-access list\. I’ll personally follow up as pricing and onboarding are ready\./i);` — this string was intentionally changed in `app/early-access-copy.mjs`. Update to match the new success copy.
+2. **Update `tests/early-access-copy.test.mjs`** — its `"early-access"` presentation test still asserts the old `success` string (`"...as pricing and onboarding are ready."`). Update to the new string in `app/early-access-copy.mjs`.
+3. **Not yet run:** `npm run lint` and `npm test` (which runs `npm run build` then the Node test suite). Must both pass clean before this is considered done, per this repo's standing gate. Remember this environment needs `npm ci --include=dev` if `NODE_ENV=production` is set (see "Sales-page readiness copy pass closeout" above) or the build breaks on missing devDependencies.
+4. **Not yet visually verified.** No dev-server/browser pass has been done yet — need to check: the hero pause/play toggle doesn't visually collide with anything at 360/768/1024px, the mobile header "Pricing" link (now visible again, previously `display: none`) doesn't crowd the wordmark at 360px, the pricing-section contrast fix reads correctly, and the auto-popup genuinely stops firing once `#pricing` has been scrolled into view.
+5. **Nothing committed or pushed.** All of the above is uncommitted working-tree state only.
+
+Once 1–4 are done and green, this becomes a normal `/commit-push-pr`-shaped unit of work (single feature: "conversion-focused UX fixes from the 10-expert panel review").
