@@ -144,11 +144,49 @@ Ship a real offer and point every CTA at it: finalize pricing → wire Polar che
 
 Nothing in this list can be implemented correctly without the owner supplying the fact or decision — do not guess or draft final copy for these:
 
-1. **Final pricing and packaging** — single price vs. tiers, what's included at each tier. Blocks checkout, any on-page price display, and the final CTA-copy swap from "Get early access" to a purchase verb.
-2. **Polar product and checkout link(s)**, plus success/cancel redirect targets — blocks wiring the checkout itself.
+1. **Final pricing and packaging** — single price vs. tiers, what's included at each tier. Blocks checkout, any on-page price display, and the final CTA-copy swap from "Get early access" to a purchase verb. **Partially unblocked 2026-08-06**: the Polar org and product now exist so pricing can be dropped in the moment it's decided; see "Polar organization and product setup" below. The real number itself is still owner-supplied.
+2. **Polar product and checkout link(s)**, plus success/cancel redirect targets — blocks wiring the checkout itself. **In progress 2026-08-06**: org and a draft product now exist in Polar (see below), but no checkout link has been generated yet and nothing is wired into the site — still blocked on real pricing plus the payout account.
 3. **Guarantee terms beyond the existing review-before-publish policy** — e.g., refund conditions, revision limits, how long the guarantee window is. (The plan does include naming and elevating the *existing* review-before-publish policy as a guarantee, since that requires no new commitment — this item is for anything stronger.)
 4. **Turnaround-time commitment** — how many days per listing. Needed to close the Value Equation's Time Delay gap and to make a "how it works" timeline concrete.
 5. **Real client testimonials or case studies**, once real client work exists — nothing actionable here until then; do not fabricate or imply proof that doesn't exist.
 6. **Terms of Service / refund policy text** the owner is comfortable publishing — required before Polar checkout can credibly go live, and before item 3's guarantee is legally meaningful.
 7. **Confirmation on outcome language** for the hero/headline beyond what's already approved (e.g., is he comfortable with output-outcome framing like "so buyers don't scroll past your listing," or does he want to hold the line on process-only language until there's data to back an outcome claim).
 8. Carried forward from the prior checkpoint, still open: sending-domain verification, welcome-email automation, a monitored privacy contact, and email-preference handling (see "External operational work outside this plan" above).
+
+## Polar organization and product setup — 2026-08-06
+
+Done entirely through Kimi WebBridge browser automation against the owner's live, logged-in Polar session (no API keys, no code changes in this repo). This directly unblocks part of item 2 above but does **not** wire anything into the site yet — no code in `app/` was touched.
+
+### What was created
+
+- **Organization**: "Cinema Estate", slug `cinema-estate`, dashboard at `https://polar.sh/dashboard/cinema-estate`.
+- **Organization profile**: Website set to `https://cinema-estate.vercel.app`; Support Email set to `emaildonovin@gmail.com` (a personal address — no dedicated business domain/work email exists yet, this was an explicit owner instruction, not a guess).
+- **Product**: "Cinema Estate", one-time purchase, at `https://polar.sh/dashboard/cinema-estate/products/a4fc8817-ecea-4093-aa83-528495cd36c8`.
+  - Price is **$1.00 USD — a placeholder, not the real price**. Polar's product form hard-rejects `$0.00` ("Price must be greater than 0"); there is no draft/blank-price state in the product model. $1.00 was chosen live, with the owner's explicit sign-off, specifically so the product record could exist ahead of real pricing.
+  - Visibility is **Private** ("only purchasable via a direct checkout link") — the closest equivalent Polar has to a draft/unpublished state. It is not listed in any customer-facing portal. No checkout link has been generated for it, so it is not reachable by anyone yet.
+
+### What was intentionally not touched
+
+- No real banking, tax ID, or identity documents were entered anywhere — none exist yet, and none were fabricated.
+- "Connect a payout account" (Stripe Connect) in Polar's Account Review checklist is still unstarted — needs owner-supplied banking info.
+- "Submit for review" was not clicked — Polar's review requires the payout account step first.
+- No checkout link was generated (Products → Checkout Links in Polar), so nothing here is purchasable by a customer today.
+
+### What's left before this can go live
+
+1. Owner supplies the real price (item 1 above) → update the product's price in Polar (trivial edit, same form).
+2. Connect a real payout account in Polar (Finance → Account) — needs owner banking details.
+3. Generate a checkout link for the product and get real success/cancel redirect URLs.
+4. Wire that checkout link into `app/` (currently every CTA posts to the Sequenzy waitlist form only — see "The core gap" above) — this is the actual code change, not yet started.
+5. Flip product visibility from Private to Public once ready to be listed, and submit the org for Polar's review.
+6. Optional cleanup: Polar's Account Review flags the support email as "Business email is preferred" / "domain does not match your organization website" — cosmetic-only until a real business email/domain exists.
+
+## Pricing strategy and ICP research drafted — 2026-08-06 (awaiting owner go-ahead)
+
+- `docs/pricing-strategy-plain-english.md` and `docs/icp-audience-profile.md` landed via PR #3. Neither is implemented on the site — the pricing doc explicitly ends with "I'll hold off on making any of these edits until you've reviewed this document and given the go-ahead."
+- Drafted pricing: three one-time, per-listing tiers — Proof $149, Story $299 (the lead tier), Signature $549 (luxury/high-stakes listings only). Not a subscription.
+- Drafted guarantee: refund if the delivered result doesn't match the supplied photos. Explicitly does **not** promise showings, faster sales, or more offers.
+- Drafted turnaround: 48 hours per listing once approved photos are in — this would close the Value Equation's Time Delay gap (item 4 above) once the owner signs off.
+- New requirement the pricing doc surfaces: MLS listing permission doesn't automatically grant photo-reuse rights (the photographer usually retains them), so a rights-confirmation checkbox at checkout is needed. Not yet designed or built.
+- **Factual correction:** the pricing doc's implementation section claims the live site "currently says 'Plans from $99 per listing' in two places (hero line and pricing section)." Verified against `app/page.tsx` on `origin/main` and the live production HTML at `https://cinema-estate.vercel.app` on 2026-08-06 — this is not accurate. No price appears anywhere on the current site or in the current repo; the `TODO(pricing)` comment and the orphaned `.price-section` CSS are untouched. Do not treat that claim as fact in a future session.
+- Items 1 and 4 in "Blocked on owner input" above are now **drafted, not blocked on missing information** — they're blocked on the owner's go-ahead to implement the specific numbers above, a smaller ask than "we don't know the numbers yet."
