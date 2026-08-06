@@ -1,5 +1,7 @@
 # Cinema Estate Sales-Page Readiness Implementation Plan
 
+> **Historical / superseded (2026-08-06):** This plan's no-pricing/no-checkout boundaries, old early-access literal, and `TODO(pricing)` direction are archival. Checkout is now the primary action; use `2026-08-06-ux-conversion-closeout.md` and `HANDOFF.md` instead.
+
 > **For agentic workers:** REQUIRED SUB-SKILL: Use superpowers:subagent-driven-development (recommended) or superpowers:executing-plans to implement this plan task-by-task. Steps use checkbox (`- [ ]`) syntax for tracking.
 
 **Goal:** Apply every copy/structure improvement from the 2026-08-06 sales-page readiness review that does **not** require a fact or decision only the owner can supply — without adding pricing, checkout, guarantees beyond what's already true, turnaround claims, or proof that doesn't exist yet.

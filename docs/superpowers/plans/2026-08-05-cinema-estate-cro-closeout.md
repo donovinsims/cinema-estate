@@ -1,5 +1,7 @@
 # Cinema Estate CRO Copy Contract Closeout Implementation Plan
 
+> **Historical / superseded (2026-08-06):** This archival plan predates the live pricing and Polar checkout path. Its no-checkout restrictions and old early-access test literals are not current implementation instructions; use `2026-08-06-ux-conversion-closeout.md` and `HANDOFF.md` for the active release state.
+
 > **For agentic workers:** REQUIRED SUB-SKILL: Use superpowers:subagent-driven-development (recommended) or superpowers:executing-plans to implement this plan task-by-task. Steps use checkbox (`- [ ]`) syntax for tracking.
 
 **Goal:** Close the two remaining regression-protection gaps in the implemented About and sitewide CRO pass without changing the approved public copy, visual design, form API, pricing, or deployment architecture.

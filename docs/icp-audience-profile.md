@@ -131,7 +131,7 @@ The report names **Pamela Cunningham of Gambino Realtors** as the strongest loca
 | **Anxiety** (fear of the new thing) | "Will this look fake?" · "Am I even allowed to use these photos this way?" · "Will my broker or the MLS have a problem with this?" |
 | **Habit** (comfort with what they already do) | Their photographer already bundles in basic video · they're used to skipping video on lower-budget listings · they'd rather be on camera themselves |
 
-**The offer only wins when Push + Pull clearly outweighs Anxiety + Habit.** Killing the Anxiety row (fake-looking output, unclear rights, compliance risk) matters at least as much as strengthening the Pull row — this is why the rights checkbox and the independent QA pass belong in the core pitch, not a footnote.
+**The offer only wins when Push + Pull clearly outweighs Anxiety + Habit.** Killing the Anxiety row (fake-looking output, unclear rights, compliance risk) matters at least as much as strengthening the Pull row. Photo-use authorization is covered by the published purchase terms, not a custom Polar checkout checkbox; the core pitch should not claim one exists.
 
 ---
 
@@ -158,7 +158,7 @@ Not just other "AI real estate video" tools. The real competition for this job i
 | "I can get this for $10–$40 with [cheap AI tool]." | Those tools generate and hand it over. We verify your facts, verify your identity as the agent, and independently check the result before you ever see it — that's a different service, not the same thing at a higher price. |
 | "My photographer already includes video." | Great — this is for the listings where they didn't, or where you need something extra after the shoot's already done. |
 | "My brokerage already gives me tools for this." | Worth checking first — if they've got you covered, you don't need this. If what they give you isn't premium enough for a specific listing, that's exactly when this fits. |
-| "I don't know if I'm even allowed to reuse these photos." | That's exactly why we ask you to confirm usage rights at checkout — it protects you as much as us. |
+| "I don't know if I'm even allowed to reuse these photos." | Published terms require the buyer to have authorization to use the photos; no custom hosted-checkout checkbox is configured. |
 | "My seller or broker might not like AI being involved." | We disclose AI use plainly and follow your MLS/brokerage rules — nothing gets published without your review first. |
 | "This market moves too fast to need this." | This isn't about selling faster — it's about how you look to the *next* seller who's deciding whether to list with you. |
 | "I'd rather just be on camera myself." | This isn't a replacement for your personal on-camera content — it's a different asset for a different purpose (the listing itself, not your personal brand). |

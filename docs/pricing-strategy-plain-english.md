@@ -61,15 +61,15 @@ We do **not** promise your listing will sell faster, get more showings, or get m
 
 ---
 
-## The one catch we have to handle
+## Historical / superseded proposal: the one catch we thought checkout would handle
 
 Here's something easy to miss: **whoever took the listing photos usually owns them**, even if the agent has full permission to use them for the listing. That permission doesn't automatically extend to us turning those photos into a video, a script, and a separate webpage.
 
-So at checkout, the agent has to confirm they're allowed to use their photos this way. It's one checkbox, not a legal maze — but skipping it isn't an option. Done right, this is actually a selling point: it signals we take this seriously when a lot of competitors don't even ask.
+This earlier proposal assumed a custom checkout checkbox. That is not the live design: photo-use authorization is covered by the published `/terms` accepted during purchase, and Polar hosted checkout has no configured custom checkbox.
 
 ---
 
-## How it works (as originally proposed — see correction below)
+## Historical / superseded proposal: original flow
 
 1. **Drop in your listing URL or photos.**
 2. **Review a free preview before you pay anything.**
@@ -77,7 +77,7 @@ So at checkout, the agent has to confirm they're allowed to use their photos thi
 
 That's the whole process. No production appointment, no waiting on a crew's schedule.
 
-**This is not exactly what shipped.** The free-preview-before-paying step wasn't built — Polar checkout doesn't support that flow, and building a custom preview-then-pay system was out of scope for the launch. What's actually live: the agent pays first (real Polar checkout), submits approved photos, gets the package within 24 hours, and reviews every asset before anything publishes — with a full refund within 7 days if the result doesn't match the submitted photos (the Review-First Guarantee, published in full at `/terms`). The risk this step was meant to cover — "will it look fake before I've paid" — ended up covered by the refund guarantee instead of a pre-payment preview.
+**This did not ship.** The live flow is: buy first through Polar, submit approved photos, receive the package within 24 hours, then review every asset before anything publishes. The Review-First Guarantee and refund terms are published at `/terms`. Early access is secondary email capture, not the purchase flow.
 
 ---
 

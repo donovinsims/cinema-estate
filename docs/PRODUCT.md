@@ -15,7 +15,7 @@ Cinema Estate turns a real-estate listing's **already-approved photography** int
 
 The listing's real, approved photos remain the source throughout. Cinema Estate does not invent rooms, move walls, replace finishes, or otherwise change what the property is — it adds motion, narration, and packaging to work the agent has already shot and approved. Nothing publishes until the agent reviews and approves the assets.
 
-The site (`https://cinema-estate.vercel.app`) now sells three one-time, per-listing packages directly — Proof ($149), Story ($299, the recommended tier), and Signature ($549, luxury/high-stakes listings only) — each with a real "Buy" button linking to a live Polar checkout. An early-access email form still exists alongside it for visitors who aren't ready to buy. The on-site demo package (255 Eldon Ave, Columbus) is self-produced to show a realistic example of the work — it is explicitly disclosed as a demo, not client work, and there are no client testimonials or case studies yet.
+The site (`https://cinema-estate.vercel.app`) sells three one-time, per-listing packages directly — Proof ($149), Story ($299, the recommended tier), and Signature ($549, luxury/high-stakes listings only) — each with a Polar checkout link. Pricing and purchase are the primary action; the Sequenzy early-access email form is intentionally secondary for visitors who are not ready to buy. The on-site demo package (255 Eldon Ave, Columbus) is self-produced to show a realistic example of the work — it is explicitly disclosed as a demo, not client work, and there are no client testimonials or case studies yet.
 
 ## Why it exists
 
@@ -46,9 +46,9 @@ Explicitly **not** the target today: brokerages or teams buying at scale, agents
 
 - **Pricing:** finalized and live. Three one-time, per-listing tiers — Proof $149, Story $299 (recommended), Signature $549 (luxury/distinctive listings only) — not a subscription. Delivery is committed at 24 hours from receipt of approved photos and listing details.
 - **Guarantee:** the Review-First Guarantee — nothing publishes until the agent approves it, and a full refund within 7 days if the result doesn't match the approved photos. It explicitly does not promise showings, faster sales, or more offers. Full terms, revisions policy, and refund conditions are published at `/terms` (not yet reviewed by a lawyer — drafted at the owner's request; flagged for legal review before high-volume launch).
-- **Checkout:** live. Each pricing tier's "Buy" button links directly to a real, working Polar checkout page (`app/CheckoutButton.tsx`). **Important caveat: no payout account is connected in Polar yet.** A customer can complete a real charge today, but the business cannot yet receive that money — connecting a payout account (Finance → Account in Polar) is the single most urgent open item, ahead of any further copy or growth work.
+- **Checkout:** each pricing tier links directly to Polar (`app/CheckoutButton.tsx`). **Payout follow-up:** the owner alone enters any Polar Finance bank and tax details. Confirming payouts is operational work, not a branch-review, merge, deployment, or product-release blocker; agents do not handle those details.
 - **Proof:** no real client testimonials or case studies exist yet — the demo package on the site is self-made and disclosed as such. This is a known, tracked gap, not an oversight.
 - **ICP:** documented in `docs/icp-audience-profile.md` — a research-derived (not yet customer-validated) profile of the primary buyer: an independent or near-solo listing agent handling roughly 8-20 seller-side listings a year, who already pays for professional photography and has no in-house media team.
-- **Distribution today:** both the three-tier checkout above and the original early-access/waitlist funnel (email capture via Sequenzy) are live side by side.
+- **Distribution today:** the three-tier Polar checkout is the primary path; Sequenzy email capture remains the secondary early-access path.
 
-See `HANDOFF.md` for full implementation history, the Polar setup details, and the current "Blocked on owner input" list — the payout account is now the top item.
+See `HANDOFF.md` for full implementation history and the Polar setup details. Payout setup remains owner-only operational follow-up, not a release gate.

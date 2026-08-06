@@ -3,6 +3,7 @@ import { CheckoutButton } from "./CheckoutButton";
 import { ComparisonExperience } from "./ComparisonExperience";
 import { EarlyAccessButton } from "./EarlyAccessButton";
 import { EarlyAccessModal } from "./EarlyAccessModal";
+import { HeroVideo } from "./HeroVideo";
 
 export const metadata: Metadata = {
   title: "Cinema Estate — Real listing photos, cinematic marketing",
@@ -21,14 +22,14 @@ const tiers = [
     name: "Proof",
     price: "149",
     note: "For a standard listing that needs to look sharp.",
-    items: ["Up to 12 approved photos", "Short cinematic film, branded and unbranded", "Hosted listing page", "1 round of revisions", "Delivered in 24 hours"],
+    items: ["Up to 12 approved photos", "Short cinematic film, branded and unbranded", "Hosted listing page", "1 round of revisions"],
     checkoutUrl: "https://buy.polar.sh/polar_cl_r6UPLdTbK0UNuL4QCNH0sfQFdgcpi5DXVWLYn1W4pgw",
   },
   {
     name: "Story",
     price: "299",
     note: "The complete package for most listings.",
-    items: ["Up to 25 approved photos", "Narrated film with a script from your listing's facts", "Social teaser cut plus the full listing page", "1 round of revisions", "Delivered in 24 hours"],
+    items: ["Up to 25 approved photos", "Narrated film with a script from your listing's facts", "Social teaser cut plus the full listing page", "1 round of revisions"],
     recommended: true,
     checkoutUrl: "https://buy.polar.sh/polar_cl_2qd3HGz4AhmpQCLcqKpYXzVFsWmyoM39lwg3s4BXGZi",
   },
@@ -36,7 +37,7 @@ const tiers = [
     name: "Signature",
     price: "549",
     note: "Reserved for luxury, architecturally distinctive, or high-stakes listings.",
-    items: ["Up to 40 approved photos", "Custom narrative direction and voice option", "Multiple social cuts plus the listing page", "2 rounds of revisions", "Delivered in 24 hours"],
+    items: ["Up to 40 approved photos", "Custom narrative direction and voice option", "Multiple social cuts plus the listing page", "2 rounds of revisions"],
     checkoutUrl: "https://buy.polar.sh/polar_cl_5JvCDNNcFwSW9ZwYaAORoOxJqHucSEY7IuziO0bL3h7",
   },
 ];
@@ -52,19 +53,18 @@ export default function Home() {
   return (
     <main>
       <section className="hero" aria-labelledby="hero-title">
-        <video className="hero-film" src="/media/eldon-hero-film.mp4" poster="/media/eldon-hero-poster.jpg" muted autoPlay loop playsInline preload="metadata" />
+        <HeroVideo src="/media/eldon-hero-film.mp4" poster="/media/eldon-hero-poster.jpg" />
         <div className="hero-scrim" />
         <header className="site-header section-shell">
           <a className="wordmark" href="#top" aria-label="Cinema Estate home">CINEMA ESTATE<span>™</span></a>
-          <EarlyAccessButton className="header-link" source="header">Early access <span aria-hidden="true">↘</span></EarlyAccessButton>
+          <a className="header-link" href="#pricing">Pricing <span aria-hidden="true">→</span></a>
         </header>
         <div className="hero-content section-shell" id="top">
           <p className="eyebrow hero-label">A real completed package · 255 Eldon Ave, Columbus</p>
           <h1 id="hero-title">Turn your real listing photos into cinematic marketing.</h1>
-          <p className="hero-deck">Video tours, narration, a listing page, and a final film—so buyers don&rsquo;t scroll past your listing.</p>
-          <p className="hero-alt">Not another photo shoot. Not another crew to book. A third option, built entirely from the listing photos you&rsquo;ve already approved.</p>
+          <p className="hero-deck">Video tours, narration, a listing page, and a final film—built from photos you&rsquo;ve already approved, so buyers don&rsquo;t scroll past your listing.</p>
           <p className="hero-price">Plans from <strong>$149</strong> per listing — delivered in 24 hours.</p>
-          <EarlyAccessButton className="button button-primary" source="hero">Get early access <span aria-hidden="true">↘</span></EarlyAccessButton>
+          <a className="button button-primary" href="#pricing">See pricing <span aria-hidden="true">→</span></a>
         </div>
       </section>
 
@@ -117,15 +117,16 @@ export default function Home() {
         </div>
       </section>
 
-      <section className="price-section" aria-labelledby="price-title">
+      <section className="price-section" id="pricing" aria-labelledby="price-title">
         <div className="section-shell">
           <div className="price-grid">
             <div>
-              <p className="eyebrow">07 / Pricing</p>
+              <p className="eyebrow">05 / Pricing</p>
               <h2 id="price-title">Plans from <span>$149</span> per listing.</h2>
             </div>
             <div>
               <p>Delivered within 24 hours from your approved photos. Reviewed by you before anything publishes, and backed by the Review-First Guarantee.</p>
+              <p className="guarantee-line"><strong>The Review-First Guarantee:</strong> nothing publishes until you&rsquo;ve reviewed and approved every asset yourself. If it doesn&rsquo;t match your approved photos, you get a full refund within 7 days. <a href="/terms">Full terms</a>.</p>
             </div>
           </div>
           <div className="tier-grid">
@@ -140,7 +141,7 @@ export default function Home() {
                     <li key={item}>{item}</li>
                   ))}
                 </ul>
-                <CheckoutButton className="button button-primary tier-cta" href={tier.checkoutUrl} tier={tier.name} price={tier.price}>{`Buy ${tier.name} `}<span aria-hidden="true">→</span></CheckoutButton>
+                <CheckoutButton className="button button-primary tier-cta" href={tier.checkoutUrl} tier={tier.name} price={tier.price}>{`Buy ${tier.name}`}<span aria-hidden="true">↗</span></CheckoutButton>
               </article>
             ))}
           </div>
@@ -164,7 +165,7 @@ export default function Home() {
             />
           </figure>
           <div className="about-story">
-            <p className="eyebrow">05 / Why Cinema Estate</p>
+            <p className="eyebrow">06 / Why Cinema Estate</p>
             <h2 id="about-title">Give your listing a cinematic story without another shoot.</h2>
             <div className="about-copy">
               <p>Your listing photos can be accurate, approved, and still feel flat on a screen. Static images show the rooms one frame at a time. Real video adds motion, but it also means finding a crew, coordinating property access, and managing another production schedule for every listing.</p>
@@ -173,13 +174,13 @@ export default function Home() {
               <p>I’m Donovin, from Northern Illinois. After talking with 15–20 individual agents over the past year, I kept hearing the same tradeoff: use static photos or add another production to an already busy listing. I started Cinema Estate to give agents a third option: a stronger visual story built from work they have already approved.</p>
               <p>The 255 Eldon package on this page is a demo listing, not client work. It is here to show you a realistic example of what to expect and let you judge the source photos, the cinematic treatment, and the complete package for yourself. AI-enhanced visualization is disclosed, local MLS and brokerage rules still apply, and nothing is published until you approve it.</p>
             </div>
-            <EarlyAccessButton className="button button-primary about-cta" intent="listing" source="about">Send me a listing <span aria-hidden="true">→</span></EarlyAccessButton>
+            <EarlyAccessButton className="button button-dark about-cta" intent="listing" source="about">Start with your listing <span aria-hidden="true">→</span></EarlyAccessButton>
           </div>
         </div>
       </section>
 
       <section className="answers-section section-shell" aria-labelledby="answers-title">
-        <p className="eyebrow">06 / Clear answers</p>
+        <p className="eyebrow">07 / Clear answers</p>
         <h2 id="answers-title">Marketing with the right guardrails.</h2>
         <div className="answer-list">
           <details open><summary>Will this look fake or gimmicky?</summary><p>No. The real listing images remain the source. Cinema Estate adds motion, narration, and a complete marketing package.</p></details>
@@ -190,8 +191,8 @@ export default function Home() {
 
       <section className="waitlist-section" id="early-access" aria-labelledby="waitlist-title">
         <div className="section-shell waitlist-grid">
-          <div><p className="eyebrow">Early access</p><h2 id="waitlist-title">Give your next listing a stronger next move.</h2><p className="guarantee-line"><strong>The Review-First Guarantee:</strong> nothing publishes to your listing until you&rsquo;ve reviewed and approved every asset yourself. If it doesn&rsquo;t match your approved photos, you get a full refund within 7 days. <a href="/terms">Full terms</a>.</p></div>
-          <div><p>For individual agents ready to turn approved listing photos into a cinematic marketing package.</p><EarlyAccessButton className="button button-dark" source="final-cta">Get early access <span aria-hidden="true">↗</span></EarlyAccessButton></div>
+          <div><p className="eyebrow">08 / Early access</p><h2 id="waitlist-title">Give your next listing a stronger next move.</h2><p className="guarantee-line"><strong>The Review-First Guarantee:</strong> nothing publishes to your listing until you&rsquo;ve reviewed and approved every asset yourself. If it doesn&rsquo;t match your approved photos, you get a full refund within 7 days. <a href="/terms">Full terms</a>.</p></div>
+          <div><p>For individual agents ready to turn approved listing photos into a cinematic marketing package.</p><EarlyAccessButton className="button button-dark" source="final-cta">Get early access <span aria-hidden="true">→</span></EarlyAccessButton></div>
         </div>
       </section>
 

@@ -9,7 +9,7 @@ const expectedAboutParagraphs = [
   "I’m Donovin, from Northern Illinois. After talking with 15–20 individual agents over the past year, I kept hearing the same tradeoff: use static photos or add another production to an already busy listing. I started Cinema Estate to give agents a third option: a stronger visual story built from work they have already approved.",
   "The 255 Eldon package on this page is a demo listing, not client work. It is here to show you a realistic example of what to expect and let you judge the source photos, the cinematic treatment, and the complete package for yourself. AI-enhanced visualization is disclosed, local MLS and brokerage rules still apply, and nothing is published until you approve it.",
 ];
-const expectedAboutCta = 'Send me a listing <span aria-hidden="true">→</span>';
+const expectedAboutCta = 'Start with your listing <span aria-hidden="true">→</span>';
 
 async function render(pathname = "/") {
   const workerUrl = new URL("../dist/server/index.js", import.meta.url);
@@ -41,8 +41,10 @@ test("server-renders Cinema Estate with an accessible comparison and waitlist", 
   assert.match(html, /<title>Cinema Estate/i);
   assert.match(html, /Turn your real listing photos into cinematic marketing\./i);
   assert.match(html, /A real completed package · 255 Eldon Ave, Columbus/i);
-  assert.match(html, /so buyers don’t scroll past your listing/i);
-  assert.match(html, /Not another photo shoot\. Not another crew to book\. A third option, built entirely from the listing photos you’ve already approved\./i);
+  assert.match(
+    html,
+    /Video tours, narration, a listing page, and a final film—built from photos you.{1,2}ve already approved, so buyers don.{1,2}t scroll past your listing\./i,
+  );
   assert.match(html, /Plans from <strong>\$149<\/strong> per listing — delivered in 24 hours\./i);
   assert.match(html, /One real photo\. One cinematic move\./i);
   assert.match(html, /One cinematic move is one component of the complete package\./i);
@@ -95,7 +97,7 @@ test("server-renders Cinema Estate with an accessible comparison and waitlist", 
   assert.match(html, /<button[^>]*>After<\/button>/i);
   assert.match(html, /name="email"/i);
   assert.match(html, /name="website"/i);
-  assert.match(html, /You’re on the early-access list\. I’ll personally follow up as pricing and onboarding are ready\./i);
+  assert.match(html, /You’re on the early-access list\. I’ll personally follow up with next steps — or see pricing and buy now below\./i);
   assert.doesNotMatch(html, /\$99|next week|Unsubscribe anytime|privacy@sequenzy\.com/i);
   assert.match(html, /local MLS and brokerage rules apply/i);
   assert.match(html, /Will this look fake or gimmicky\?/i);

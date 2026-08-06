@@ -11,7 +11,7 @@ export async function POST(request: Request) {
   if (!emailPattern.test(email)) return NextResponse.json({ error: "Enter a valid email address." }, { status: 400 });
 
   const endpoint = process.env.SEQUENZY_FORM_ENDPOINT;
-  if (!endpoint) return NextResponse.json({ error: "Early access is not configured." }, { status: 503 });
+  if (!endpoint) return NextResponse.json({ error: "Early access is temporarily unavailable. Please use a pricing option to buy directly." }, { status: 503 });
 
   const upstreamForm = new FormData();
   upstreamForm.set("email", email);
@@ -19,9 +19,9 @@ export async function POST(request: Request) {
 
   try {
     const upstream = await fetch(endpoint, { method: "POST", body: upstreamForm, cache: "no-store" });
-    if (!upstream.ok) return NextResponse.json({ error: "Unable to join the early-access list." }, { status: 502 });
+    if (!upstream.ok) return NextResponse.json({ error: "We couldn’t add you to early access right now. Please use a pricing option to buy directly." }, { status: 502 });
   } catch {
-    return NextResponse.json({ error: "Unable to join the early-access list." }, { status: 502 });
+    return NextResponse.json({ error: "We couldn’t add you to early access right now. Please use a pricing option to buy directly." }, { status: 502 });
   }
 
   return NextResponse.json({ ok: true });
