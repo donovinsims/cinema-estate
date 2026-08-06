@@ -1,6 +1,6 @@
 # Cinema Estate — Product Overview
 
-*Last updated: 2026-08-06*
+*Last updated: 2026-08-06 (revised same day — pricing launched and checkout wired since the first version of this doc)*
 
 This is the canonical answer to "what is this, why does it exist, and who is it for." Other docs (`HANDOFF.md`, plan files under `docs/superpowers/plans/`) assume this context; read it first in a new session before touching product copy or positioning.
 
@@ -15,7 +15,7 @@ Cinema Estate turns a real-estate listing's **already-approved photography** int
 
 The listing's real, approved photos remain the source throughout. Cinema Estate does not invent rooms, move walls, replace finishes, or otherwise change what the property is — it adds motion, narration, and packaging to work the agent has already shot and approved. Nothing publishes until the agent reviews and approves the assets.
 
-Today the site is a pre-revenue marketing/waitlist page (`https://cinema-estate.vercel.app`): visitors leave an email through an early-access form, not a purchase. The on-site demo package (255 Eldon Ave, Columbus) is self-produced to show a realistic example of the work — it is explicitly disclosed as a demo, not client work, and there are no client testimonials or case studies yet.
+The site (`https://cinema-estate.vercel.app`) now sells three one-time, per-listing packages directly — Proof ($149), Story ($299, the recommended tier), and Signature ($549, luxury/high-stakes listings only) — each with a real "Buy" button linking to a live Polar checkout. An early-access email form still exists alongside it for visitors who aren't ready to buy. The on-site demo package (255 Eldon Ave, Columbus) is self-produced to show a realistic example of the work — it is explicitly disclosed as a demo, not client work, and there are no client testimonials or case studies yet.
 
 ## Why it exists
 
@@ -44,9 +44,11 @@ Explicitly **not** the target today: brokerages or teams buying at scale, agents
 
 ## Where the business model stands today
 
-- **Pricing:** not finalized, not published. No price appears anywhere on the live site.
-- **Checkout:** not built. There is no payment integration in the codebase; checkout is planned through Polar (polar.sh), pending product/checkout links from the owner.
-- **Proof:** no real client testimonials or case studies exist yet — the demo package on the site is self-made and disclosed as such. This is a known, tracked gap (see `HANDOFF.md`'s "Blocked on owner input"), not an oversight.
-- **Distribution today:** an early-access/waitlist funnel (email capture via Sequenzy) is the only live conversion path.
+- **Pricing:** finalized and live. Three one-time, per-listing tiers — Proof $149, Story $299 (recommended), Signature $549 (luxury/distinctive listings only) — not a subscription. Delivery is committed at 24 hours from receipt of approved photos and listing details.
+- **Guarantee:** the Review-First Guarantee — nothing publishes until the agent approves it, and a full refund within 7 days if the result doesn't match the approved photos. It explicitly does not promise showings, faster sales, or more offers. Full terms, revisions policy, and refund conditions are published at `/terms` (not yet reviewed by a lawyer — drafted at the owner's request; flagged for legal review before high-volume launch).
+- **Checkout:** live. Each pricing tier's "Buy" button links directly to a real, working Polar checkout page (`app/CheckoutButton.tsx`). **Important caveat: no payout account is connected in Polar yet.** A customer can complete a real charge today, but the business cannot yet receive that money — connecting a payout account (Finance → Account in Polar) is the single most urgent open item, ahead of any further copy or growth work.
+- **Proof:** no real client testimonials or case studies exist yet — the demo package on the site is self-made and disclosed as such. This is a known, tracked gap, not an oversight.
+- **ICP:** documented in `docs/icp-audience-profile.md` — a research-derived (not yet customer-validated) profile of the primary buyer: an independent or near-solo listing agent handling roughly 8-20 seller-side listings a year, who already pays for professional photography and has no in-house media team.
+- **Distribution today:** both the three-tier checkout above and the original early-access/waitlist funnel (email capture via Sequenzy) are live side by side.
 
-See `HANDOFF.md` for current implementation status and `docs/superpowers/plans/2026-08-06-cinema-estate-sales-page-readiness.md` for what's actionable next versus what's blocked on the owner.
+See `HANDOFF.md` for full implementation history, the Polar setup details, and the current "Blocked on owner input" list — the payout account is now the top item.
