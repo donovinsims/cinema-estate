@@ -1,6 +1,6 @@
 # Cinema Estate Handoff
 
-Last updated: 2026-08-05
+Last updated: 2026-08-06
 
 ## Active implementation checkpoint
 
@@ -92,3 +92,54 @@ Last updated: 2026-08-05
 - Duplicate local files named `* 2.*` are intentionally ignored; do not add them to commits.
 - Remote `sites` remains the original ChatGPT Sites remote. GitHub `origin` is `https://github.com/donovinsims/cinema-estate.git`.
 - Stage files explicitly. Do not use `git add .` for this plan.
+
+## Sales-page readiness review — 2026-08-06
+
+The site is currently a waitlist page. The owner's goal is a live sales page an individual agent can land on, trust, and pay from, unassisted. A full review was run against eight marketing-strategy skills (`cro`, `copywriting`, `copy-editing`, `pricing`, `marketing-psychology`, `product-marketing`, `hundred-million-offers`, `storybrand-messaging`, `cro-methodology`, `obviously-awesome`, `made-to-stick`, `influence-psychology`, `monetizing-innovation`) plus the live site and full source. Full findings live in the session transcript; this is the durable summary.
+
+### The core gap
+
+There is no purchase mechanism anywhere in the codebase or on the live site. Every CTA (`app/page.tsx:39,115,133`, `app/EarlyAccessButton.tsx`, `app/EarlyAccessModal.tsx`) dispatches to an email-only modal that posts to Sequenzy (`app/api/early-access/route.ts`). No Polar integration, no checkout route, no price object exists. **This is architectural, not a copy problem** — no amount of headline or trust-signal polish converts a sale while there is nothing to click that takes money.
+
+### Framework scores (current state)
+
+| Framework | Score | Weakest point |
+|---|---|---|
+| Value Equation (Hormozi) | Effort/Sacrifice strong (8/10, "no reshoot, no crew, no property-access schedule" is genuinely well done); Dream Outcome 4/10 (states process, not outcome); **Perceived Likelihood weakest at 2/10** (zero proof — the on-site demo is explicitly disclosed as non-client work); Time Delay 2/10 (no turnaround claim anywhere) | Perceived Likelihood — the one lever a strong guarantee can raise without needing real client proof yet |
+| Grand Slam Offer diagnostic (7-row) | ~2-3/10 | Only "starving crowd" (individual agents, acute pain, targetable) clearly passes; no guarantee named, no bonuses, no pricing/packaging |
+| StoryBrand SB7 | ~4-5/10 | Character/external-problem present; internal problem, explicit process plan, and failure/success stakes are all missing or implicit only |
+| Made to Stick SUCCESs | ~29/60 ("forgettable" band) | Unexpected (3/10) and Credible (4/10) are lowest; Simple (7/10) is the strength |
+| CRO / cro-methodology | ~5-6/10 | Proof at friction points is the biggest gap; single clear action and FAQ objection-handling are partial passes |
+| Positioning (Obviously Awesome) | "Third option" framing (`app/page.tsx:112`) is explicit and defensible — it names both real alternatives (static photos, hiring a videographer/crew) — but it appears once, in the About section (page position 5 of 9), and is never echoed in the hero |
+
+### Highest-leverage change
+
+Ship a real offer and point every CTA at it: finalize pricing → wire Polar checkout → swap CTA copy from "Get early access" to a purchase action. Everything else in this review (proof, guarantee, positioning placement, headline) makes a good sales page better; only this makes it a sales page at all.
+
+### What's already working and should survive any rebuild
+
+- The before/after comparison slider (`app/ComparisonExperience.tsx`) — the most persuasive asset on the page; concrete and credible without needing a testimonial.
+- The four real production clips in the proof grid (`app/page.tsx:45-59`).
+- The MLS-policy outbound link in the footer (`app/page.tsx:140`) — real, verifiable authority.
+- The founder story and "third option" framing in About (`app/page.tsx:105-118`) — good material, currently under-placed.
+- The review-before-publish policy (`app/page.tsx:79-84`) — real risk reversal already exists in substance, just isn't named as a guarantee yet.
+- The honest disclosure that the 255 Eldon package is a demo, not client work (`app/page.tsx:113`) — protects trust; do not let sales pressure erode this before real client proof exists.
+- The `early-access-copy.mjs` / `EarlyAccessButton` intent-dispatch architecture — built so the CTA target can be swapped to a real purchase action later without a rewrite.
+
+### New reference docs
+
+- `docs/PRODUCT.md` — canonical product overview (what it is, why it exists, who it's for), for onboarding future sessions without re-deriving this from the source.
+- `docs/superpowers/plans/2026-08-06-cinema-estate-sales-page-readiness.md` — actionable implementation plan. Scoped to work that does **not** require owner-supplied facts or decisions; see the blocked list below for everything that does.
+
+### Blocked on owner input
+
+Nothing in this list can be implemented correctly without the owner supplying the fact or decision — do not guess or draft final copy for these:
+
+1. **Final pricing and packaging** — single price vs. tiers, what's included at each tier. Blocks checkout, any on-page price display, and the final CTA-copy swap from "Get early access" to a purchase verb.
+2. **Polar product and checkout link(s)**, plus success/cancel redirect targets — blocks wiring the checkout itself.
+3. **Guarantee terms beyond the existing review-before-publish policy** — e.g., refund conditions, revision limits, how long the guarantee window is. (The plan does include naming and elevating the *existing* review-before-publish policy as a guarantee, since that requires no new commitment — this item is for anything stronger.)
+4. **Turnaround-time commitment** — how many days per listing. Needed to close the Value Equation's Time Delay gap and to make a "how it works" timeline concrete.
+5. **Real client testimonials or case studies**, once real client work exists — nothing actionable here until then; do not fabricate or imply proof that doesn't exist.
+6. **Terms of Service / refund policy text** the owner is comfortable publishing — required before Polar checkout can credibly go live, and before item 3's guarantee is legally meaningful.
+7. **Confirmation on outcome language** for the hero/headline beyond what's already approved (e.g., is he comfortable with output-outcome framing like "so buyers don't scroll past your listing," or does he want to hold the line on process-only language until there's data to back an outcome claim).
+8. Carried forward from the prior checkpoint, still open: sending-domain verification, welcome-email automation, a monitored privacy contact, and email-preference handling (see "External operational work outside this plan" above).
