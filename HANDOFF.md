@@ -9,8 +9,8 @@ Last updated: 2026-08-05
 - Preflight: complete. The eight required marketing skills and the copy-editing checklist were re-read before implementation.
 - Task 1 — exact About section contract: **complete**.
 - Task 2 — source-aware modal/form copy contract: **complete**.
-- Task 3 — final gates, commit/push, Vercel and live verification: **in progress; local gates and scoped staging complete**.
-- Resume point if interrupted: inspect `git diff --cached`, commit with `test: lock Cinema Estate CRO copy contracts`, and push `main`. Do not edit `app/page.tsx` or `app/api/early-access/route.ts`.
+- Task 3 — final gates, commit/push, Vercel and live verification: **complete**.
+- Resume point if interrupted: none for this plan. The CRO copy-contract closeout is complete; begin a new focused task for any external operational work listed below.
 
 ### Task 1 evidence
 
@@ -28,14 +28,26 @@ Last updated: 2026-08-05
 - Green proof: `node --test tests/early-access-copy.test.mjs` passed 2 tests with 0 failures after implementation.
 - `git diff -- app/api/early-access/route.ts` produced no output; the server API and Sequenzy integration were not changed.
 
+### Task 3 evidence
+
+- Code-gate green: final `npm ci`, lint, `npm test` (6 tests, 0 failures, including Vinext), native `npx next build`, and the scoped diff check all passed.
+- Git: application/test closeout commit `f00a95f` (`test: lock Cinema Estate CRO copy contracts`) was pushed to `origin/main`.
+- Production Ready: Vercel deployment `dpl_94P6PRhjLPScVm2xW9u1Eu3kZxt9` at `https://cinema-estate-nrfkfmszw-teamdonovin.vercel.app` reached `Ready` and received the canonical `https://cinema-estate.vercel.app` alias.
+- Live 375px: Quality → About → FAQ order passed; the 343px portrait stacks before the 343px copy column; the exact heading, five paragraphs, and CTA render; the About CTA opens the listing-handoff variant.
+- Live 1440px: Quality → About → FAQ order passed; the portrait and copy are top-aligned in a two-column layout (approximately 383px and 680px); the desktop header CTA is visible and opens the evergreen early-access variant.
+- CTA behavior: About, hero, final, and header sources reported the correct listing or early-access intent and exact title/description/submit/success copy.
+- Keyboard behavior: focus enters the dialog, Shift+Tab and Tab wrap between the last and first controls, Escape closes the dialog, and focus returns to the triggering About CTA.
+- Reduced motion: the hero film and interactive desktop/mobile comparison are hidden; the two-figure reduced-motion comparison renders instead.
+- Assets and runtime: both `donovin-sims-320.webp` and `donovin-sims-640.webp` returned HTTP 200 as `image/webp`; no framework error overlay or browser console errors were detected.
+
 ## Current repository and deployment state
 
 - Checkout: `/Users/forex/cinema-estate`.
 - Active branch: `main`.
-- Local `main` was fast-forwarded to `origin/main` at `042b97d` before this plan began.
+- Local `main` was fast-forwarded to `origin/main` at `042b97d` before this plan began, then the closeout was committed and pushed as `f00a95f`.
 - The two remote commits found during preflight only changed `package-lock.json` to install/update Vercel Web Analytics dependencies.
 - Production alias: `https://cinema-estate.vercel.app`.
-- Production deployment before this closeout: `dpl_4HCv89xFN7yheyTgR7jSiCrkyXQE` (`https://cinema-estate-iqhpuhdv3-teamdonovin.vercel.app`), status `Ready`.
+- Production deployment for the application closeout: `dpl_94P6PRhjLPScVm2xW9u1Eu3kZxt9` (`https://cinema-estate-nrfkfmszw-teamdonovin.vercel.app`), status `Ready`.
 - Current Vercel CLI: `58.1.0`; upgrading is deferred maintenance and is not part of this plan.
 
 ## Verification for this plan
@@ -45,9 +57,9 @@ Last updated: 2026-08-05
 - Final `npm test`: passed with 6 tests and 0 failures; this includes a successful Vinext production build.
 - Final `npx next build`: passed, including TypeScript and static generation for `/` and `/privacy` plus the dynamic `/api/early-access` route.
 - The scoped `git diff --check` passed for all implementation, test, plan, and handoff files.
-- Exactly seven authorized files are staged: five implementation/test files, this handoff, and the active plan. `.agents/`, `conductor/`, `opencode.json`, and `skills-lock.json` remain untracked and unstaged.
+- The seven authorized implementation/test/documentation files were committed in `f00a95f`. `.agents/`, `conductor/`, `opencode.json`, and `skills-lock.json` remain untracked and were not committed.
 - `npm ci` reported 18 dependency audit findings (1 low, 4 moderate, 13 high). No automatic audit fix was run because dependency remediation is outside this focused copy-contract plan.
-- Commit/push, production Ready confirmation, and live viewport verification still remain under Task 3.
+- The active closeout plan has no remaining implementation or verification steps.
 
 ## Implemented public experience
 

@@ -161,7 +161,7 @@ git status --short
 
 Expected: only the five implementation/test files, this plan, and the owner-authorized `HANDOFF.md` are staged; installer artifacts remain unstaged.
 
-- [ ] **Step 3: Commit and push the verified closeout**
+- [x] **Step 3: Commit and push the verified closeout**
 
 ```bash
 git commit -m "test: lock Cinema Estate CRO copy contracts"
@@ -170,7 +170,7 @@ git push origin main
 
 Expected: the commit lands on `origin/main` and triggers the existing Vercel production deployment.
 
-- [ ] **Step 4: Wait for the exact production deployment to reach Ready**
+- [x] **Step 4: Wait for the exact production deployment to reach Ready**
 
 ```bash
 vercel inspect https://cinema-estate.vercel.app
@@ -178,7 +178,7 @@ vercel inspect https://cinema-estate.vercel.app
 
 Expected: target `production`, status `Ready`, with `https://cinema-estate.vercel.app` listed as an alias.
 
-- [ ] **Step 5: Verify the live page at 375px and 1440px**
+- [x] **Step 5: Verify the live page at 375px and 1440px**
 
 At each viewport, verify:
 
@@ -191,6 +191,6 @@ At each viewport, verify:
 - Reduced-motion mode replaces motion-dependent comparison behavior with the accessible static/control presentation.
 - Both WebP portrait candidates load without 404s and there are no new console errors.
 
-- [ ] **Step 6: Record closeout evidence**
+- [x] **Step 6: Record closeout evidence**
 
 Report the commit SHA, `origin/main` push result, Vercel deployment URL/status, gate results, viewport checks, and the intentionally untouched dirty files. Explicitly separate code-gate green, production Ready, and live behavior verified.
