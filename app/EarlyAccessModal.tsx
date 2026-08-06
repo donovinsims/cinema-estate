@@ -3,6 +3,7 @@
 import { KeyboardEvent, MouseEvent, useEffect, useRef, useState } from "react";
 import { WaitlistForm } from "./WaitlistForm";
 import { track } from "./analytics";
+import { getEarlyAccessPresentation } from "./early-access-copy.mjs";
 
 type PresentationIntent = "early-access" | "listing";
 
@@ -125,20 +126,16 @@ export function EarlyAccessModal() {
     } catch {}
   }
 
-  const isListingHandoff = presentationIntent === "listing";
-  const title = isListingHandoff ? "Send me your listing." : "Get early access.";
-  const description = isListingHandoff
-    ? "Leave your email and I’ll follow up with the next step for sending the listing photos you already have."
-    : "See how your next approved listing can become a cinematic marketing package.";
+  const presentation = getEarlyAccessPresentation(presentationIntent);
 
   return (
     <div className="early-access-backdrop" style={{ zIndex: 40 }} onMouseDown={closeFromBackdrop} hidden={!isOpen}>
       <div ref={dialogRef} className="early-access-modal" role="dialog" aria-modal="true" aria-labelledby="early-access-modal-title" aria-describedby="early-access-modal-description" onKeyDown={trapFocus} data-opened-by={openedBy} data-presentation-intent={presentationIntent}>
         <button className="modal-close" type="button" onClick={() => close()} aria-label="Close early-access form">×</button>
-        <p className="eyebrow">Cinema Estate / {isListingHandoff ? "Listing handoff" : "Early access"}</p>
-        <h2 id="early-access-modal-title">{title}</h2>
-        <p id="early-access-modal-description">{description}</p>
-        <WaitlistForm variant="modal" intent={isListingHandoff ? "listing" : "early-access"} onSuccess={handleSuccess} />
+        <p className="eyebrow">{presentation.eyebrow}</p>
+        <h2 id="early-access-modal-title">{presentation.title}</h2>
+        <p id="early-access-modal-description">{presentation.description}</p>
+        <WaitlistForm variant="modal" intent={presentationIntent} onSuccess={handleSuccess} />
         <p className="modal-detail">Email only.</p>
         <button className="modal-decline" type="button" onClick={() => close()}>Maybe later</button>
       </div>

@@ -2,11 +2,7 @@
 
 import { FormEvent, useId, useState } from "react";
 import { track } from "./analytics";
-
-const successMessages = {
-  "early-access": "You’re on the early-access list. We’ll be in touch when there’s an update.",
-  listing: "Thanks — I’ll follow up with the next step for sending the listing photos you already have.",
-} as const;
+import { getEarlyAccessPresentation } from "./early-access-copy.mjs";
 
 type WaitlistFormProps = {
   intent?: "early-access" | "listing";
@@ -18,6 +14,7 @@ export function WaitlistForm({ intent = "early-access", onSuccess, variant = "in
   const [status, setStatus] = useState<"idle" | "sending" | "success" | "error">("idle");
   const [message, setMessage] = useState("");
   const formId = useId();
+  const presentation = getEarlyAccessPresentation(intent);
 
   async function submit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
@@ -42,7 +39,7 @@ export function WaitlistForm({ intent = "early-access", onSuccess, variant = "in
         throw new Error(payload.error ?? "Sequenzy signup failed");
       }
       setStatus("success");
-      setMessage(successMessages[intent]);
+      setMessage(presentation.success);
       form.reset();
       onSuccess?.();
       track("early_access_submit_succeeded", { intent, placement: variant });
@@ -58,14 +55,14 @@ export function WaitlistForm({ intent = "early-access", onSuccess, variant = "in
       className={`waitlist-form waitlist-form-${variant}`}
       onSubmit={submit}
       noValidate
-      data-success-message={successMessages[intent]}
+      data-success-message={presentation.success}
       aria-describedby={`${formId}-status`}
     >
       <label className="sr-only" htmlFor={`${formId}-email`}>Email address</label>
       <input id={`${formId}-email`} name="email" type="email" inputMode="email" autoComplete="email" placeholder="you@agency.com" required />
       <input className="honeypot" name="website" type="text" tabIndex={-1} autoComplete="off" aria-hidden="true" />
       <button type="submit" disabled={status === "sending"}>
-        {status === "sending" ? "Sending…" : intent === "listing" ? "Start the listing handoff" : "Get early access"}
+        {status === "sending" ? "Sending…" : presentation.submit}
       </button>
       <p id={`${formId}-status`} className={`form-status ${status}`} aria-live="polite">
         {message}

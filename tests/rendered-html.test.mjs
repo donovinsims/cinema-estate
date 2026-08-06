@@ -1,6 +1,16 @@
 import assert from "node:assert/strict";
 import test from "node:test";
 
+const expectedAboutHeading = "Give your listing a cinematic story without another shoot.";
+const expectedAboutParagraphs = [
+  "Your listing photos can be accurate, approved, and still feel flat on a screen. Static images show the rooms one frame at a time. Real video adds motion, but it also means finding a crew, coordinating property access, and managing another production schedule for every listing.",
+  "Cinema Estate uses AI to handle the repetitive production work behind the motion, narration, listing page, and final film. It does not invent rooms, move walls, replace finishes, or change what the property is. Your already-approved listing photos remain the source.",
+  "You send the photos you already have. Cinema Estate builds the four-part package, then you review every asset before anything is published. There is no reshoot, no crew to book, and no property-access schedule to coordinate.",
+  "I’m Donovin, from Northern Illinois. After talking with 15–20 individual agents over the past year, I kept hearing the same tradeoff: use static photos or add another production to an already busy listing. I started Cinema Estate to give agents a third option: a stronger visual story built from work they have already approved.",
+  "The 255 Eldon package on this page is a demo listing, not client work. It is here to show you a realistic example of what to expect and let you judge the source photos, the cinematic treatment, and the complete package for yourself. AI-enhanced visualization is disclosed, local MLS and brokerage rules still apply, and nothing is published until you approve it.",
+];
+const expectedAboutCta = 'Send me a listing <span aria-hidden="true">→</span>';
+
 async function render(pathname = "/") {
   const workerUrl = new URL("../dist/server/index.js", import.meta.url);
   workerUrl.searchParams.set("test", `${process.pid}-${Date.now()}`);
@@ -35,15 +45,20 @@ test("server-renders Cinema Estate with an accessible comparison and waitlist", 
   assert.match(html, /One cinematic move is one component of the complete package\./i);
   assert.match(html, /Four deliverables for your next listing launch\./i);
   assert.match(html, /Reviewed with you before anything is published\./i);
-  assert.match(html, /Give your listing a cinematic story without another shoot\./i);
-  assert.match(html, /Your listing photos can be accurate, approved, and still feel flat on a screen\./i);
-  assert.match(html, /Cinema Estate uses AI to handle the repetitive production work/i);
-  assert.match(html, /There is no reshoot, no crew to book, and no property-access schedule to coordinate\./i);
-  assert.match(html, /I’m Donovin, from Northern Illinois\./i);
-  assert.match(html, /15–20 individual agents over the past year/i);
-  assert.match(html, /The 255 Eldon package on this page is a demo listing, not client work\./i);
-  assert.match(html, /AI-enhanced visualization is disclosed, local MLS and brokerage rules still apply, and nothing is published until you approve it\./i);
-  assert.match(html, /Send me a listing\s*<span[^>]*>→<\/span>/i);
+  const aboutSection = html.match(/<section class="about-section"[\s\S]*?<\/section>/);
+  assert.ok(aboutSection, "About section must render");
+  assert.ok(
+    aboutSection[0].includes(`<h2 id="about-title">${expectedAboutHeading}</h2>`),
+    "About heading must match the approved copy exactly",
+  );
+  const aboutCopy = aboutSection[0].match(/<div class="about-copy">([\s\S]*?)<\/div>/);
+  assert.ok(aboutCopy, "About copy wrapper must render");
+  const renderedAboutParagraphs = [...aboutCopy[1].matchAll(/<p>([\s\S]*?)<\/p>/g)].map((match) => match[1]);
+  assert.deepEqual(renderedAboutParagraphs, expectedAboutParagraphs, "About paragraphs must match the approved copy exactly and in order");
+  assert.ok(
+    aboutSection[0].includes(`>${expectedAboutCta}</button>`),
+    "About CTA must match the approved copy exactly",
+  );
   assert.match(html, /src="\/media\/donovin-sims-640\.webp"/i);
   assert.match(html, /srcSet="\/media\/donovin-sims-320\.webp 320w, \/media\/donovin-sims-640\.webp 640w"/i);
   assert.match(html, /sizes="\(max-width: 720px\) calc\(100vw - 32px\), \(max-width: 1100px\) 38vw, 420px"/i);
