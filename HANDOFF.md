@@ -153,10 +153,10 @@ Ship a real offer and point every CTA at it: finalize pricing → wire Polar che
 
 ### Blocked on owner input
 
-Items 1, 3, 4, 6, and 7 were resolved by the owner on 2026-08-06 and implemented in the pricing launch below. Items 2, 5, and 8 remain open.
+Items 1, 2, 3, 4, 6, and 7 were resolved by the owner on 2026-08-06 and implemented below. Items 5 and 8 remain open. Item 2's resolution carries its own caveat (no payout account connected yet) — see "Polar checkout wired" below before treating checkout as safe for real customers.
 
 1. ~~Final pricing and packaging~~ — **resolved.** Three one-time, per-listing tiers: Proof $149, Story $299 (recommended), Signature $549 (luxury/distinctive listings only). Live in the pricing section (`app/page.tsx`). The Polar product created below should have its placeholder $1.00 price updated to match.
-2. **Polar product and checkout link(s)**, plus success/cancel redirect targets — still open. A Polar org and a **private, $1.00-placeholder** product already exist (see "Polar organization and product setup" below) — still need: the price corrected to the real tiers (or split into three products, one per tier), a connected payout account, and a generated checkout link. Tier CTAs currently route to the existing "listing" early-access flow with a `TODO(checkout)` comment in `app/page.tsx` marking where each becomes a real Polar checkout link once that exists.
+2. ~~Polar product and checkout link(s)~~ — **resolved 2026-08-06.** Three real, correctly-priced products now exist in Polar (superseding the earlier $1.00 placeholder — see "Polar checkout wired" below), and all three tier CTAs in `app/page.tsx` link directly to their real checkout URLs via a new `CheckoutButton` component. **Payments cannot yet settle** — no payout account is connected in Polar — see the caveat below before treating this as safe for real customers.
 3. ~~Guarantee terms beyond the existing review-before-publish policy~~ — **resolved.** The Review-First Guarantee now includes a 7-day, accuracy-based full-refund window and per-tier revision limits (1 round for Proof/Story, 2 for Signature), documented in full at `/terms` (`app/terms/page.tsx`).
 4. ~~Turnaround-time commitment~~ — **resolved.** 24 hours from receipt of approved photos and required listing details (supersedes the 48-hour figure floated in the pre-approval pricing draft below). Stated in the hero, the pricing section, and `/terms`.
 5. **Real client testimonials or case studies** — still open; nothing actionable until real client work exists.
@@ -185,12 +185,26 @@ Done entirely through Kimi WebBridge browser automation against the owner's live
 
 ### What's left before this can go live
 
-1. Owner supplies the real price (item 1 above) → update the product's price in Polar (trivial edit, same form).
-2. Connect a real payout account in Polar (Finance → Account) — needs owner banking details.
-3. Generate a checkout link for the product and get real success/cancel redirect URLs.
-4. Wire that checkout link into `app/` (currently every CTA posts to the Sequenzy waitlist form only — see "The core gap" above) — this is the actual code change, not yet started.
-5. Flip product visibility from Private to Public once ready to be listed, and submit the org for Polar's review.
-6. Optional cleanup: Polar's Account Review flags the support email as "Business email is preferred" / "domain does not match your organization website" — cosmetic-only until a real business email/domain exists.
+1. ~~Owner supplies the real price~~ / ~~generate checkout links~~ / ~~wire into `app/`~~ — **done, see "Polar checkout wired" below.**
+2. **Connect a real payout account in Polar (Finance → Account)** — needs owner banking details. **This is the one remaining blocker before real customers can pay** — see the caveat below.
+3. Flip product visibility from Private to Public once ready to be listed, and submit the org for Polar's review.
+4. Optional cleanup: Polar's Account Review flags the support email as "Business email is preferred" / "domain does not match your organization website" — cosmetic-only until a real business email/domain exists.
+
+## Polar checkout wired — 2026-08-06
+
+- The Polar org's earlier $1.00-placeholder single product (above) was superseded by **three real, correctly-priced, one-time-purchase products**, created via the same Kimi WebBridge browser-automation approach against the owner's live Polar session:
+
+  | Product | Product ID | Checkout link |
+  |---|---|---|
+  | Cinema Estate — Proof ($149) | `d277e3be-ad51-4aee-b278-2ea73d25c49d` | `https://buy.polar.sh/polar_cl_r6UPLdTbK0UNuL4QCNH0sfQFdgcpi5DXVWLYn1W4pgw` |
+  | Cinema Estate — Story ($299) | `e581549a-7ce7-4ab7-8d96-b683512c7ced` | `https://buy.polar.sh/polar_cl_2qd3HGz4AhmpQCLcqKpYXzVFsWmyoM39lwg3s4BXGZi` |
+  | Cinema Estate — Signature ($549) | `2c13ef9f-09b1-49da-b61b-c8ca78a52c66` | `https://buy.polar.sh/polar_cl_5JvCDNNcFwSW9ZwYaAORoOxJqHucSEY7IuziO0bL3h7` |
+
+- All three remain **Private** visibility (reachable only via the direct checkout link above, not listed in any public Polar storefront) — consistent with the earlier placeholder's visibility, not a change in exposure.
+- Each product's Success URL is `?checkout=success` and Return URL is `?checkout=cancelled` on `https://cinema-estate.vercel.app`. Note from the session that set these: Polar's "Return URL" is what fires on the checkout back-button, not a true post-cancel webhook-driven redirect — the closest available match, not an exact one.
+- Site-side: added `app/CheckoutButton.tsx` (a thin client wrapper around a plain `<a>`, firing a `checkout_cta_clicked` PostHog event with `tier`/`price` before navigating — mirrors `EarlyAccessButton`'s tracking pattern). The three pricing-tier CTAs in `app/page.tsx` now use it instead of the early-access modal, linking directly to the checkout URLs above. Button copy changed from "Start with {tier}" to "Buy {tier}" to match — these are now real purchase buttons, not lead capture.
+- Hit the same `${expr}` hydration-comment-marker bug as the earlier tier-price fix (see "Pricing launch closeout" above), this time in the button label (`Buy {tier.name} <span>...`) — same fix, combined into one template-literal expression.
+- **Caveat carried forward, not resolved:** no payout account is connected in Polar. The session that wired these links reports checkout works end-to-end except settlement — meaning a customer could complete a real charge that the business cannot yet receive. Do not treat this as safe for real customer traffic until a payout account is connected in Polar (Finance → Account).
 
 ## Pricing strategy and ICP research drafted — 2026-08-06 (superseded by the pricing launch above)
 
