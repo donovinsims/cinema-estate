@@ -86,7 +86,7 @@ test("server-renders Cinema Estate with an accessible comparison and waitlist", 
   assert.match(html, /<button[^>]*>After<\/button>/i);
   assert.match(html, /name="email"/i);
   assert.match(html, /name="website"/i);
-  assert.match(html, /You’re on the early-access list\. We’ll be in touch when there’s an update\./i);
+  assert.match(html, /You’re on the early-access list\. I’ll personally follow up as pricing and onboarding are ready\./i);
   assert.doesNotMatch(html, /\$99|next week|Unsubscribe anytime|privacy@sequenzy\.com/i);
   assert.match(html, /local MLS and brokerage rules apply/i);
   assert.match(html, /Will this look fake or gimmicky\?/i);
