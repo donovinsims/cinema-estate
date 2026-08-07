@@ -60,6 +60,14 @@ Task-tracking IDs for these six (from this session's task list, same numbering i
 4. Phase 5 — `cinema-estate-visual-reviewer` pass at representative viewports (not started) — specifically needs to check the new fixed/translucent header over both dark and white (`.price-section`, `.waitlist-section`) sections, the hero's mobile headline-wrap risk the UX audit flagged, and the subgrid tier-card alignment.
 5. Phase 6/7 — engineering review, commit, push, open PR targeting `main` (**never merge**).
 
+### Documentation hygiene pass — also done, same session
+
+Beyond `HANDOFF.md` itself, checked every doc file for staleness against what's actually being built. Found and fixed two genuine inaccuracies the Phase 1 strategy audit had flagged as doc conflicts but not yet corrected at the source:
+
+- `docs/pricing-strategy-plain-english.md`: removed the unsupported "we check who you are" (automatic agent identity/license/brokerage verification) and "a second, independent pass checks the work" (internal pre-delivery QA) differentiator claims — neither is built or documented in `docs/PRODUCT.md`/the guardrails file. Replaced with the two claims that are actually true and guardrail-safe (review-first, refund guarantee). Also fixed a residual "approve the preview" phrase in the guarantee description — the shipped flow has no preview-before-payment step.
+- `docs/icp-audience-profile.md` §8: the same unsupported identity-verification/independent-QA claim was repeated in the objection-table answer for "I can get this for $10–$40 with a cheap AI tool" — replaced with the same guardrail-safe answer now live in the FAQ addition above, for consistency.
+- Checked `CLAUDE.md` and `docs/PRODUCT.md` for staleness against this session's edits — neither needed changes; nothing they document (prices, deliverables, guarantee terms, file-level architecture) was altered, only presentation/UX/copy details neither file describes at that level of detail. `docs/superpowers/plans/*.md` are intentionally immutable historical records, not living docs, and were left alone.
+
 ### To resume
 
 Read this section, run `git status --short` on `codex/sales-page-upgrade-2026-08-06` to confirm the four modified files above are still present, then dispatch the six delegated tasks (specs above are complete enough to hand directly to fresh agents) and continue from "What's left" above.
