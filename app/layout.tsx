@@ -14,7 +14,7 @@ export const metadata: Metadata = {
   openGraph: { title: "Cinema Estate", description: "Real listing photos, cinematic marketing.", images: ["/og.png"] },
   twitter: { card: "summary_large_image", title: "Cinema Estate", description: "Real listing photos, cinematic marketing.", images: ["/og.png"] },
   icons: { icon: "/favicon.svg" },
-  alternates: { canonical: "/" },
+  alternates: { canonical: "https://cinema-estate.vercel.app" },
 };
 
 export const viewport: Viewport = { themeColor: "#0A0A0A", colorScheme: "dark" };

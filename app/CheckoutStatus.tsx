@@ -21,7 +21,9 @@ export function CheckoutStatus() {
     } else {
       return;
     }
-    window.history.replaceState({}, "", window.location.pathname);
+    const url = new URL(window.location.href);
+    url.searchParams.delete("checkout");
+    window.history.replaceState({}, "", `${url.pathname}${url.search}${url.hash}`);
   }, []);
 
   return null;

@@ -16,8 +16,8 @@ export function HeroVideo({ src, poster }: HeroVideoProps) {
     const video = videoRef.current;
     if (!video) return;
     // CSS hides the film under prefers-reduced-motion, but a muted autoplaying
-    // video keeps playing without an explicit pause; stop it here. The pause
-    // event updates the toggle state via onPause.
+    // video keeps playing without an explicit pause; stop it here. If autoplay
+    // hasn't started yet, onPlay below re-checks and pauses it the moment it does.
     if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
       video.pause();
       return;
@@ -41,7 +41,25 @@ export function HeroVideo({ src, poster }: HeroVideoProps) {
 
   return (
     <>
-      <video ref={videoRef} className="hero-film" src={src} poster={poster} muted autoPlay loop playsInline preload="metadata" onPlay={() => setPlaying(true)} onPause={() => setPlaying(false)} />
+      <video
+        ref={videoRef}
+        className="hero-film"
+        src={src}
+        poster={poster}
+        muted
+        autoPlay
+        loop
+        playsInline
+        preload="metadata"
+        onPlay={() => {
+          if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+            videoRef.current?.pause();
+            return;
+          }
+          setPlaying(true);
+        }}
+        onPause={() => setPlaying(false)}
+      />
       <button type="button" className="hero-media-toggle" onClick={toggle} aria-pressed={!playing}>
         {playing ? "Pause background video" : "Play background video"}
       </button>

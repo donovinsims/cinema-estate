@@ -21,6 +21,7 @@ export function CheckoutButton({ children, tier, price, href, ...props }: Checko
   }, []);
 
   function trackClick() {
+    if (isNavigating) return;
     track("checkout_cta_clicked", { tier, price });
     setIsNavigating(true);
     if (resetTimerRef.current !== null) window.clearTimeout(resetTimerRef.current);

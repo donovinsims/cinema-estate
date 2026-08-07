@@ -12,8 +12,12 @@ const initialPosition = 18;
 
 function subscribeReducedMotion(onStoreChange: () => void) {
   const media = window.matchMedia("(prefers-reduced-motion: reduce)");
-  media.addEventListener("change", onStoreChange);
-  return () => media.removeEventListener("change", onStoreChange);
+  if (media.addEventListener) {
+    media.addEventListener("change", onStoreChange);
+    return () => media.removeEventListener("change", onStoreChange);
+  }
+  media.addListener(onStoreChange);
+  return () => media.removeListener(onStoreChange);
 }
 
 function usePrefersReducedMotion() {
