@@ -109,9 +109,12 @@ export default function Home() {
             <p className="hero-meta">From $149 per listing &middot; delivered in 24 hours</p>
             <a className="button button-primary" href="#pricing">Choose your package <ArrowIcon /></a>
           </div>
-          <div className="hero-media-frame">
-            <HeroVideo src="/media/villa-siena/01-Night-Arrival.mp4" poster="/media/villa-siena/01-Night-Aerial-Exterior.jpg" />
-            <p className="hero-media-caption"><span>Real photo</span><ArrowIcon /><span>Cinematic scene</span></p>
+          <div className="hero-media-column">
+            <div className="hero-media-frame">
+              <HeroVideo src="/media/villa-siena/01-Night-Arrival.mp4" poster="/media/villa-siena/01-Night-Aerial-Exterior.jpg" />
+              <p className="hero-media-caption"><span>Real photo</span><ArrowIcon /><span>Cinematic scene</span></p>
+            </div>
+            <p className="hero-media-disclosure">Villa Siena is a real, permission-cleared listing used as a demonstration—not paid Cinema Estate client work.</p>
           </div>
         </div>
       </section>
@@ -124,6 +127,7 @@ export default function Home() {
           <h2 id="proof-title">The proof is in the source material.</h2>
           <p>Every clip below begins with approved photography from Villa Siena, a real Bel-Air listing shown with the listing team&rsquo;s permission. The camera moves, but the property remains the property.</p>
           <p>It does not invent rooms, move walls, replace finishes, or change what the property is—your already-approved listing photos remain the source.</p>
+          <p className="proof-disclosure">Villa Siena&rsquo;s video and property page were produced using a separate production tool, not Cinema Estate&rsquo;s own process.</p>
         </div>
         <ProofReel />
       </section>

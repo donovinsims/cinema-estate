@@ -38,6 +38,7 @@ export default function VillaSienaPage() {
           <source src={`${MEDIA}/00-WATCH-THIS-FINAL-FILM.mp4`} type="video/mp4" />
         </video>
         <div className={styles.heroCopy}>
+          <div className={styles.demoNotice}>A Cinema Estate demonstration using a real, permission-cleared listing—not the official brokerage listing site.</div>
           <div className={styles.eyebrow}>607 Siena Way · Bel-Air, California</div>
           <h1>
             Villa
