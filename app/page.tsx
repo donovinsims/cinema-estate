@@ -95,6 +95,7 @@ export default function Home() {
             <a className="header-link header-link-secondary" href="#transformation">Example</a>
             <a className="header-link header-link-secondary" href="#package">What you get</a>
             <a className="header-link header-link-secondary" href="#how-it-works">How it works</a>
+            <a className="header-link header-link-secondary" href="/listing-plan">Free listing plan</a>
             <a className="header-link" href="#pricing">Pricing <ArrowIcon /></a>
           </nav>
         </div>
@@ -246,6 +247,19 @@ export default function Home() {
         <AnswersAccordion />
       </section>
 
+      <section className="lm-section" aria-labelledby="lm-title">
+        <div className="section-shell lm-grid">
+          <div>
+            <p className="eyebrow">Not ready to choose a package yet?</p>
+            <h2 id="lm-title">See what your listing actually needs first.</h2>
+          </div>
+          <div>
+            <p>Answer a few questions and get a free seller-ready listing marketing plan with your readiness score, launch priorities, and next steps.</p>
+            <a className="button button-dark" href="/listing-plan" style={{marginTop: 24}}>Build my free listing plan <ArrowIcon /></a>
+          </div>
+        </div>
+      </section>
+
       <section className="waitlist-section" id="early-access" aria-labelledby="waitlist-title">
         <div className="section-shell waitlist-grid">
           <div><p className="eyebrow">08 / The next step</p><h2 id="waitlist-title">Give your next listing a stronger next move.</h2><p>Delivered within 24 hours from your approved photos, reviewed by you before anything publishes.</p></div>
@@ -253,6 +267,7 @@ export default function Home() {
             <p>Ready to buy? Story is the recommended starting point for a complete listing launch. Have a question first? Ask about your listing and I&rsquo;ll help you pick the right package.</p>
             <div className="waitlist-actions">
               <CheckoutButton className="button button-primary" href={tiers[1].checkoutUrl} tier={tiers[1].name} price={tiers[1].price}>Buy Story <ArrowIcon direction="up-right" /></CheckoutButton>
+              <a className="button button-dark" href="/listing-plan">Build my free listing plan <ArrowIcon /></a>
               <EarlyAccessButton className="button button-dark" source="final-cta">Ask about my listing <ArrowIcon /></EarlyAccessButton>
             </div>
           </div>

@@ -2,6 +2,46 @@
 
 Last updated: 2026-08-07
 
+## Listing-plan lead magnet — MERGED (2026-08-07)
+
+Route: `/listing-plan`. Branch: `freebuff/is-the-squenzy-email-integration-live-and-working-041d32e5-bdc5-42a5-a40b-9e71b403ea0e`.
+
+**What:** A free acquisition tool for real-estate agents. Visitors complete a 4-step assessment about a property and their existing marketing assets, receive an immediate deterministic readiness score and preview, then enter an email to unlock the full seller-ready plan. Marketing consent is a separate unchecked checkbox — requesting the plan does not subscribe anyone to marketing.
+
+**Architecture (deterministic only, no AI):**
+
+The AI module and `@google/genai` dependency were intentionally excluded. The plan is generated entirely by a deterministic engine in `app/listing-plan/engine/`:
+- `types.ts` — `ListingProfile`, scoring, recommendations, CinemaEstateFit types
+- `segmentation.ts` — property segment classification (Standard, Premium, Luxury, Land, Multi-family)
+- `scoring.ts` — 5-category readiness score (Foundation / Presentation / Distribution / Professionalism / Preparedness, max 100)
+- `recommendations.ts` — rule-based recommendations (photography, video, property page, social, distribution)
+- `cinema-estate-fit.ts` — deterministic fit determination (strong / possible / none based on photography status, video/page gaps, priorities)
+- `plan-builder.ts` — `generatePreview()` (deterministic only, returned before email) and `generateFullPlan()` (returns the complete plan including seller talking points, launch roadmap)
+
+**No env vars needed beyond production's existing `SEQUENZY_FORM_ENDPOINT`.**
+
+**API:** `app/api/listing-plan/route.ts` — `POST ?action=preview` (no email required, deterministic only) and `POST ?action=generate` (requires email, runs full plan + Sequenzy delivery). Honeypot, 64KB size limit, schema validation, bounded string lengths, sanitized input.
+
+**Sequenzy flow:**
+- Transactional delivery (always): `sendTransactionalPlan()` fires on every `?action=generate` call — uses `FormData` to the same `SEQUENZY_FORM_ENDPOINT`, field names: `plan_readiness_score`, `plan_readiness_tier`, `plan_property_type`, `plan_generated_at`
+- Marketing subscriber (opt-in only): `sendMarketingSubscriber()` fires only when `marketingConsent` is `true` — tags `lead-magnet,listing-plan,cinema-estate-prospect`, attributes: `lead_source`, `listing_readiness_score`, `listing_readiness_tier`, `cinema_estate_fit`, `property_type`, `state`, `launch_timing`, `photography_status`
+
+**Homepage integration (paid funnel untouched):**
+1. Header nav: "Free listing plan" (`header-link-secondary`, subordinate to Pricing)
+2. Post-pricing section (`.lm-section`): "Not ready to choose a package yet?"
+3. Final CTA: "Build my free listing plan" (secondary button, alongside Buy Story primary)
+
+**Analytics (consent-gated, via existing `app/analytics.ts`):**
+`listing_plan_viewed`, `listing_plan_started`, `listing_plan_preview_generated`, `listing_plan_claim_attempted`, `listing_plan_claimed`, `listing_plan_full_plan_generated`, `listing_plan_cinema_estate_cta_clicked`
+
+**Privacy:** Updated `app/privacy/page.tsx` (August 7, 2026) to describe listing-plan data flow, Sequenzy delivery, and separate marketing consent. No AI provider disclosure needed (deterministic only).
+
+**Sitemap:** `/listing-plan` added (weekly, priority 0.7).
+
+**Files:** `app/listing-plan/page.tsx` (client component, 4-phase UI: entry → wizard → preview → results), `app/listing-plan/engine/*.ts` (6 files), `app/api/listing-plan/route.ts`, CSS in `app/globals.css` (`.lp-*` rules + `.lm-section` homepage rules), homepage edits in `app/page.tsx`, privacy update in `app/privacy/page.tsx`, sitemap update in `app/sitemap.ts`.
+
+**Known limitation:** No automated engine unit tests yet — the prototype's `src/engine/test.ts` fixtures should be ported into `tests/listing-plan-engine.test.mjs`.
+
 ## PR3 — Component system finalization + interaction polish + QA — MERGED + PRODUCTION-VERIFIED (2026-08-07)
 
 Branch: `sales-page/03-component-system-polish`. Merged as [PR #23](https://github.com/donovinsims/cinema-estate/pull/23) into `main` at `29a3694`. Production smoke-verified against `cinema-estate.vercel.app` on 2026-08-07 — all checks pass (see production verification table below).
@@ -328,6 +368,7 @@ Everything below is retained for context. Earlier no-checkout, pre-pricing, unco
 - Sequenzy company: `v26iblogat0kdfyw581h1hb1`.
 - Saved form: `Cinema Estate — Early Access Waitlist`, ID `jmab7vbumu415ko0sfkig969`.
 - `SEQUENZY_FORM_ENDPOINT` is stored as a sensitive Vercel environment variable; never expose it as `NEXT_PUBLIC_*` or copy it into documentation.
+- Live integration smoke test: `SEQUENZY_SMOKE_URL=https://cinema-estate.vercel.app node --test tests/sequenzy-smoke.test.mjs` (opt-in — skipped by plain `npm test`; the valid-email case sends one real submission to the dashboard per run, labeled `smoke-test-*@example.com` — delete those entries after verifying). Verified against production on 2026-08-07: invalid → 400, valid → 200.
 - Sending-domain verification, welcome-email automation, a monitored privacy contact, email-preference handling, and one controlled real signup remain separate operational work and must be verified before being claimed publicly.
 - `ce.sequenzy.com` is only the Sequenzy sending domain; the website stays on `https://cinema-estate.vercel.app`.
 

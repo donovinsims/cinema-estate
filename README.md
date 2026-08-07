@@ -21,7 +21,13 @@ npm test
 git diff --check
 ```
 
-`npm test` builds the app and runs the seven Node tests. For UI work, also verify the local conversion journey at 375px and 1440px, including reduced motion.
+`npm test` builds the app and runs the full Node test suite. For UI work, also verify the local conversion journey at 375px and 1440px, including reduced motion.
+
+To re-verify the live Sequenzy email integration on demand (opt-in; each run sends one real submission to the Sequenzy dashboard, labeled `smoke-test-*@example.com`):
+
+```bash
+SEQUENZY_SMOKE_URL=https://cinema-estate.vercel.app node --test tests/sequenzy-smoke.test.mjs
+```
 
 ## Public routes and conversion paths
 
