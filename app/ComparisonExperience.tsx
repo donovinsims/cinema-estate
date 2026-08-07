@@ -83,7 +83,7 @@ export function ComparisonExperience() {
   };
 
   return (
-    <section className="comparison-section" aria-labelledby="comparison-title">
+    <section className="comparison-section" id="transformation" aria-labelledby="comparison-title">
       <div className="section-shell comparison-heading">
         <div>
           <p className="eyebrow">01 / The transformation</p>
@@ -116,14 +116,14 @@ export function ComparisonExperience() {
         >
           <img
             className="comparison-before"
-            src="/media/eldon-exterior-before.jpg"
-            alt="Original listing photo of the exterior at 255 Eldon Avenue"
+            src="/media/villa-siena/02-Great-Room-and-Garden.jpg"
+            alt="Original listing photo of the great room and garden at Villa Siena, 607 Siena Way, Bel-Air"
           />
           <div className="comparison-after" aria-hidden={position < 6}>
             <video
               ref={afterVideoRef}
-              src="/media/eldon-exterior.mp4"
-              poster="/media/eldon-exterior-poster.jpg"
+              src="/media/villa-siena/02-Living-With-Nature.mp4"
+              poster="/media/villa-siena/02-Great-Room-and-Garden.jpg"
               muted
               playsInline
               preload="metadata"
@@ -197,12 +197,12 @@ export function ComparisonExperience() {
           </button>
         </div>
         {mobileView === "before" ? (
-          <img src="/media/eldon-exterior-before.jpg" alt="Original listing photo of 255 Eldon Avenue" />
+          <img src="/media/villa-siena/02-Great-Room-and-Garden.jpg" alt="Original listing photo of the great room at Villa Siena" />
         ) : (
           <video
             ref={afterVideoRef}
-            src="/media/eldon-exterior.mp4"
-            poster="/media/eldon-exterior-poster.jpg"
+            src="/media/villa-siena/02-Living-With-Nature.mp4"
+            poster="/media/villa-siena/02-Great-Room-and-Garden.jpg"
             controls
             muted
             playsInline
@@ -212,11 +212,11 @@ export function ComparisonExperience() {
 
       <div className="comparison-reduced">
         <figure>
-          <img src="/media/eldon-exterior-before.jpg" alt="Original listing photo of 255 Eldon Avenue" />
+          <img src="/media/villa-siena/02-Great-Room-and-Garden.jpg" alt="Original listing photo of the great room at Villa Siena" />
           <figcaption>Before / Static listing image</figcaption>
         </figure>
         <figure>
-          <video src="/media/eldon-exterior.mp4" poster="/media/eldon-exterior-poster.jpg" controls muted playsInline />
+          <video src="/media/villa-siena/02-Living-With-Nature.mp4" poster="/media/villa-siena/02-Great-Room-and-Garden.jpg" controls muted playsInline />
           <figcaption>After / One slow camera move</figcaption>
         </figure>
       </div>

@@ -113,9 +113,12 @@ before anything goes live.
 
 ## Demo disclosure requirement
 
-The on-site example package (255 Eldon Ave, Columbus) is self-produced by the founder to
-demonstrate realistic output. It must always be disclosed as a demo, not client work. Never let
-copy or design implicitly suggest it is a real client result.
+The on-site example (Villa Siena, 607 Siena Way, Bel-Air) is a real, permission-cleared listing
+used as a demonstration — not self-produced by the founder, and not paid Cinema Estate client
+work. Its video and landing page were produced using a separate production tool, not Cinema
+Estate's own process; this must be disclosed plainly wherever the demo is presented. Never let
+copy or design imply it is a real Cinema Estate client result, or that Cinema Estate's own
+process produced the video/page shown.
 
 ## Current customer-proof limitations
 

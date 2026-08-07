@@ -81,17 +81,29 @@ plus a few client islands:
 - `EarlyAccessButton.tsx` — dispatches a `window` CustomEvent (`cinemaestate:early-access`)
   rather than holding modal state itself.
 - `EarlyAccessModal.tsx` — listens for that event; also auto-opens once on exit-intent
-  (pointer leaving the top of the viewport) after the visitor has scrolled `#pricing` into
-  view, gated by a `localStorage` dismissal/conversion cooldown
+  (pointer leaving the top of the viewport, detected via `document`-level `mouseout` with
+  `clientY <= 0` and no `relatedTarget` — that `relatedTarget` check is what makes the trigger
+  structurally incapable of firing while a visitor is hovering/leaving a tier or checkout CTA,
+  since that always produces a `mouseout` with a `relatedTarget`) after the visitor has
+  scrolled `#pricing` into view, gated by a `localStorage` dismissal/conversion cooldown
   (`cinema-estate.waitlist-dismissed-at` / `-converted`). Auto-open is skipped entirely under
   `prefers-reduced-motion` and on coarse-pointer (touch) devices; auto-opened instances do not
   steal focus. Closing now animates (180ms fade + translateY) instead of vanishing instantly.
+  Internal prop/event/localStorage-key names still say "early access" for continuity, but the
+  **presentation copy is reframed** (`early-access-copy.mjs`) as truthful low-intent human
+  assistance ("Not sure which package fits?" / "Ask about my listing") rather than early-access
+  language, since the product is directly purchasable, not pre-launch — don't reintroduce
+  "Get early access" wording in user-facing copy.
 - `WaitlistForm.tsx` — secondary email capture only. It posts to the first-party
   `/api/early-access` route, displays a non-empty JSON `error` from that route, and otherwise
   uses a purchase-forward fallback. Never render raw exceptions. The route alone reads the
   server-only `SEQUENZY_FORM_ENDPOINT` value and returns only intentional safe messages.
 - `HeroVideo.tsx` — keeps its control synchronized with the video's real play/pause state. In
   `prefers-reduced-motion: reduce`, both `.hero-film` and `.hero-media-toggle` must be hidden.
+  It renders inside `.hero-media-frame` (a bordered, contained panel — not a full-bleed
+  background) as the right-hand side of the hero's `.hero-grid` two-column layout
+  (`.hero-message` left, `.hero-media-frame` right; stacks message-first on mobile). The
+  reduced-motion fallback image now applies to `.hero-media-frame`'s background, not `.hero`'s.
 - `CheckoutButton.tsx` — thin client wrapper around a plain `<a>`, navigating same-tab (so
   Polar's `?checkout=success|cancelled` return lands back on this origin); fires a
   `checkout_cta_clicked` PostHog event (`track()` from `app/analytics.ts`) with `tier`/`price`
@@ -115,10 +127,38 @@ plus a few client islands:
   `TierImpressionTracker` renders the `<article className="tier-card">` itself (no wrapper) —
   it must stay a direct child of `.tier-grid` for the CSS subgrid row-alignment across the
   three cards to keep working.
+- The header now includes a desktop-only wayfinding `<nav>` (`.header-nav`, hidden below 720px
+  via `.header-link-secondary { display: none }`) linking to in-page section `id`s: `#top`
+  (hero), `#transformation` (on `ComparisonExperience`'s own `<section>`), `#package`, and
+  `#how-it-works`, plus the existing `#pricing`. Keep these `id`s in sync if you rename or
+  reorder sections.
 
-Pricing is the primary CTA hierarchy: blue pricing/purchase controls lead to Polar checkout;
-dark controls open the secondary Sequenzy email path. Do not change checkout APIs, add routes,
-or expose provider configuration during conversion work.
+Pricing is the primary CTA hierarchy: solid `.button-primary` controls (purchase-intent) lead
+to Polar checkout; outlined `.button-dark` controls open the secondary Sequenzy email/inquiry
+path. Do not change checkout APIs, add routes, or expose provider configuration during
+conversion work.
+
+### Design system (`app/globals.css`)
+
+Mid-redesign as of this writing (see `HANDOFF.md`'s "PR2 — cinematic editorial redesign"
+section for full status) — moving away from a dark/near-black, blue-glow "AI SaaS" look toward
+a warm-ink/bone "cinematic editorial" identity. Current token roles: `--ink`/`--ink-surface`/
+`--ink-raised` (warm near-black grounds), `--bone`/`--paper` (warm off-white — `--bone` for text
+on ink, `--paper` for the one light section's background), `--tungsten`/`--tungsten-light` (the
+one restrained accent — used thin, for rules/marks/eyebrows/focus states, never as a large fill
+or a glow), `--link`/`--link-light` (blue, demoted to a quiet secondary/focus color only — it is
+**not** the primary brand color anymore, don't reintroduce blue-gradient buttons or blue glow
+halos). A handful of `--black`/`--surface`/`--blue`/`--offwhite`-style legacy variable names are
+kept as aliases pointing at the new tokens so any not-yet-migrated selector still resolves
+sensibly — prefer the new names in anything you touch. Radius scale: `--radius-media` (~3px,
+video/image containers), `--radius-surface` (~8px, cards/modals), `--radius-button` (~6px),
+`--radius-pill` (reserved for genuinely circular single-icon controls only — not badges, not the
+hero media toggle anymore). Type roles: Fraunces (`--font-fraunces`, via `next/font/google` in
+`app/layout.tsx`) for `h1`/`h2` display type, Inter for body/UI (unchanged), Roboto Mono for
+metadata/eyebrows (unchanged). `.button-primary` is a solid bone-on-ink fill (flipped to
+ink-on-bone inside `.waitlist-section`, the one light-background section); `.button-dark` is a
+quiet transparent/outlined secondary, not a second solid fill — the two need to stay visually
+distinct from each other in whichever section they appear.
 
 ### Current conversion verification
 
