@@ -2,6 +2,14 @@
 
 This file provides guidance to Claude Code (claude.ai/code) when working with code in this repository.
 
+## Engineering workflow
+
+Invoke the `/engineering-workflow` skill at the start of every non-trivial task in this
+repo (plan → check in → build → verify → summarize), regardless of session or machine.
+Track active work in `tasks/todo.md` (checkboxes, Results section on completion) and log
+patterns learned from user corrections in `tasks/lessons.md`. Both files are tracked in
+git so plan/history carry across sessions.
+
 ## What this is
 
 "Cinema Estate" — a marketing landing page (real-estate listing photos turned into
