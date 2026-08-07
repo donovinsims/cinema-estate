@@ -40,12 +40,25 @@ test("server-renders Cinema Estate with an accessible comparison and waitlist", 
   const html = await response.text();
   assert.match(html, /<title>Cinema Estate/i);
   assert.match(html, /Turn your real listing photos into cinematic marketing\./i);
-  assert.match(html, /A real completed package · 255 Eldon Ave, Columbus/i);
+  assert.match(html, /A self-produced demo package · 255 Eldon Ave, Columbus/i);
+  assert.doesNotMatch(html, /A real completed package/i);
   assert.match(
     html,
     /Video tours, narration, a listing page, and a final film—built from photos you.{1,2}ve already approved, so buyers don.{1,2}t scroll past your listing\./i,
   );
-  assert.match(html, /Plans from <strong>\$149<\/strong> per listing — delivered in 24 hours\./i);
+  assert.match(
+    html,
+    /The third option between flat photos and booking a film crew—so every listing makes you look like the best-marketed agent in the room\./i,
+  );
+  assert.match(html, /Plans from <strong>\$149<\/strong> per listing — delivered in 24 hours, backed by the Review-First Guarantee\./i);
+  const siteHeaderPosition = html.indexOf('class="site-header"');
+  const heroMediaTogglePosition = html.indexOf('class="hero-media-toggle"');
+  const heroPricingAnchorPosition = html.indexOf('id="top"');
+  assert.ok(siteHeaderPosition >= 0, "Site header must render");
+  assert.ok(
+    siteHeaderPosition < heroMediaTogglePosition && heroMediaTogglePosition < heroPricingAnchorPosition,
+    "Header must render before the hero media toggle for correct keyboard tab order",
+  );
   assert.match(html, /One real photo\. One cinematic move\./i);
   assert.match(html, /One cinematic move is one component of the complete package\./i);
   assert.match(html, /Four deliverables for your next listing launch\./i);
@@ -97,11 +110,20 @@ test("server-renders Cinema Estate with an accessible comparison and waitlist", 
   assert.match(html, /<button[^>]*>After<\/button>/i);
   assert.match(html, /name="email"/i);
   assert.match(html, /name="website"/i);
-  assert.match(html, /You’re on the early-access list\. I’ll personally follow up with next steps — or see pricing and buy now below\./i);
+  assert.match(html, /You’re on the early-access list\. I’ll personally follow up with next steps — or see pricing and buy anytime\./i);
+  assert.match(html, /Ready to buy\? Pricing is above\. Not ready yet\? Leave your email and I.{1,2}ll personally follow up about your listing\./i);
+  const waitlistSection = html.match(/<section class="waitlist-section"[\s\S]*?<\/section>/);
+  assert.ok(waitlistSection, "Waitlist section must render");
+  assert.match(waitlistSection[0], /<a class="button button-primary" href="#pricing">See pricing/i);
   assert.doesNotMatch(html, /\$99|next week|Unsubscribe anytime|privacy@sequenzy\.com/i);
   assert.match(html, /local MLS and brokerage rules apply/i);
   assert.match(html, /Will this look fake or gimmicky\?/i);
   assert.match(html, /Will AI-enhanced visualization cause MLS or disclosure trouble\?/i);
+  assert.match(html, /What if I can get this for \$10–\$40 with a cheaper AI tool\?/i);
+  assert.match(
+    html,
+    /Cinema Estate builds a defined package around your real, already-approved photos—nothing invented or altered/i,
+  );
   assert.match(html, /Plans from <span>\$149<\/span> per listing\./i);
   assert.match(html, /Delivered within 24 hours from your approved photos/i);
   assert.match(html, />Proof</);
@@ -110,6 +132,8 @@ test("server-renders Cinema Estate with an accessible comparison and waitlist", 
   assert.match(html, /\$149/);
   assert.match(html, /\$299/);
   assert.match(html, /\$549/);
+  assert.match(html, /For a standard listing that needs to look sharp, fast\./i);
+  assert.match(html, /The complete package for the listing you want your next seller to remember\./i);
   assert.match(html, /Reserved for luxury, architecturally distinctive, or high-stakes listings/i);
   assert.match(html, /<a href="https:\/\/buy\.polar\.sh\/polar_cl_r6UPLdTbK0UNuL4QCNH0sfQFdgcpi5DXVWLYn1W4pgw"[^>]*>Buy Proof/i);
   assert.match(html, /<a href="https:\/\/buy\.polar\.sh\/polar_cl_2qd3HGz4AhmpQCLcqKpYXzVFsWmyoM39lwg3s4BXGZi"[^>]*>Buy Story/i);
