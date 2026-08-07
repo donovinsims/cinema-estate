@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 
 type Clip = {
   key: string;
@@ -51,10 +51,39 @@ const clips: Clip[] = [
 export function ProofReel() {
   const [activeKey, setActiveKey] = useState(clips[0].key);
   const active = clips.find((clip) => clip.key === activeKey) ?? clips[0];
+  const videoRef = useRef<HTMLVideoElement>(null);
+
+  // Swap src/poster via the element directly instead of remounting via key,
+  // so the player stays stable and avoids a flash.
+  useEffect(() => {
+    const video = videoRef.current;
+    if (!video) return;
+    // Only touch the element when the active clip changes — not on first render,
+    // since the initial src/poster are already set via JSX.
+    // Compare pathnames (not full URLs) so the guard works regardless of origin.
+    try {
+      if (new URL(video.src).pathname === active.video) return;
+    } catch {
+      // Fallback for environments where video.src is a bare path.
+      if (video.src === active.video || video.src.endsWith(active.video)) return;
+    }
+    video.pause();
+    video.src = active.video;
+    video.poster = active.poster;
+    video.load();
+  }, [active.video, active.poster]);
 
   return (
     <div className="proof-reel" id="proof-reel">
-      <video key={active.key} className="proof-reel-player" src={active.video} poster={active.poster} controls playsInline preload="metadata" />
+      <video
+        ref={videoRef}
+        className="proof-reel-player"
+        src={active.video}
+        poster={active.poster}
+        controls
+        playsInline
+        preload="metadata"
+      />
       <p className="proof-reel-caption">{active.note}</p>
       <div className="proof-reel-strip" role="group" aria-label="Choose a scene from Villa Siena">
         {clips.map((clip) => (

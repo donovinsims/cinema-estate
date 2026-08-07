@@ -38,3 +38,87 @@ evidence links, About disclosure rewrite), plus Tasks 6-9's visual chrome (prici
 removed, About pull-quote, FAQ/waitlist/sweep retinted to tungsten). 12/12 tests passing, lint
 clean on all touched files. Remaining: integrate the Villa Siena route worker's result, coherence
 pass, full verification, docs, push, PR.
+
+**Final status:** PR #22 merged into `main` (`f102946`), including the disclosure fix
+(`6d2f3b1`). PR2 fully closed out — no further action needed on this branch.
+
+## sales-page/03-component-system-polish
+
+### PR3: Component system finalization + interaction polish + QA (2026-08-07)
+
+State gate: PR #22 confirmed merged (`f102946`) before starting. Branched from `origin/main`.
+
+Quota constraint: max 2 Explore subagents total, launched once in parallel before any
+implementation. No further Explore/design/research agents after that.
+
+- [x] Explore A (component audit: buttons/icons/pricing/forms/FAQ/media controls/borders/
+      radii/shadows/states/motion) + Explore B (QA audit: responsive/keyboard/focus/a11y/
+      reduced-motion/touch targets/ProofReel/modal/checkout-status/perf) — parallel, read-only
+- [x] Synthesize both audits into a prioritized implementation list (main context only, no
+      further agents)
+- [x] Workstream 1 — component system: button vocabulary (primary/secondary/text-action),
+      icon language (nav/external/check/play), shape-language consistency, pricing hierarchy
+      via composition, forms/modal/FAQ into same component language
+- [x] Workstream 2 — interaction/motion: semantic motion per control type, interruptible,
+      reduced-motion respected, ProofReel active/focus states
+- [x] Workstream 3 — responsive/a11y QA pass at 375/768/1440 on `/` and `/villa-siena`
+- [x] Workstream 4 — performance/final QA: media preload, poster usage, font-loading/CLS,
+      unnecessary client JS
+- [x] Validation gate: lint, `npm test`, `npm run build`, `npx next build`, `git diff --check`
+- [x] Browser verification: homepage, `/villa-siena`, checkout links, inquiry modal,
+      `?checkout=success`/`cancelled`, keyboard, reduced motion, console, media
+- [x] Update `tasks/todo.md` (this file), `tasks/lessons.md`, `HANDOFF.md`
+- [x] Open PR against `main` titled "PR3: Finish Cinema Estate component system and final QA"
+      — do not merge
+
+**Results (2026-08-07):** 5 files changed (+118/−20). No new dependencies. ⬇️
+
+### Component system
+
+- **ArrowIcon** now has three semantic variants: `arrow` (forward nav), `check` (approval),
+  `play` (media). Each sets `data-motion` (`forward`/`external`/`check`/`play`) so CSS can
+  apply the right hover transform. `data-direction="up-right"` controls the base rotation via
+  CSS (not inline style), so the hover rule can override it.
+  → `app/ArrowIcon.tsx`
+- **Checklist** in `page.tsx` now uses `variant="check"` (a proper checkmark path) instead of
+  a rotated forward arrow.
+- **Radius system** applied consistently: tier cards `16px → var(--radius-surface)` (8px),
+  modal `12px → var(--radius-surface)` (8px). Mobile bottom-sheet override is preserved.
+  → `app/globals.css`
+
+### Interaction + motion
+
+- **Semantic hover transforms:** forward arrows slide X, external arrows slide diagonally
+  (rotate + translate), play buttons scale 1.1×, check icons have no motion.
+  Replaced the old universal `.button:hover svg { transform: translateX(3px) }`.
+- **Scale on press:** `.button:active` changed from `.98` to `.96` per MIFB. Added
+  `:active` states to `modal-close`, `hero-media-toggle`, `proof-reel-thumb`,
+  `comparison-toggle`, and FAQ `summary`.
+- All CSS transitions target specific properties (no `transition: all`), and the global
+  `prefers-reduced-motion` rule already covers everything.
+
+### Accessibility / responsive
+
+- **Hero media toggle** `min-height` raised from `40px` to `44px` (minimum touch target).
+- **Focus-visible** expanded to cover `proof-reel-thumb`, `hero-media-toggle`, and
+  `deliverable-evidence`.
+- **ProofReel** video switching now uses a ref-based `src` swap instead of a React `key`
+  remount — no more full-element-destroy-then-recreate flash.
+
+### Polish
+
+- **Modal** border changed from blue (`rgba(174,191,255,.36)`) to `var(--line)`;
+  inset shadow changed from blue (`rgba(77,124,255,.08)`) to tungsten
+  (`rgba(201,138,75,.06)`).
+
+### Validation
+
+- `npm run lint`: clean (4 pre-existing warnings on `villa-siena/page.tsx` only)
+- `node --test tests/*.test.mjs`: 15/15 pass
+- `npm run build` (vinext): ✓
+- `npx next build` (Vercel): ✓
+- `git diff --check`: clean
+- Browser: homepage + /villa-siena no console errors; checkout-status success/cancelled
+  banners render; modal border/radius/shadow confirmed; tier-card radius 8px confirmed;
+  proof-reel-thumb/hero-toggle focus-visible rules present; external arrow hover now
+  overridable (CSS-applied rotation, not inline).

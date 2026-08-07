@@ -2,6 +2,44 @@
 
 Last updated: 2026-08-07
 
+## PR3 — Component system finalization + interaction polish + QA — OPEN FOR REVIEW (2026-08-07)
+
+Branch: `sales-page/03-component-system-polish`, created off `main` at `f102946` (PR #22 merge).
+PR is open against `main` — **do not merge; owner review required.**
+
+**What changed (5 files, +118/−20, no new dependencies):**
+
+- **ArrowIcon** now has three semantic variants: `arrow` (forward nav), `check` (approval),
+  `play` (media). Each sets `data-motion`/`data-direction` attributes so CSS applies the
+  right hover transform. Base rotation moved from inline `style` to CSS
+  (`[data-direction="up-right"]`) so hover rules can override it.
+  → `app/ArrowIcon.tsx`
+- **Checklist** in `page.tsx` now uses `variant="check"` (a checkmark path) instead of a
+  rotated arrow.
+  → `app/page.tsx`
+- **Radius system** applied consistently: tier cards `16px → var(--radius-surface)` (8px),
+  modal `12px → var(--radius-surface)` (8px). Mobile bottom-sheet override preserved.
+- **Modal** border changed from blue (`rgba(174,191,255,.36)`) to `var(--line)`; inset shadow
+  changed from blue (`rgba(77,124,255,.08)`) to tungsten (`rgba(201,138,75,.06)`).
+- **Semantic hover transforms:** forward arrows slide X, external arrows slide diagonally
+  (rotate + translate), play buttons scale 1.1×, check icons have no motion.
+  Replaced universal `.button:hover svg { transform: translateX(3px) }`.
+- **Scale on press:** `.button:active` changed from `.98` to `.96` per MIFB. Added `:active`
+  states to `modal-close`, `hero-media-toggle`, `proof-reel-thumb`, `comparison-toggle`,
+  and FAQ `summary`.
+- **Hero media toggle** `min-height` raised from `40px` to `44px` (minimum touch target).
+- **Focus-visible** expanded to cover `proof-reel-thumb`, `hero-media-toggle`, and
+  `deliverable-evidence`.
+- **ProofReel** video switching now uses a ref-based `src` swap instead of a React `key`
+  remount — no more full-element-destroy-then-recreate flash.
+  → `app/ProofReel.tsx`
+
+**Validation (2026-08-07):** `npm run lint` clean (4 pre-existing warnings only),
+15/15 node tests pass, `npm run build` (vinext) ✓, `npx next build` (Vercel) ✓,
+`git diff --check` clean. Browser-verified: no console errors, checkout-status
+success/cancelled banners render, modal border/radius/shadow confirmed,
+tier-card radius 8px, external arrow hover overridable.
+
 ## Current state (read this first)
 
 UX closeout branch: `codex/ux-conversion-closeout`, based on `origin/ux-review/conversion-fixes-wip` (`a1979e063d81ba2722a7983ded7cf21a6034416d`). It was merged by [PR #10](https://github.com/donovinsims/cinema-estate/pull/10) into `main` as `0da04c36d22ecf77ee3536d2e7cef9dfbad14cee` on 2026-08-06. Key commits include `88db72e` (copy contracts), `57edea6` (safe form and motion safeguards), and `844e921` (non-blocking payout follow-up).

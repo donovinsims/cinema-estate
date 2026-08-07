@@ -168,9 +168,9 @@ export default function Home() {
             </ol>
             <p className="turnaround-note">Your 24-hour build window starts once we have your approved photos and the listing details required to build your package&mdash;not when you place the order.</p>
             <ul className="checklist">
-              <li><ArrowIcon />Agent approval before publishing</li>
-              <li><ArrowIcon />Real listing imagery remains the source</li>
-              <li><ArrowIcon />Disclosure and delivery review</li>
+              <li><ArrowIcon variant="check" />Agent approval before publishing</li>
+              <li><ArrowIcon variant="check" />Real listing imagery remains the source</li>
+              <li><ArrowIcon variant="check" />Disclosure and delivery review</li>
             </ul>
           </div>
         </div>
