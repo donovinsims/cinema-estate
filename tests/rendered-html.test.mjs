@@ -5,7 +5,7 @@ const expectedAboutHeading = "Give your listing a cinematic story without anothe
 const expectedAboutParagraphs = [
   "Listing photos can be accurate and approved, and still feel flat on a screen—real video adds motion, but usually means booking a crew, coordinating property access, and managing another production schedule for every listing. Cinema Estate uses AI to handle that production work instead: the motion, narration, listing page, and final film. It does not invent rooms, move walls, replace finishes, or change what the property is—your already-approved listing photos remain the source.",
   "You send the photos you already have. Cinema Estate builds the four-part package, then you review every asset before anything is published. There is no reshoot, no crew to book, and no property-access schedule to coordinate.",
-  "I’m Donovin, from Northern Illinois. After talking with 15–20 individual agents over the past year, I kept hearing the same tradeoff: use static photos or add another production to an already busy listing. I started Cinema Estate to give agents a third option: a stronger visual story built from work they have already approved. The 255 Eldon package on this page is a demo listing, not client work—here to show you a realistic example of what to expect, so you can judge the source photos, the cinematic treatment, and the complete package for yourself. AI-enhanced visualization is disclosed, local MLS and brokerage rules still apply, and nothing is published until you approve it.",
+  "I’m Donovin, from Northern Illinois. After talking with 15–20 individual agents over the past year, I kept hearing the same tradeoff: use static photos or add another production to an already busy listing. <span class=\"about-pullquote\">I started Cinema Estate to give agents a third option: a stronger visual story built from work they have already approved.</span> The Villa Siena package shown here is a real, permission-cleared listing used as a demonstration—its video and page were produced using a separate production tool, not delivered as paid Cinema Estate client work. AI-enhanced visualization is disclosed, local MLS and brokerage rules still apply, and nothing is published until you approve it.",
 ];
 const expectedAboutCtaText = "Start with your listing";
 
@@ -38,7 +38,7 @@ test("server-renders Cinema Estate with an accessible comparison and waitlist", 
   const html = await response.text();
   assert.match(html, /<title>Cinema Estate/i);
   assert.match(html, /Turn your real listing photos into cinematic marketing\./i);
-  assert.match(html, /A self-produced demo package · 255 Eldon Ave, Columbus/i);
+  assert.match(html, /A real listing, shown with permission · Villa Siena, Bel-Air/i);
   assert.doesNotMatch(html, /A real completed package/i);
   assert.match(
     html,

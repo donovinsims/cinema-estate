@@ -7,6 +7,7 @@ import { ComparisonExperience } from "./ComparisonExperience";
 import { EarlyAccessButton } from "./EarlyAccessButton";
 import { EarlyAccessModal } from "./EarlyAccessModal";
 import { HeroVideo } from "./HeroVideo";
+import { ProofReel } from "./ProofReel";
 import { ScrollDepthTracker } from "./ScrollDepthTracker";
 import { TierImpressionTracker } from "./TierImpressionTracker";
 
@@ -14,13 +15,6 @@ export const metadata: Metadata = {
   title: "Cinema Estate — Real listing photos, cinematic marketing",
   description: "Cinema Estate turns approved listing photography into video tours, narration, a listing page, and a final film for real-estate agents.",
 };
-
-const proofClips = [
-  { title: "Exterior", file: "eldon-exterior", note: "The approach" },
-  { title: "Living room", file: "eldon-living-room", note: "One room, one slow move" },
-  { title: "Kitchen", file: "eldon-kitchen", note: "Light, texture, and context" },
-  { title: "Ravine", file: "eldon-ravine", note: "The neighborhood story" },
-];
 
 const tiers = [
   {
@@ -48,10 +42,47 @@ const tiers = [
 ];
 
 const deliverables = [
-  ["01", "Video tours", "Slow cinematic sequences from the photos you approve—so your listing shows motion, not just a static frame."],
-  ["02", "Narration", "A clear listing story shaped around the real property—so buyers understand what makes it worth seeing in person."],
-  ["03", "Listing page", "One focused destination to share with prospective buyers, instead of splitting attention across scattered photo links."],
-  ["04", "Final film", "A complete, ready-to-review marketing package—one link that covers the whole story of the listing."],
+  {
+    number: "01",
+    title: "Video tours",
+    detail: "Slow cinematic sequences from the photos you approve—so your listing shows motion, not just a static frame.",
+    evidence: (
+      <a className="deliverable-evidence" href="#proof-reel">
+        Watch the generated scenes <ArrowIcon />
+      </a>
+    ),
+  },
+  {
+    number: "02",
+    title: "Narration",
+    detail: "A clear listing story shaped around the real property—so buyers understand what makes it worth seeing in person.",
+    evidence: (
+      <div className="deliverable-evidence deliverable-audio">
+        <audio src="/media/villa-siena/villa-siena-hero-narration.wav" controls preload="none" />
+        <p className="deliverable-evidence-caption">A narration sample from the Villa Siena package—not a frame-matched cut of the film above.</p>
+      </div>
+    ),
+  },
+  {
+    number: "03",
+    title: "Listing page",
+    detail: "One focused destination to share with prospective buyers, instead of splitting attention across scattered photo links.",
+    evidence: (
+      <a className="deliverable-evidence" href="/villa-siena">
+        View the Villa Siena property page <ArrowIcon direction="up-right" />
+      </a>
+    ),
+  },
+  {
+    number: "04",
+    title: "Final film",
+    detail: "A complete, ready-to-review marketing package—one link that covers the whole story of the listing.",
+    evidence: (
+      <a className="deliverable-evidence" href="#proof-reel">
+        Watch the final film <ArrowIcon />
+      </a>
+    ),
+  },
 ];
 
 export default function Home() {
@@ -72,15 +103,15 @@ export default function Home() {
       <section className="hero" aria-labelledby="hero-title">
         <div className="hero-grid section-shell" id="top">
           <div className="hero-message">
-            <p className="eyebrow hero-label">A self-produced demo package · 255 Eldon Ave, Columbus</p>
+            <p className="eyebrow hero-label">A real listing, shown with permission · Villa Siena, Bel-Air</p>
             <h1 id="hero-title">Turn your real listing photos into cinematic marketing.</h1>
             <p className="hero-deck">Video tours, narration, a listing page, and a final film&mdash;built from photos you&rsquo;ve already approved, giving every listing the same polished presentation you bring to your best work.</p>
             <p className="hero-meta">From $149 per listing &middot; delivered in 24 hours</p>
             <a className="button button-primary" href="#pricing">Choose your package <ArrowIcon /></a>
           </div>
           <div className="hero-media-frame">
-            <HeroVideo src="/media/eldon-hero-film.mp4" poster="/media/eldon-hero-poster.jpg" />
-            <p className="hero-media-caption"><span>Original photo</span><ArrowIcon /><span>Cinema Estate</span></p>
+            <HeroVideo src="/media/villa-siena/01-Night-Arrival.mp4" poster="/media/villa-siena/01-Night-Aerial-Exterior.jpg" />
+            <p className="hero-media-caption"><span>Real photo</span><ArrowIcon /><span>Cinematic scene</span></p>
           </div>
         </div>
       </section>
@@ -91,17 +122,10 @@ export default function Home() {
         <div className="section-intro">
           <p className="eyebrow">02 / Real-media fidelity</p>
           <h2 id="proof-title">The proof is in the source material.</h2>
-          <p>Every frame below begins with approved photography from the actual listing. The camera moves, but the property remains the property.</p>
+          <p>Every clip below begins with approved photography from Villa Siena, a real Bel-Air listing shown with the listing team&rsquo;s permission. The camera moves, but the property remains the property.</p>
           <p>It does not invent rooms, move walls, replace finishes, or change what the property is—your already-approved listing photos remain the source.</p>
         </div>
-        <div className="proof-grid">
-          {proofClips.map((clip) => (
-            <article className="proof-card" key={clip.file}>
-              <video src={`/media/${clip.file}.mp4`} poster={`/media/${clip.file}-poster.jpg`} controls muted playsInline preload="metadata" />
-              <div><span>{clip.title}</span><p>{clip.note}</p></div>
-            </article>
-          ))}
-        </div>
+        <ProofReel />
       </section>
 
       <section className="package-section" id="package" aria-labelledby="package-title">
@@ -112,8 +136,15 @@ export default function Home() {
             <p>One coherent package, reviewed by you before anything is published.</p>
           </div>
           <div className="deliverables">
-            {deliverables.map(([number, title, detail]) => (
-              <article key={number}><span>{number}</span><div><h3>{title}</h3><p>{detail}</p></div></article>
+            {deliverables.map((item) => (
+              <article key={item.number}>
+                <span>{item.number}</span>
+                <div>
+                  <h3>{item.title}</h3>
+                  <p>{item.detail}</p>
+                  {item.evidence}
+                </div>
+              </article>
             ))}
           </div>
         </div>
@@ -198,7 +229,7 @@ export default function Home() {
             <div className="about-copy">
               <p>Listing photos can be accurate and approved, and still feel flat on a screen—real video adds motion, but usually means booking a crew, coordinating property access, and managing another production schedule for every listing. Cinema Estate uses AI to handle that production work instead: the motion, narration, listing page, and final film. It does not invent rooms, move walls, replace finishes, or change what the property is—your already-approved listing photos remain the source.</p>
               <p>You send the photos you already have. Cinema Estate builds the four-part package, then you review every asset before anything is published. There is no reshoot, no crew to book, and no property-access schedule to coordinate.</p>
-              <p>I’m Donovin, from Northern Illinois. After talking with 15–20 individual agents over the past year, I kept hearing the same tradeoff: use static photos or add another production to an already busy listing. I started Cinema Estate to give agents a third option: a stronger visual story built from work they have already approved. The 255 Eldon package on this page is a demo listing, not client work—here to show you a realistic example of what to expect, so you can judge the source photos, the cinematic treatment, and the complete package for yourself. AI-enhanced visualization is disclosed, local MLS and brokerage rules still apply, and nothing is published until you approve it.</p>
+              <p>I’m Donovin, from Northern Illinois. After talking with 15–20 individual agents over the past year, I kept hearing the same tradeoff: use static photos or add another production to an already busy listing. <span className="about-pullquote">I started Cinema Estate to give agents a third option: a stronger visual story built from work they have already approved.</span> The Villa Siena package shown here is a real, permission-cleared listing used as a demonstration—its video and page were produced using a separate production tool, not delivered as paid Cinema Estate client work. AI-enhanced visualization is disclosed, local MLS and brokerage rules still apply, and nothing is published until you approve it.</p>
             </div>
             <EarlyAccessButton className="button button-dark about-cta" intent="listing" source="about">Start with your listing <ArrowIcon /></EarlyAccessButton>
           </div>
