@@ -20,7 +20,7 @@ UX closeout branch: `codex/ux-conversion-closeout`, based on `origin/ux-review/c
   - `2f52cfc`: `.tier-cta` border-radius changed from `999px` (pill) to `8px` to match every other `.button` on the site (owner's explicit request — "make the buttons the same border-radius as the other buttons"); `.tier-note` color changed from `var(--muted)` to `#c4c4cb` (the site's existing secondary-copy tone, already used by `.comparison-caption`/`.about-copy p`) for more contrast on the dark cards; and a new `@property --tier-border-angle` + `@keyframes tier-border-spin` + `.tier-card.is-recommended::before` conic-gradient ring were added — a slowly rotating blue border animation on the recommended (Story) card only, automatically gated by the site's existing `prefers-reduced-motion` override.
   - `6403f3e`: `.tier-cta` background changed from flat `var(--blue)` (inherited from `.button-primary`) to a vertical glossy gradient (`var(--blue-light)` → `var(--blue)` → `#3f5fd9`) with inset highlight/shadow layers and a `:hover` variant — the owner asked for the CTA to have the same glossy, dimensional finish as a 21st.dev reference button image, adapted to the site's own blue tokens instead of copying that reference's white/gray gradient. `.button`/`.button-primary`/`.button-dark` themselves are untouched — this is scoped to `.tier-cta` only.
   - If another session sees these `.tier-*` values differ from what PR #16 originally shipped, that's expected — these are two intentional, owner-requested follow-ups, verified with `npm run lint` + `npm test` (12/12) + `git diff --check` after each, not drift to fix. Note: PR #17 was rebased onto `b04fa6c` (post-PR-#18) before merging, so the `.tier-*` polish now sits on top of PR #18's interface-polish CSS — both are present in `main`.
-- **8-skill UX/UI audit + Priority-1 fixes — UNCOMMITTED (2026-08-07):** an independent 8-skill audit (ux-review 10-expert panel + ux-heuristics, refactoring-ui, web-typography, design-taste, responsive, visual-foundations, web-component) produced a 3-tier action plan. Priority 1 is implemented in the working tree, uncommitted (see the "UX/UI audit Priority-1 fixes" section below): exit-intent-gated modal, direct Buy Story in the final section, collapsed hero, visible checkout confirmation, spinning-border removal. `npm run lint` + `npm test` (12/12) pass.
+- **8-skill UX/UI audit + Priority-1 fixes — MERGED (2026-08-07):** an independent 8-skill audit (ux-review 10-expert panel + ux-heuristics, refactoring-ui, web-typography, design-taste, responsive, visual-foundations, web-component) produced a 3-tier action plan. Priority 1 was implemented in the working tree, then committed and merged as [PR #19](https://github.com/donovinsims/cinema-estate/pull/19) (branch `hero-waitlist-checkout-refinement`, commit `8b7ccaf`) into `main` as `48616f9`: exit-intent-gated modal, direct Buy Story in the final section, collapsed hero (the "third option" positioning line and the `$149`/24h price teaser were removed from the hero — positioning still lives in the About copy, price/delivery still lives in the pricing section), visible checkout confirmation banner, spinning-border removal. `npm run lint` clean, `npm test` 12/12, `git diff --check` clean. See the "UX/UI audit Priority-1 fixes" section below for the full per-change detail. No browser/visual verification pass was done before merging; recommend one at 360/768/1024px, particularly the collapsed hero and the new checkout-status banner.
 
 ## Sales-page-upgrade workflow — 2026-08-06/07 (complete, merged)
 
@@ -346,9 +346,9 @@ Partway through implementation, every edit made via the Edit tool to `page.tsx`,
 
 Once 1–4 are done and green, this becomes a normal `/commit-push-pr`-shaped unit of work (single feature: "conversion-focused UX fixes from the 10-expert panel review").
 
-## UX/UI audit Priority-1 fixes — 2026-08-07 (uncommitted)
+## UX/UI audit Priority-1 fixes — 2026-08-07 (merged)
 
-An independent 8-skill audit (ux-review 10-expert panel + ux-heuristics, refactoring-ui, web-typography, design-taste, responsive, visual-foundations, web-component) ran against `main` and produced a 3-tier action plan. Priority 1 (conversion-blocking) is implemented in the working tree, uncommitted. `git status --short` shows:
+An independent 8-skill audit (ux-review 10-expert panel + ux-heuristics, refactoring-ui, web-typography, design-taste, responsive, visual-foundations, web-component) ran against `main` and produced a 3-tier action plan. Priority 1 (conversion-blocking) was implemented in the working tree, then committed and merged as [PR #19](https://github.com/donovinsims/cinema-estate/pull/19) (branch `hero-waitlist-checkout-refinement`, commit `8b7ccaf`) into `main` as `48616f9`. Files touched:
 
 ```
  M app/CheckoutButton.tsx
@@ -379,11 +379,10 @@ An independent 8-skill audit (ux-review 10-expert panel + ux-heuristics, refacto
 ### Not done (deferred)
 
 - Priority 2/3 items from the audit are NOT implemented: FAQ/About-before-pricing section reorder (deliberately deferred — high blast radius, re-numbers all 8 eyebrows, and the prior session already rejected it for the same reason), comparison auto-reveal removal, touch-target/tablet-breakpoint work, spacing/radius/type tokenization, contrast fixes on `.tier-cta`/input borders, icon-glyph unification, and the `::first-letter` `$` hack.
-- No visual/browser verification yet (no dev-server pass at 360/768/1024px).
-- Nothing committed or pushed.
+- No visual/browser verification yet (no dev-server pass at 360/768/1024px) — still true post-merge, this is the one real remaining follow-up.
 
 ### Resume point
 
 1. Optionally implement remaining Priority 2/3 audit items (see the audit report in the session transcript).
-2. Visually verify at 360/768/1024px (hero, comparison heading with the new two-link group, final-section Buy Story button, checkout-status banner).
-3. Commit as a single unit ("conversion-focused UX fixes from the 8-skill audit") and open a PR.
+2. Visually verify at 360/768/1024px (hero, comparison heading with the new two-link group, final-section Buy Story button, checkout-status banner) — not yet done.
+3. ~~Commit as a single unit and open a PR~~ — done, merged as PR #19.

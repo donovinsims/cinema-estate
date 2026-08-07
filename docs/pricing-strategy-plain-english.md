@@ -87,7 +87,7 @@ That's the whole process. No production appointment, no waiting on a crew's sche
 
 Everything in "How I plan to implement this" (the original version of this section) has shipped:
 
-1. ~~Fix the price mismatch~~ — done. The site now shows the real $149 / $299 / $549 tiers in the hero and a dedicated pricing section, not the old placeholder $99 line.
+1. ~~Fix the price mismatch~~ — done. The site now shows the real $149 / $299 / $549 tiers in a dedicated pricing section, not the old placeholder $99 line. (The hero itself no longer states a price — the 2026-08-07 UX audit collapsed the hero to eyebrow + H1 + deck + CTA, moving the price/delivery teaser entirely into the pricing section to cut duplication; see `HANDOFF.md`'s "UX/UI audit Priority-1 fixes" section.)
 2. ~~Rewrite the pricing section~~ — done. Three tier cards (Proof, Story, Signature) with what's included, each with a real "Buy" button.
 3. **Rights confirmation didn't become an FAQ question** — instead it's covered in `/terms`' "Your responsibilities" section, which the customer agrees to by paying. No separate checkout-flow checkbox exists (Polar's hosted checkout doesn't expose a custom-checkbox field we've configured) — worth revisiting if this turns out to need to be more explicit than "covered in the terms you agreed to."
 4. ~~Update the guarantee wording~~ — done, and named: "The Review-First Guarantee," with concrete refund terms, live at `/terms` and linked from the pricing section.

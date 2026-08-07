@@ -72,22 +72,41 @@ plus a few client islands:
   `node --test` and no build step.
 - `EarlyAccessButton.tsx` — dispatches a `window` CustomEvent (`cinemaestate:early-access`)
   rather than holding modal state itself.
-- `EarlyAccessModal.tsx` — listens for that event; also auto-opens once based on a
-  scroll-depth + dwell-time heuristic, gated by a `localStorage` dismissal/conversion
-  cooldown (`cinema-estate.waitlist-dismissed-at` / `-converted`).
+- `EarlyAccessModal.tsx` — listens for that event; also auto-opens once on exit-intent
+  (pointer leaving the top of the viewport) after the visitor has scrolled `#pricing` into
+  view, gated by a `localStorage` dismissal/conversion cooldown
+  (`cinema-estate.waitlist-dismissed-at` / `-converted`). Auto-open is skipped entirely under
+  `prefers-reduced-motion` and on coarse-pointer (touch) devices; auto-opened instances do not
+  steal focus. Closing now animates (180ms fade + translateY) instead of vanishing instantly.
 - `WaitlistForm.tsx` — secondary email capture only. It posts to the first-party
   `/api/early-access` route, displays a non-empty JSON `error` from that route, and otherwise
   uses a purchase-forward fallback. Never render raw exceptions. The route alone reads the
   server-only `SEQUENZY_FORM_ENDPOINT` value and returns only intentional safe messages.
 - `HeroVideo.tsx` — keeps its control synchronized with the video's real play/pause state. In
   `prefers-reduced-motion: reduce`, both `.hero-film` and `.hero-media-toggle` must be hidden.
-- `CheckoutButton.tsx` — thin client wrapper around a plain `<a>`; fires a
+- `CheckoutButton.tsx` — thin client wrapper around a plain `<a>`, navigating same-tab (so
+  Polar's `?checkout=success|cancelled` return lands back on this origin); fires a
   `checkout_cta_clicked` PostHog event (`track()` from `app/analytics.ts`) with `tier`/`price`
-  before navigating. Used by the three pricing-tier CTAs (`tiers` array in `app/page.tsx`),
-  each linking directly to a real, live Polar checkout URL — these are real purchase buttons,
-  not lead capture. See `HANDOFF.md`'s "Polar checkout wired" section for the product IDs and
-  the owner-only payout-account operational follow-up. It is not a code-review, merge, or
-  deployment gate.
+  before navigating. Used by the three pricing-tier CTAs (`tiers` array in `app/page.tsx`) plus
+  the final section's direct "Buy Story" CTA, each linking directly to a real, live Polar
+  checkout URL — these are real purchase buttons, not lead capture. See `HANDOFF.md`'s "Polar
+  checkout wired" section for the product IDs and the owner-only payout-account operational
+  follow-up. It is not a code-review, merge, or deployment gate.
+- `CheckoutStatus.tsx` — reads `?checkout=success|cancelled` from the URL once on mount, fires
+  `checkout_completed`/`checkout_returned`, strips the query param via `history.replaceState`,
+  and renders a visible fixed confirmation/cancellation banner (`.checkout-status` in
+  `globals.css`) — not just an analytics side effect.
+- `ArrowIcon.tsx` — the single shared inline SVG arrow used everywhere a directional icon
+  appears (nav/CTA arrows, the proof/quality checklist, the footer MLS link, checkout buttons).
+  Renders with `currentColor` so it inherits the surrounding text/link color; a bare Unicode
+  arrow character was falling back to a color-emoji glyph on iOS, so don't reintroduce raw
+  `→`/`↗` characters — always render this component instead.
+- `ScrollDepthTracker.tsx`, `TierImpressionTracker.tsx`, `AnswersAccordion.tsx` — funnel
+  analytics islands (`scroll_depth_reached`, `tier_card_viewed`/`tier_card_hovered`,
+  `faq_item_opened`), all going through the same consent-gated `track()` in `app/analytics.ts`.
+  `TierImpressionTracker` renders the `<article className="tier-card">` itself (no wrapper) —
+  it must stay a direct child of `.tier-grid` for the CSS subgrid row-alignment across the
+  three cards to keep working.
 
 Pricing is the primary CTA hierarchy: blue pricing/purchase controls lead to Polar checkout;
 dark controls open the secondary Sequenzy email path. Do not change checkout APIs, add routes,
@@ -96,9 +115,11 @@ or expose provider configuration during conversion work.
 ### Current conversion verification
 
 Use `npm ci --include=dev`, `npm run lint`, `npm test`, and `git diff --check`. Then verify the
-local page at 375px and 1440px: pricing anchors, CTA hierarchy, all three checkout links and
-their transient launch state, safe form errors, the automatic modal's pricing suppression, and
-the absent hero control under reduced motion. Do not run a real checkout.
+local page at 375px and 1440px: pricing anchors, CTA hierarchy, all checkout links (including
+the final section's direct "Buy Story" CTA), safe form errors, the exit-intent modal (only
+after `#pricing` has been seen, skipped under reduced motion / on touch), the modal's close
+animation, the checkout-status banner on a `?checkout=success`/`?checkout=cancelled` return,
+and the absent hero control under reduced motion. Do not run a real checkout.
 
 `app/terms/page.tsx` is a second top-level route (alongside `app/privacy/page.tsx`), reusing
 the same `.policy-page` CSS pattern. It publishes the Terms & refund policy — delivery
