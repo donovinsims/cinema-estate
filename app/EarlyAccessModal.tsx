@@ -31,8 +31,7 @@ export function EarlyAccessModal() {
   const [hasConverted, setHasConverted] = useState(false);
   const dialogRef = useRef<HTMLDivElement>(null);
   const lastFocusedElement = useRef<HTMLElement | null>(null);
-  const engagedRef = useRef(false);
-  const elapsedRef = useRef(false);
+  const focusOnOpenRef = useRef(true);
   const autoOpenedRef = useRef(false);
   const hasInteractedRef = useRef(false);
   const sawPricingRef = useRef(false);
@@ -52,6 +51,7 @@ export function EarlyAccessModal() {
     }
     if (source !== "engaged") hasInteractedRef.current = true;
     lastFocusedElement.current = document.activeElement instanceof HTMLElement ? document.activeElement : null;
+    focusOnOpenRef.current = source !== "engaged";
     setOpenedBy(source);
     setPresentationIntent(intent);
     setHasConverted(false);
@@ -107,35 +107,30 @@ export function EarlyAccessModal() {
       return () => window.removeEventListener("cinemaestate:early-access", onOpen);
     }
 
+    const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    const coarsePointer = window.matchMedia("(pointer: coarse)").matches;
+    if (reducedMotion || coarsePointer) {
+      return () => window.removeEventListener("cinemaestate:early-access", onOpen);
+    }
+
     const tryOpen = () => {
-      if (elapsedRef.current && engagedRef.current && !autoOpenedRef.current && !hasInteractedRef.current && !sawPricingRef.current) {
-        autoOpenedRef.current = true;
-        open("engaged");
-      }
+      if (autoOpenedRef.current || hasInteractedRef.current || !sawPricingRef.current) return;
+      autoOpenedRef.current = true;
+      open("engaged");
     };
-    const timer = window.setTimeout(() => {
-      elapsedRef.current = true;
-      tryOpen();
-    }, 35000);
-    const onScroll = () => {
-      const progress = window.scrollY / Math.max(1, document.documentElement.scrollHeight - window.innerHeight);
-      if (progress >= 0.45) {
-        engagedRef.current = true;
-        tryOpen();
-      }
+    const onMouseOut = (event: MouseEvent) => {
+      if (event.clientY <= 0 && !event.relatedTarget) tryOpen();
     };
-    window.addEventListener("scroll", onScroll, { passive: true });
-    onScroll();
+    document.addEventListener("mouseout", onMouseOut);
 
     return () => {
-      window.clearTimeout(timer);
-      window.removeEventListener("scroll", onScroll);
+      document.removeEventListener("mouseout", onMouseOut);
       window.removeEventListener("cinemaestate:early-access", onOpen);
     };
   }, []);
 
   useEffect(() => {
-    if (!isOpen) return;
+    if (!isOpen || !focusOnOpenRef.current) return;
     const emailInput = dialogRef.current?.querySelector<HTMLElement>('input[type="email"]');
     const firstFocusable = dialogRef.current?.querySelector<HTMLElement>("input, button, [href], select, textarea, [tabindex]:not([tabindex='-1'])");
     (emailInput ?? firstFocusable)?.focus();
@@ -176,7 +171,7 @@ export function EarlyAccessModal() {
 
   return (
     <div className={isClosing ? "early-access-backdrop is-closing" : "early-access-backdrop"} style={{ zIndex: 40 }} onMouseDown={closeFromBackdrop} hidden={!isOpen && !isClosing}>
-      <div ref={dialogRef} className="early-access-modal" role="dialog" aria-modal="true" aria-labelledby="early-access-modal-title" aria-describedby="early-access-modal-description" onKeyDown={trapFocus} data-opened-by={openedBy} data-presentation-intent={presentationIntent}>
+      <div ref={dialogRef} className="early-access-modal" role="dialog" aria-modal="true" aria-labelledby="early-access-modal-title" aria-describedby="early-access-modal-description" tabIndex={-1} onKeyDown={trapFocus} data-opened-by={openedBy} data-presentation-intent={presentationIntent}>
         <button className="modal-close" type="button" onClick={() => close()} aria-label="Close early-access form">×</button>
         <p className="eyebrow">{presentation.eyebrow}</p>
         <h2 id="early-access-modal-title">{presentation.title}</h2>

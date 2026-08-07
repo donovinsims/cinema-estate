@@ -1,30 +1,39 @@
 "use client";
 
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import { track } from "./analytics";
 
-// Renders nothing. Reads the Polar checkout status from the URL (?checkout=success
-// | cancelled) once on mount, reports it to analytics, then strips the query
-// parameter so a refresh does not double-fire the event.
+type CheckoutOutcome = "none" | "success" | "cancelled";
+
+// Reads the Polar checkout status from the URL (?checkout=success | cancelled)
+// once on mount, reports it to analytics, strips the query parameter so a
+// refresh does not double-fire the event, and shows a visible confirmation so
+// the buyer knows their purchase landed.
 export function CheckoutStatus() {
+  const [outcome, setOutcome] = useState<CheckoutOutcome>("none");
   const trackedRef = useRef(false);
 
   useEffect(() => {
     if (trackedRef.current) return;
     const status = new URLSearchParams(window.location.search).get("checkout");
-    if (status === "success") {
-      trackedRef.current = true;
-      track("checkout_completed");
-    } else if (status === "cancelled") {
-      trackedRef.current = true;
-      track("checkout_returned");
-    } else {
-      return;
-    }
+    if (status !== "success" && status !== "cancelled") return;
+    trackedRef.current = true;
+    track(status === "success" ? "checkout_completed" : "checkout_returned");
     const url = new URL(window.location.href);
     url.searchParams.delete("checkout");
     window.history.replaceState({}, "", `${url.pathname}${url.search}${url.hash}`);
+    queueMicrotask(() => setOutcome(status));
   }, []);
 
-  return null;
+  if (outcome === "none") return null;
+
+  return (
+    <div className={`checkout-status ${outcome}`} role="status" aria-live="polite">
+      {outcome === "success" ? (
+        <p>Order confirmed — I&rsquo;ll reach out with next steps to start your package.</p>
+      ) : (
+        <p>Checkout cancelled — no charge was made. <a href="#pricing">Back to pricing</a></p>
+      )}
+    </div>
+  );
 }

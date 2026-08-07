@@ -1,6 +1,6 @@
 "use client";
 
-import { AnchorHTMLAttributes, useEffect, useRef, useState } from "react";
+import { AnchorHTMLAttributes, useRef } from "react";
 import { track } from "./analytics";
 
 type CheckoutButtonProps = AnchorHTMLAttributes<HTMLAnchorElement> & {
@@ -8,36 +8,18 @@ type CheckoutButtonProps = AnchorHTMLAttributes<HTMLAnchorElement> & {
   price: string;
 };
 
-const resetDelayMs = 2500;
-
 export function CheckoutButton({ children, tier, price, href, ...props }: CheckoutButtonProps) {
-  const [isNavigating, setIsNavigating] = useState(false);
-  const resetTimerRef = useRef<number | null>(null);
-
-  useEffect(() => {
-    return () => {
-      if (resetTimerRef.current !== null) window.clearTimeout(resetTimerRef.current);
-    };
-  }, []);
+  const trackedRef = useRef(false);
 
   function trackClick() {
-    if (isNavigating) return;
+    if (trackedRef.current) return;
+    trackedRef.current = true;
     track("checkout_cta_clicked", { tier, price });
-    setIsNavigating(true);
-    if (resetTimerRef.current !== null) window.clearTimeout(resetTimerRef.current);
-    resetTimerRef.current = window.setTimeout(() => setIsNavigating(false), resetDelayMs);
   }
 
   return (
-    <a
-      href={href}
-      {...props}
-      target="_blank"
-      rel="noopener noreferrer"
-      aria-busy={isNavigating}
-      onClick={trackClick}
-    >
-      {isNavigating ? "Opening checkout…" : children}
+    <a href={href} {...props} rel="noopener noreferrer" onClick={trackClick}>
+      {children}
     </a>
   );
 }
