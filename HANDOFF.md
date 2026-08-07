@@ -2,12 +2,11 @@
 
 Last updated: 2026-08-07
 
-## PR3 — Component system finalization + interaction polish + QA — OPEN FOR REVIEW (2026-08-07)
+## PR3 — Component system finalization + interaction polish + QA — MERGED + PRODUCTION-VERIFIED (2026-08-07)
 
-Branch: `sales-page/03-component-system-polish`, created off `main` at `f102946` (PR #22 merge).
-PR is open against `main` — **do not merge; owner review required.**
+Branch: `sales-page/03-component-system-polish`. Merged as [PR #23](https://github.com/donovinsims/cinema-estate/pull/23) into `main` at `29a3694`. Production smoke-verified against `cinema-estate.vercel.app` on 2026-08-07 — all checks pass (see production verification table below).
 
-**What changed (5 files, +118/−20, no new dependencies):**
+**What changed (5 app files, +118/−20, no new dependencies):**
 
 - **ArrowIcon** now has three semantic variants: `arrow` (forward nav), `check` (approval),
   `play` (media). Each sets `data-motion`/`data-direction` attributes so CSS applies the
@@ -34,11 +33,39 @@ PR is open against `main` — **do not merge; owner review required.**
   remount — no more full-element-destroy-then-recreate flash.
   → `app/ProofReel.tsx`
 
-**Validation (2026-08-07):** `npm run lint` clean (4 pre-existing warnings only),
-15/15 node tests pass, `npm run build` (vinext) ✓, `npx next build` (Vercel) ✓,
-`git diff --check` clean. Browser-verified: no console errors, checkout-status
-success/cancelled banners render, modal border/radius/shadow confirmed,
-tier-card radius 8px, external arrow hover overridable.
+### Production verification (2026-08-07, against cinema-estate.vercel.app)
+
+| Check | Result |
+|---|---|
+| Merge commit | `29a3694` (PR #23 merged) |
+| Homepage HTTP | 200 ✓ |
+| Villa Siena HTTP | 200, title correct ✓ |
+| Checklist icons | 3× `data-motion="check"` in HTML ✓ |
+| Semantic `data-motion` | 3 check + 6 external + 8 forward = 17 total ✓ |
+| Tier-card radius | `var(--radius-surface)` in CSS ✓ |
+| Button active scale | `0.96` in CSS ✓ |
+| Base rotation CSS | `[data-direction=up-right]{transform:rotate(-45deg)}` ✓ |
+| Hover: forward | `translate(3px)` ✓ |
+| Hover: external | `rotate(-45deg)translate(3px,-3px)` ✓ |
+| Hover: play | `scale(1.1)` ✓ |
+| Modal border | `var(--line)` ✓ |
+| Modal inset shadow | Tungsten `#c98a4b0f` ✓ |
+| Hero toggle | `min-height:44px` ✓ |
+| Focus-visible: proof-reel-thumb | Present ✓ |
+| Focus-visible: hero-toggle | Present ✓ |
+| Story-first mobile | `order:-1` in mobile media query ✓ |
+| Polar checkout links | 4 links (3 unique tiers + final CTA) ✓ |
+| Canonical | `https://cinema-estate.vercel.app` ✓ |
+| Structured data | `application/ld+json` present ✓ |
+| Reduced motion | `prefers-reduced-motion` media query present ✓ |
+| Horizontal overflow | `max-width:100%` on images/video, `overflow:hidden` scoped ✓ |
+| Media files | `/media/villa-siena/*.jpg` returns 200 ✓ |
+| CSS file | Returns 200 (immutable) ✓ |
+| Early Access modal | Backdrop, modal, close, decline buttons present ✓ |
+| FAQ | Answer-list + details elements present ✓ |
+| ProofReel player | 1 instance, no React key attribute ✓ |
+
+**Verdict: All 26 production checks pass. PR3 is production-verified.**
 
 ## Current state (read this first)
 

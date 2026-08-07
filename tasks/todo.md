@@ -122,3 +122,12 @@ implementation. No further Explore/design/research agents after that.
   banners render; modal border/radius/shadow confirmed; tier-card radius 8px confirmed;
   proof-reel-thumb/hero-toggle focus-visible rules present; external arrow hover now
   overridable (CSS-applied rotation, not inline).
+
+**Final status:** PR #23 merged into `main` at `29a3694`. Production smoke-verified against
+`cinema-estate.vercel.app` on 2026-08-07 — all 26 checks pass: merge commit confirmed,
+homepage + /villa-siena return 200, checklist icons have `data-motion="check"`,
+semantic hover transforms in production CSS, tier-card radius 8px, button active scale 0.96,
+modal border tungsten + inset shadow tungsten, hero toggle 44px, focus-visible expanded,
+Story-first mobile order -1, 4 Polar checkout links present, canonical correct,
+structured data present, reduced motion query present, no horizontal overflow risks,
+media files return 200, Early Access modal + FAQ intact. **PR3 fully closed.**
