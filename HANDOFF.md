@@ -328,6 +328,7 @@ Everything below is retained for context. Earlier no-checkout, pre-pricing, unco
 - Sequenzy company: `v26iblogat0kdfyw581h1hb1`.
 - Saved form: `Cinema Estate — Early Access Waitlist`, ID `jmab7vbumu415ko0sfkig969`.
 - `SEQUENZY_FORM_ENDPOINT` is stored as a sensitive Vercel environment variable; never expose it as `NEXT_PUBLIC_*` or copy it into documentation.
+- Live integration smoke test: `SEQUENZY_SMOKE_URL=https://cinema-estate.vercel.app node --test tests/sequenzy-smoke.test.mjs` (opt-in — skipped by plain `npm test`; the valid-email case sends one real submission to the dashboard per run, labeled `smoke-test-*@example.com` — delete those entries after verifying). Verified against production on 2026-08-07: invalid → 400, valid → 200.
 - Sending-domain verification, welcome-email automation, a monitored privacy contact, email-preference handling, and one controlled real signup remain separate operational work and must be verified before being claimed publicly.
 - `ce.sequenzy.com` is only the Sequenzy sending domain; the website stays on `https://cinema-estate.vercel.app`.
 

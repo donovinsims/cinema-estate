@@ -1,3 +1,17 @@
+## freebuff/is-the-squenzy-email-integration-live-and-working-041d32e5
+
+### Live Sequenzy smoke test (2026-08-07)
+
+- [x] Verify the Sequenzy email integration against production (invalid → 400, valid → 200, env var configured)
+- [x] Add opt-in live smoke test `tests/sequenzy-smoke.test.mjs` (skips unless `SEQUENZY_SMOKE_URL` set)
+- [x] Document run command + dashboard side effect in `CLAUDE.md`, `README.md`, `HANDOFF.md`
+
+**Results:** confirmed the integration is live and configured (see HANDOFF.md). The new
+smoke test pings `/api/early-access` on the deployed origin — invalid and missing emails
+assert 400, a unique `smoke-test-*@example.com` asserts 200. Plain `npm test` skips it
+(no env var), so the suite stays offline; each live run sends one real submission to the
+Sequenzy dashboard that should be deleted after verifying.
+
 ## claude/cloud-work-repo-attachment-3r27ay
 
 ### Set up persistent engineering workflow (2026-08-07)

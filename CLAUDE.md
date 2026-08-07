@@ -183,6 +183,13 @@ linked from the footer and the pricing section's guarantee line.
   `ExecutionContext`, then asserts against the rendered HTML string. This is why `npm test`
   always builds first — editing `app/` content requires a rebuild before this test reflects
   the change.
+- `sequenzy-smoke.test.mjs` — opt-in live smoke test for the Sequenzy email integration.
+  It pings `/api/early-access` on a real deployed origin (invalid → 400, missing → 400,
+  valid → 200) and skips unless `SEQUENZY_SMOKE_URL` is set, so the normal `npm test` run
+  stays offline and never writes to the Sequenzy dashboard. Run on demand:
+  `SEQUENZY_SMOKE_URL=https://cinema-estate.vercel.app node --test
+  tests/sequenzy-smoke.test.mjs`. The valid-email case sends ONE real submission to the
+  Sequenzy dashboard per run — delete the `smoke-test-*@example.com` entries after verifying.
 
 ### Generated/ignored directories
 
