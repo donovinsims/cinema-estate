@@ -118,7 +118,7 @@ export function EarlyAccessModal() {
       autoOpenedRef.current = true;
       open("engaged");
     };
-    const onMouseOut = (event: MouseEvent) => {
+    const onMouseOut = (event: globalThis.MouseEvent) => {
       if (event.clientY <= 0 && !event.relatedTarget) tryOpen();
     };
     document.addEventListener("mouseout", onMouseOut);

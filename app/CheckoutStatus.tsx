@@ -30,7 +30,7 @@ export function CheckoutStatus() {
   return (
     <div className={`checkout-status ${outcome}`} role="status" aria-live="polite">
       {outcome === "success" ? (
-        <p>Order confirmed — I&rsquo;ll reach out with next steps to start your package.</p>
+        <p>Order confirmed. I&rsquo;ll follow up to collect your approved photos and listing details — your 24-hour build window starts once I have everything, and you&rsquo;ll review every asset before it publishes.</p>
       ) : (
         <p>Checkout cancelled — no charge was made. <a href="#pricing">Back to pricing</a></p>
       )}

@@ -83,7 +83,7 @@ export function ComparisonExperience() {
   };
 
   return (
-    <section className="comparison-section" aria-labelledby="comparison-title">
+    <section className="comparison-section" id="transformation" aria-labelledby="comparison-title">
       <div className="section-shell comparison-heading">
         <div>
           <p className="eyebrow">01 / The transformation</p>

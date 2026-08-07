@@ -25,14 +25,14 @@ export function WaitlistForm({ intent = "early-access", onSuccess, variant = "in
     if (!email) {
       track("early_access_submit_failed", { intent, reason: "missing_email", placement: variant });
       setStatus("error");
-      setMessage("Enter an email address to get early access.");
+      setMessage("Enter an email address to continue.");
       return;
     }
 
     if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
       track("early_access_submit_failed", { intent, reason: "invalid_email", placement: variant });
       setStatus("error");
-      setMessage("Enter a valid email address to get early access.");
+      setMessage("Enter a valid email address to continue.");
       return;
     }
 

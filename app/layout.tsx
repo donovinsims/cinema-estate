@@ -1,11 +1,12 @@
 import type { Metadata, Viewport } from "next";
-import { Inter, Roboto_Mono } from "next/font/google";
+import { Inter, Roboto_Mono, Fraunces } from "next/font/google";
 import { AnalyticsConsent } from "./AnalyticsConsent";
 import { StructuredData } from "./StructuredData";
 import "./globals.css";
 
 const inter = Inter({ variable: "--font-inter", subsets: ["latin"] });
 const mono = Roboto_Mono({ variable: "--font-mono", subsets: ["latin"] });
+const fraunces = Fraunces({ variable: "--font-fraunces", subsets: ["latin"], weight: ["500", "600"], style: ["normal", "italic"], display: "swap" });
 
 export const metadata: Metadata = {
   metadataBase: new URL("https://cinema-estate.vercel.app"),
@@ -17,8 +18,8 @@ export const metadata: Metadata = {
   alternates: { canonical: "https://cinema-estate.vercel.app" },
 };
 
-export const viewport: Viewport = { themeColor: "#0A0A0A", colorScheme: "dark" };
+export const viewport: Viewport = { themeColor: "#16130F", colorScheme: "dark" };
 
 export default function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
-  return <html lang="en"><body className={`${inter.variable} ${mono.variable}`}>{children}<AnalyticsConsent /><StructuredData /></body></html>;
+  return <html lang="en"><body className={`${inter.variable} ${mono.variable} ${fraunces.variable}`}>{children}<AnalyticsConsent /><StructuredData /></body></html>;
 }

@@ -35,7 +35,7 @@ export function AnalyticsConsent() {
     <Analytics />
     <SpeedInsights />
     {choice === null && <aside className="analytics-consent" aria-label="Analytics privacy choice">
-      <p>Allow optional PostHog analytics to help us understand early-access interest. <a href="/privacy">Learn more</a>.</p>
+      <p>Allow optional PostHog analytics to help us understand buyer interest. <a href="/privacy">Learn more</a>.</p>
       <div><button type="button" onClick={() => choose("denied")}>No thanks</button><button type="button" onClick={() => choose("granted")}>Allow analytics</button></div>
     </aside>}
   </>;

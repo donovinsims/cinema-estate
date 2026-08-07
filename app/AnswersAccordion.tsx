@@ -20,6 +20,22 @@ const items: AnswerItem[] = [
     answer: "You do. Agents approve their assets before anything is published or shared.",
   },
   {
+    question: "What happens after I pay?",
+    answer: "You get an order confirmation, then I personally follow up to collect your approved photos and the listing details required to build your package.",
+  },
+  {
+    question: "What do I need to send you?",
+    answer: "Your approved listing photos, up to your package's limit, plus the listing details required to build the package. No reshoot and no property visit.",
+  },
+  {
+    question: "When does the 24-hour turnaround begin?",
+    answer: "Once we have your approved photos and the listing details required to build the package—not when you place the order. If something's missing, we'll tell you what's outstanding before the 24 hours starts.",
+  },
+  {
+    question: "How do revisions work?",
+    answer: "Proof and Story include one round of revisions, Signature includes two. Revisions address accuracy and delivery issues within your original order, and nothing publishes until you approve the final assets.",
+  },
+  {
     question: "Will AI-enhanced visualization cause MLS or disclosure trouble?",
     answer: "AI-enhanced visualization is disclosed. Local MLS and brokerage rules apply, and agents remain responsible for their listing requirements.",
   },

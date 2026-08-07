@@ -42,15 +42,18 @@ test("server-renders Cinema Estate with an accessible comparison and waitlist", 
   assert.doesNotMatch(html, /A real completed package/i);
   assert.match(
     html,
-    /Video tours, narration, a listing page, and a final film—built from photos you.{1,2}ve already approved, so buyers don.{1,2}t scroll past your listing\./i,
+    /Video tours, narration, a listing page, and a final film.{1,2}built from photos you.{1,2}ve already approved, giving every listing the same polished presentation you bring to your best work\./i,
   );
+  assert.doesNotMatch(html, /so buyers don.{1,2}t scroll past your listing/i, "hero copy must not imply an unsupported buyer-attention outcome");
+  assert.match(html, /From \$149 per listing/i);
+  assert.match(html, /Choose your package/i);
   const siteHeaderPosition = html.indexOf('class="site-header"');
   const heroMediaTogglePosition = html.indexOf('class="hero-media-toggle"');
-  const heroPricingAnchorPosition = html.indexOf('id="top"');
+  const heroTopAnchorPosition = html.indexOf('id="top"');
   assert.ok(siteHeaderPosition >= 0, "Site header must render");
   assert.ok(
-    siteHeaderPosition < heroMediaTogglePosition && heroMediaTogglePosition < heroPricingAnchorPosition,
-    "Header must render before the hero media toggle for correct keyboard tab order",
+    siteHeaderPosition < heroTopAnchorPosition && heroTopAnchorPosition < heroMediaTogglePosition,
+    "Header must render before the hero message, and the hero message (with its primary CTA) before the secondary hero media toggle, for correct keyboard tab order",
   );
   assert.match(html, /One real photo\. One cinematic move\./i);
   assert.match(html, /One cinematic move is one component of the complete package\./i);
@@ -59,10 +62,12 @@ test("server-renders Cinema Estate with an accessible comparison and waitlist", 
   assert.match(html, /so buyers understand what makes it worth seeing in person/i);
   assert.match(html, /instead of splitting attention across scattered photo links/i);
   assert.match(html, /one link that covers the whole story of the listing/i);
-  assert.match(html, /Reviewed with you before anything is published\./i);
-  assert.match(html, /Send the listing photos you.{1,2}ve already approved\./i);
-  assert.match(html, /Cinema Estate builds the four-part package around them\./i);
-  assert.match(html, /You review every asset before anything is published or shared\./i);
+  assert.match(html, /From approved photos to a finished package\./i);
+  assert.match(html, /Choose your package\./i);
+  assert.match(html, /Submit your listing\./i);
+  assert.match(html, /Send the approved photos and listing details required to build your package\./i);
+  assert.match(html, /Review and approve\./i);
+  assert.match(html, /Your 24-hour build window starts once we have your approved photos/i);
   const aboutSection = html.match(/<section class="about-section"[\s\S]*?<\/section>/);
   assert.ok(aboutSection, "About section must render");
   assert.ok(
@@ -96,15 +101,15 @@ test("server-renders Cinema Estate with an accessible comparison and waitlist", 
   assert.match(html, /AFTER\s*\/\s*ONE SLOW CAMERA MOVE/i);
   assert.match(html, /Drag to compare/i);
   assert.match(html, /Watch the transformation/i);
-  assert.match(html, /Get early access/i);
+  assert.match(html, /Ask about my listing/i);
   assert.match(html, /data-comparison-slider/i);
   assert.match(html, /aria-label="Reveal cinematic marketing"/i);
   assert.match(html, /<button[^>]*>Before<\/button>/i);
   assert.match(html, /<button[^>]*>After<\/button>/i);
   assert.match(html, /name="email"/i);
   assert.match(html, /name="website"/i);
-  assert.match(html, /You’re on the early-access list\. I’ll personally follow up with next steps — or see pricing and buy anytime\./i);
-  assert.match(html, /Ready to buy\? Start with the package most agents choose\. Not ready yet\? Leave your email and I.{1,2}ll personally follow up about your listing\./i);
+  assert.match(html, /Got it — I.{1,2}ll personally follow up about your listing\. Ready to buy\? Pricing is above anytime\./i);
+  assert.match(html, /Ready to buy\? Story is the recommended starting point for a complete listing launch\./i);
   const waitlistSection = html.match(/<section class="waitlist-section"[\s\S]*?<\/section>/);
   assert.ok(waitlistSection, "Waitlist section must render");
   assert.match(waitlistSection[0], /<a href="https:\/\/buy\.polar\.sh\/polar_cl_2qd3HGz4AhmpQCLcqKpYXzVFsWmyoM39lwg3s4BXGZi"[^>]*>Buy Story/i);

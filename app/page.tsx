@@ -60,18 +60,28 @@ export default function Home() {
       <header className="site-header">
         <div className="site-header-inner section-shell">
           <a className="wordmark" href="#top" aria-label="Cinema Estate home">CINEMA ESTATE<span>™</span></a>
-          <a className="header-link" href="#pricing">Pricing <ArrowIcon /></a>
+          <nav className="header-nav" aria-label="Page sections">
+            <a className="header-link header-link-secondary" href="#transformation">Example</a>
+            <a className="header-link header-link-secondary" href="#package">What you get</a>
+            <a className="header-link header-link-secondary" href="#how-it-works">How it works</a>
+            <a className="header-link" href="#pricing">Pricing <ArrowIcon /></a>
+          </nav>
         </div>
       </header>
 
       <section className="hero" aria-labelledby="hero-title">
-        <HeroVideo src="/media/eldon-hero-film.mp4" poster="/media/eldon-hero-poster.jpg" />
-        <div className="hero-scrim" />
-        <div className="hero-content section-shell" id="top">
-          <p className="eyebrow hero-label">A self-produced demo package · 255 Eldon Ave, Columbus</p>
-          <h1 id="hero-title">Turn your real listing photos into cinematic marketing.</h1>
-          <p className="hero-deck">Video tours, narration, a listing page, and a final film—built from photos you&rsquo;ve already approved, so buyers don&rsquo;t scroll past your listing.</p>
-          <a className="button button-primary" href="#pricing">See pricing <ArrowIcon /></a>
+        <div className="hero-grid section-shell" id="top">
+          <div className="hero-message">
+            <p className="eyebrow hero-label">A self-produced demo package · 255 Eldon Ave, Columbus</p>
+            <h1 id="hero-title">Turn your real listing photos into cinematic marketing.</h1>
+            <p className="hero-deck">Video tours, narration, a listing page, and a final film&mdash;built from photos you&rsquo;ve already approved, giving every listing the same polished presentation you bring to your best work.</p>
+            <p className="hero-meta">From $149 per listing &middot; delivered in 24 hours</p>
+            <a className="button button-primary" href="#pricing">Choose your package <ArrowIcon /></a>
+          </div>
+          <div className="hero-media-frame">
+            <HeroVideo src="/media/eldon-hero-film.mp4" poster="/media/eldon-hero-poster.jpg" />
+            <p className="hero-media-caption"><span>Original photo</span><ArrowIcon /><span>Cinema Estate</span></p>
+          </div>
         </div>
       </section>
 
@@ -110,16 +120,18 @@ export default function Home() {
       </section>
 
       <section className="quality-section section-shell" aria-labelledby="quality-title">
-        <p className="eyebrow">04 / Quality gate</p>
+        <p className="eyebrow">04 / How it works</p>
         <div className="quality-grid">
-          <h2 id="quality-title">Reviewed with you before anything is published.</h2>
+          <h2 id="quality-title">From approved photos to a finished package.</h2>
           <div>
-            <p>You review the package before anything is published or shared. That review keeps the supplied imagery, required deliverables, disclosure language, and publishing details aligned with the listing.</p>
+            <p>One path from checkout to a package you review and approve before anything goes live.</p>
             <ol className="how-it-works">
-              <li>Send the listing photos you&rsquo;ve already approved.</li>
-              <li>Cinema Estate builds the four-part package around them.</li>
-              <li>You review every asset before anything is published or shared.</li>
+              <li><strong>Choose your package.</strong> One-time, secure checkout for Proof, Story, or Signature.</li>
+              <li><strong>Submit your listing.</strong> Send the approved photos and listing details required to build your package.</li>
+              <li><strong>We build.</strong> Cinema Estate builds the package around your real, already-approved photos.</li>
+              <li><strong>Review and approve.</strong> You review every asset. Nothing publishes until you approve it.</li>
             </ol>
+            <p className="turnaround-note">Your 24-hour build window starts once we have your approved photos and the listing details required to build your package&mdash;not when you place the order.</p>
             <ul className="checklist">
               <li><ArrowIcon />Agent approval before publishing</li>
               <li><ArrowIcon />Real listing imagery remains the source</li>
@@ -148,7 +160,7 @@ export default function Home() {
           <div className="tier-grid">
             {tiers.map((tier) => (
               <TierImpressionTracker className={tier.recommended ? "tier-card is-recommended" : "tier-card"} tier={tier.name} price={tier.price} key={tier.name}>
-                {tier.recommended && <p className="tier-flag">Most listings choose this</p>}
+                {tier.recommended && <p className="tier-flag">Recommended</p>}
                 <h3>{tier.name}</h3>
                 <p className="tier-price">{`$${tier.price}`}<span className="tier-price-caption">One-time payment</span></p>
                 <p className="tier-note">{tier.note}</p>
@@ -203,10 +215,10 @@ export default function Home() {
         <div className="section-shell waitlist-grid">
           <div><p className="eyebrow">08 / The next step</p><h2 id="waitlist-title">Give your next listing a stronger next move.</h2><p>Delivered within 24 hours from your approved photos, reviewed by you before anything publishes.</p></div>
           <div>
-            <p>Ready to buy? Start with the package most agents choose. Not ready yet? Leave your email and I&rsquo;ll personally follow up about your listing.</p>
+            <p>Ready to buy? Story is the recommended starting point for a complete listing launch. Have a question first? Ask about your listing and I&rsquo;ll help you pick the right package.</p>
             <div className="waitlist-actions">
               <CheckoutButton className="button button-primary" href={tiers[1].checkoutUrl} tier={tiers[1].name} price={tiers[1].price}>Buy Story <ArrowIcon direction="up-right" /></CheckoutButton>
-              <EarlyAccessButton className="button button-dark" source="final-cta">Get early access <ArrowIcon /></EarlyAccessButton>
+              <EarlyAccessButton className="button button-dark" source="final-cta">Ask about my listing <ArrowIcon /></EarlyAccessButton>
             </div>
           </div>
         </div>
