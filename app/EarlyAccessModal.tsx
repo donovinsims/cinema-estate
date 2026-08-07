@@ -45,7 +45,7 @@ export function EarlyAccessModal() {
     track("early_access_modal_viewed", { intent, source });
   }
 
-  function close(rememberDismissal = true) {
+  function close(rememberDismissal = true, restoreFocus = true) {
     if (rememberDismissal) {
       try {
         localStorage.setItem(dismissalKey, String(Date.now()));
@@ -53,7 +53,7 @@ export function EarlyAccessModal() {
     }
     setIsOpen(false);
     track("early_access_modal_dismissed", { intent: presentationIntent, source: openedBy });
-    window.setTimeout(() => lastFocusedElement.current?.focus(), 0);
+    if (restoreFocus) window.setTimeout(() => lastFocusedElement.current?.focus(), 0);
   }
 
   useEffect(() => {
@@ -162,7 +162,7 @@ export function EarlyAccessModal() {
         <p id="early-access-modal-description">{presentation.description}</p>
         <WaitlistForm variant="modal" intent={presentationIntent} onSuccess={handleSuccess} />
         <p className="modal-detail">Email only.</p>
-        <a className="modal-decline" href="#pricing" onClick={() => close(false)}>See pricing <span aria-hidden="true">→</span></a>
+        <a className="modal-decline" href="#pricing" onClick={() => close(false, false)}>See pricing <span aria-hidden="true">→</span></a>
         <button className="modal-decline" type="button" onClick={() => close()}>{hasConverted ? "Close" : "Maybe later"}</button>
       </div>
     </div>

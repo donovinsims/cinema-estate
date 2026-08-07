@@ -81,7 +81,7 @@ test("JSON-LD prices match the rendered tier prices (anti-drift guard)", async (
 
 test("each public route declares its own canonical URL", async () => {
   const expected = [
-    ["/", "/"],
+    ["/", "https://cinema-estate.vercel.app"],
     ["/terms", "/terms"],
     ["/privacy", "/privacy"],
   ];
