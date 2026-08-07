@@ -1,0 +1,514 @@
+/*
+ * Villa Siena is a client artifact with its own finished art direction
+ * (warm paper / bronze / moss, Newsreader + Manrope). It is intentionally
+ * NOT built on Cinema Estate's --ink/--paper/--bronze-style global tokens,
+ * because those names collide with Cinema Estate's own design tokens in
+ * app/globals.css. Everything here — including custom properties and the
+ * handful of element-level rules ported from the source page's `body`,
+ * `img,video`, `a`, and `::selection` rules — is scoped under `.page` so it
+ * never leaks into the rest of the site.
+ */
+
+.page {
+  --vs-ink: #11120f;
+  --vs-paper: #f0eee8;
+  --vs-bronze: #a47748;
+  --vs-moss: #56604d;
+  --vs-line: rgba(17, 18, 15, 0.18);
+  --vs-white: #fff;
+  --vs-pad: clamp(22px, 5vw, 80px);
+
+  background: var(--vs-paper);
+  color: var(--vs-ink);
+  font-family: Manrope, Arial, sans-serif;
+  font-weight: 300;
+}
+
+.page * {
+  box-sizing: border-box;
+}
+
+.page img,
+.page video {
+  display: block;
+  width: 100%;
+}
+
+.page a {
+  color: inherit;
+}
+
+.page ::selection {
+  background: var(--vs-bronze);
+  color: #fff;
+}
+
+/* Nav */
+
+.nav {
+  position: absolute;
+  z-index: 5;
+  top: 0;
+  left: 0;
+  right: 0;
+  padding: 28px var(--vs-pad);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  color: #fff;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.28);
+}
+.wordmark {
+  font: 400 19px/1 Newsreader, serif;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+}
+.navLinks {
+  display: flex;
+  gap: 28px;
+  font-size: 11px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+.nav a {
+  text-decoration: none;
+}
+.nav a:hover {
+  opacity: 0.65;
+}
+
+/* Hero */
+
+.hero {
+  min-height: 100svh;
+  position: relative;
+  background: #0b0c09;
+  overflow: hidden;
+}
+.hero video {
+  position: absolute;
+  inset: 0;
+  height: 100%;
+  object-fit: cover;
+}
+.hero::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background:
+    linear-gradient(90deg, rgba(0, 0, 0, 0.58), rgba(0, 0, 0, 0.08) 60%),
+    linear-gradient(0deg, rgba(0, 0, 0, 0.5), transparent 45%);
+}
+
+.heroCopy {
+  position: relative;
+  z-index: 2;
+  min-height: 100svh;
+  padding: 170px var(--vs-pad) 70px;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  color: #fff;
+  max-width: 1000px;
+}
+.eyebrow {
+  font-size: 11px;
+  letter-spacing: 0.23em;
+  text-transform: uppercase;
+  margin-bottom: 22px;
+}
+.hero h1 {
+  font: 300 clamp(74px, 14vw, 190px) / 0.74 Newsreader, serif;
+  letter-spacing: -0.055em;
+  margin: 0;
+}
+.hero h1 span {
+  display: block;
+  font-size: 0.52em;
+  line-height: 1.12;
+  margin-left: 0.7em;
+  font-style: italic;
+}
+.heroMeta {
+  margin-top: 42px;
+  display: flex;
+  gap: 38px;
+  align-items: center;
+  font-size: 13px;
+}
+.scrollHint {
+  position: absolute;
+  z-index: 3;
+  right: var(--vs-pad);
+  bottom: 72px;
+  color: #fff;
+  writing-mode: vertical-rl;
+  font-size: 10px;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+}
+
+/* Intro */
+
+.intro {
+  padding: clamp(100px, 14vw, 220px) var(--vs-pad);
+  display: grid;
+  grid-template-columns: 1fr 2.25fr;
+  gap: 6vw;
+  border-bottom: 1px solid var(--vs-line);
+}
+.sectionNo {
+  font-size: 11px;
+  letter-spacing: 0.16em;
+}
+.intro h2 {
+  font: 300 clamp(44px, 6.4vw, 104px) / 0.98 Newsreader, serif;
+  letter-spacing: -0.035em;
+  margin: 0;
+  max-width: 1150px;
+}
+.intro h2 em {
+  color: var(--vs-bronze);
+  font-weight: 300;
+}
+.introCopy {
+  grid-column: 2;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 40px;
+  margin-top: 55px;
+  max-width: 950px;
+}
+.introCopy p {
+  font-size: 15px;
+  line-height: 1.8;
+  margin: 0;
+}
+
+/* Facts */
+
+.facts {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  border-bottom: 1px solid var(--vs-line);
+}
+.fact {
+  padding: 50px var(--vs-pad);
+  border-right: 1px solid var(--vs-line);
+}
+.fact:last-child {
+  border: 0;
+}
+.fact strong {
+  display: block;
+  font: 300 clamp(36px, 4.5vw, 72px) / 1 Newsreader, serif;
+}
+.fact span {
+  display: block;
+  margin-top: 13px;
+  font-size: 10px;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: #565850;
+}
+
+/* Full photo */
+
+.fullPhoto {
+  height: min(88vw, 980px);
+  overflow: hidden;
+}
+.fullPhoto img {
+  height: 100%;
+  object-fit: cover;
+}
+.caption {
+  padding: 15px var(--vs-pad);
+  display: flex;
+  justify-content: space-between;
+  border-bottom: 1px solid var(--vs-line);
+  font-size: 10px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
+/* Story */
+
+.story {
+  padding: clamp(110px, 14vw, 210px) var(--vs-pad);
+  display: grid;
+  grid-template-columns: 1.2fr 1fr;
+  gap: 8vw;
+  align-items: start;
+}
+.story h2 {
+  font: 300 clamp(55px, 8vw, 120px) / 0.88 Newsreader, serif;
+  letter-spacing: -0.04em;
+  margin: 0;
+}
+.story h2 em {
+  display: block;
+  color: var(--vs-bronze);
+  font-weight: 300;
+}
+.storyBody {
+  padding-top: 20px;
+}
+.storyBody p {
+  font: 300 clamp(23px, 2.3vw, 36px) / 1.35 Newsreader, serif;
+  margin: 0 0 40px;
+}
+.details {
+  list-style: none;
+  padding: 0;
+  margin: 55px 0 0;
+  border-top: 1px solid var(--vs-line);
+}
+.details li {
+  padding: 18px 0;
+  border-bottom: 1px solid var(--vs-line);
+  display: flex;
+  justify-content: space-between;
+  gap: 20px;
+  font-size: 12px;
+}
+.details span:last-child {
+  text-align: right;
+  color: #66675f;
+}
+
+/* Diptych */
+
+.diptych {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+  padding: 0 12px;
+}
+.diptych figure {
+  margin: 0;
+  background: #111;
+  overflow: hidden;
+}
+.diptych img {
+  height: 76vw;
+  max-height: 920px;
+  object-fit: cover;
+  transition: transform 1.2s ease;
+}
+.diptych figure:hover img {
+  transform: scale(1.015);
+}
+
+/* Amenities */
+
+.amenities {
+  padding: clamp(110px, 14vw, 210px) var(--vs-pad);
+  background: #181a16;
+  color: #e9e6dc;
+}
+.amenitiesHead {
+  display: flex;
+  justify-content: space-between;
+  align-items: end;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+  padding-bottom: 42px;
+}
+.amenities h2 {
+  font: 300 clamp(58px, 9vw, 140px) / 0.8 Newsreader, serif;
+  margin: 0;
+  letter-spacing: -0.045em;
+}
+.amenities .count {
+  font-size: 10px;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+}
+.amenityGrid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 0;
+  margin-top: 70px;
+}
+.amenity {
+  padding: 30px 30px 60px 0;
+  border-top: 1px solid rgba(255, 255, 255, 0.2);
+  margin-right: 30px;
+}
+.amenity b {
+  font: 300 30px/1.1 Newsreader, serif;
+}
+.amenity p {
+  color: #aaa99f;
+  line-height: 1.6;
+  font-size: 12px;
+  max-width: 290px;
+}
+
+/* Quote */
+
+.quote {
+  padding: clamp(100px, 14vw, 200px) var(--vs-pad);
+  text-align: center;
+}
+.quote p {
+  font: 300 clamp(45px, 7vw, 108px) / 0.98 Newsreader, serif;
+  letter-spacing: -0.04em;
+  margin: 0 auto;
+  max-width: 1300px;
+}
+.quote p em {
+  color: var(--vs-moss);
+  font-weight: 300;
+}
+.quote small {
+  display: block;
+  margin-top: 45px;
+  text-transform: uppercase;
+  letter-spacing: 0.18em;
+  font-size: 10px;
+}
+
+/* Contact */
+
+.contact {
+  min-height: 90vh;
+  background: #7d5a3b url("/media/villa-siena/04-Fire-Water-and-Stair.jpg") center / cover;
+  position: relative;
+  color: #fff;
+  display: flex;
+  align-items: end;
+}
+.contact::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(0deg, rgba(0, 0, 0, 0.72), rgba(0, 0, 0, 0.05) 70%);
+}
+.contactInner {
+  position: relative;
+  padding: 80px var(--vs-pad);
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: end;
+}
+.contact h2 {
+  font: 300 clamp(58px, 10vw, 150px) / 0.78 Newsreader, serif;
+  margin: 0;
+  letter-spacing: -0.04em;
+}
+.button {
+  display: inline-block;
+  border: 1px solid #fff;
+  border-radius: 50%;
+  padding: 42px 23px;
+  text-decoration: none;
+  text-transform: uppercase;
+  letter-spacing: 0.14em;
+  font-size: 10px;
+  transition: 0.3s;
+}
+.button:hover {
+  background: #fff;
+  color: #111;
+}
+
+/* Footer */
+
+.footer {
+  padding: 28px var(--vs-pad);
+  display: grid;
+  grid-template-columns: 1fr 2fr 1fr;
+  gap: 30px;
+  font-size: 9px;
+  line-height: 1.6;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+.right {
+  text-align: right;
+}
+
+/* Scroll reveal */
+
+.reveal {
+  opacity: 0;
+  transform: translateY(25px);
+  transition:
+    opacity 0.9s ease,
+    transform 0.9s ease;
+}
+.reveal.visible {
+  opacity: 1;
+  transform: none;
+}
+
+@media (max-width: 800px) {
+  .navLinks {
+    display: none;
+  }
+  .hero h1 {
+    font-size: 22vw;
+  }
+  .heroMeta {
+    flex-wrap: wrap;
+    gap: 15px;
+  }
+  .scrollHint {
+    display: none;
+  }
+  .intro,
+  .story {
+    grid-template-columns: 1fr;
+  }
+  .introCopy,
+  .intro h2,
+  .storyBody {
+    grid-column: 1;
+  }
+  .introCopy {
+    grid-template-columns: 1fr;
+  }
+  .facts {
+    grid-template-columns: 1fr 1fr;
+  }
+  .fact {
+    padding: 32px 24px;
+    border-bottom: 1px solid var(--vs-line);
+  }
+  .diptych {
+    grid-template-columns: 1fr;
+  }
+  .diptych img {
+    height: 115vw;
+  }
+  .amenityGrid {
+    grid-template-columns: 1fr;
+  }
+  .amenity {
+    margin: 0;
+  }
+  .contactInner {
+    display: block;
+  }
+  .button {
+    margin-top: 40px;
+  }
+  .footer {
+    grid-template-columns: 1fr;
+  }
+  .right {
+    text-align: left;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .reveal {
+    opacity: 1;
+    transform: none;
+  }
+  .diptych figure:hover img {
+    transform: none;
+  }
+}
