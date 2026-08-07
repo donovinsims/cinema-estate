@@ -31,13 +31,14 @@ test("serves robots.txt with the expected rules and sitemap reference", async ()
   assert.match(body, /Sitemap:\s*https:\/\/cinema-estate\.vercel\.app\/sitemap\.xml/);
 });
 
-test("serves sitemap.xml listing the three public routes", async () => {
+test("serves sitemap.xml listing the four public routes", async () => {
   const response = await fetchPath("/sitemap.xml");
   assert.equal(response.status, 200);
   assert.match(response.headers.get("content-type") ?? "", /application\/xml|text\/xml/i);
 
   const body = await response.text();
   assert.match(body, /<loc>https:\/\/cinema-estate\.vercel\.app<\/loc>/);
+  assert.match(body, /<loc>https:\/\/cinema-estate\.vercel\.app\/villa-siena<\/loc>/);
   assert.match(body, /<loc>https:\/\/cinema-estate\.vercel\.app\/terms<\/loc>/);
   assert.match(body, /<loc>https:\/\/cinema-estate\.vercel\.app\/privacy<\/loc>/);
 });

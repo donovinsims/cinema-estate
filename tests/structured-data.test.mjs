@@ -84,6 +84,7 @@ test("each public route declares its own canonical URL", async () => {
     ["/", "https://cinema-estate.vercel.app"],
     ["/terms", "/terms"],
     ["/privacy", "/privacy"],
+    ["/villa-siena", "/villa-siena"],
   ];
   for (const [pathname, canonicalPath] of expected) {
     const response = await render(pathname);
