@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
+import { track } from "./analytics";
 
 type HeroVideoProps = {
   src: string;
@@ -13,7 +14,15 @@ export function HeroVideo({ src, poster }: HeroVideoProps) {
 
   useEffect(() => {
     const video = videoRef.current;
-    if (video) setPlaying(!video.paused);
+    if (!video) return;
+    // CSS hides the film under prefers-reduced-motion, but a muted autoplaying
+    // video keeps playing without an explicit pause; stop it here. The pause
+    // event updates the toggle state via onPause.
+    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+      video.pause();
+      return;
+    }
+    setPlaying(!video.paused);
   }, []);
 
   function toggle() {
@@ -21,8 +30,12 @@ export function HeroVideo({ src, poster }: HeroVideoProps) {
     if (!video) return;
     if (playing) {
       video.pause();
+      track("hero_video_toggled", { action: "paused" });
     } else {
-      void video.play().catch(() => undefined);
+      void video
+        .play()
+        .then(() => track("hero_video_toggled", { action: "played" }))
+        .catch(() => undefined);
     }
   }
 

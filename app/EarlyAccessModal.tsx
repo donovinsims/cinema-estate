@@ -33,6 +33,7 @@ export function EarlyAccessModal() {
   const autoOpenedRef = useRef(false);
   const hasInteractedRef = useRef(false);
   const sawPricingRef = useRef(false);
+  const pricingTrackedRef = useRef(false);
 
   function open(source: string, intent: PresentationIntent = "early-access") {
     if (source !== "engaged") hasInteractedRef.current = true;
@@ -60,7 +61,13 @@ export function EarlyAccessModal() {
     if (!priceSection || typeof IntersectionObserver === "undefined") return;
     const observer = new IntersectionObserver(
       ([entry]) => {
-        if (entry.isIntersecting) sawPricingRef.current = true;
+        if (entry.isIntersecting) {
+          sawPricingRef.current = true;
+          if (!pricingTrackedRef.current) {
+            pricingTrackedRef.current = true;
+            track("pricing_section_viewed");
+          }
+        }
       },
       { threshold: 0.2 },
     );
@@ -155,6 +162,7 @@ export function EarlyAccessModal() {
         <p id="early-access-modal-description">{presentation.description}</p>
         <WaitlistForm variant="modal" intent={presentationIntent} onSuccess={handleSuccess} />
         <p className="modal-detail">Email only.</p>
+        <a className="modal-decline" href="#pricing" onClick={() => close(false)}>See pricing <span aria-hidden="true">→</span></a>
         <button className="modal-decline" type="button" onClick={() => close()}>{hasConverted ? "Close" : "Maybe later"}</button>
       </div>
     </div>

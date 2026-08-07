@@ -1,6 +1,7 @@
 import type { Metadata, Viewport } from "next";
 import { Inter, Roboto_Mono } from "next/font/google";
 import { AnalyticsConsent } from "./AnalyticsConsent";
+import { StructuredData } from "./StructuredData";
 import "./globals.css";
 
 const inter = Inter({ variable: "--font-inter", subsets: ["latin"] });
@@ -13,10 +14,11 @@ export const metadata: Metadata = {
   openGraph: { title: "Cinema Estate", description: "Real listing photos, cinematic marketing.", images: ["/og.png"] },
   twitter: { card: "summary_large_image", title: "Cinema Estate", description: "Real listing photos, cinematic marketing.", images: ["/og.png"] },
   icons: { icon: "/favicon.svg" },
+  alternates: { canonical: "/" },
 };
 
 export const viewport: Viewport = { themeColor: "#0A0A0A", colorScheme: "dark" };
 
 export default function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
-  return <html lang="en"><body className={`${inter.variable} ${mono.variable}`}>{children}<AnalyticsConsent /></body></html>;
+  return <html lang="en"><body className={`${inter.variable} ${mono.variable}`}>{children}<AnalyticsConsent /><StructuredData /></body></html>;
 }

@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { CheckoutButton } from "./CheckoutButton";
+import { CheckoutStatus } from "./CheckoutStatus";
 import { ComparisonExperience } from "./ComparisonExperience";
 import { EarlyAccessButton } from "./EarlyAccessButton";
 import { EarlyAccessModal } from "./EarlyAccessModal";
@@ -21,14 +22,14 @@ const tiers = [
   {
     name: "Proof",
     price: "149",
-    note: "For a standard listing that needs to look sharp.",
+    note: "For a standard listing that needs to look sharp, fast.",
     items: ["Up to 12 approved photos", "Short cinematic film, branded and unbranded", "Hosted listing page", "1 round of revisions"],
     checkoutUrl: "https://buy.polar.sh/polar_cl_r6UPLdTbK0UNuL4QCNH0sfQFdgcpi5DXVWLYn1W4pgw",
   },
   {
     name: "Story",
     price: "299",
-    note: "The complete package for most listings.",
+    note: "The complete package for the listing you want your next seller to remember.",
     items: ["Up to 25 approved photos", "Narrated film with a script from your listing's facts", "Social teaser cut plus the full listing page", "1 round of revisions"],
     recommended: true,
     checkoutUrl: "https://buy.polar.sh/polar_cl_2qd3HGz4AhmpQCLcqKpYXzVFsWmyoM39lwg3s4BXGZi",
@@ -52,18 +53,22 @@ const deliverables = [
 export default function Home() {
   return (
     <main>
+      <header className="site-header">
+        <div className="site-header-inner section-shell">
+          <a className="wordmark" href="#top" aria-label="Cinema Estate home">CINEMA ESTATE<span>™</span></a>
+          <a className="header-link" href="#pricing">Pricing <span aria-hidden="true">→</span></a>
+        </div>
+      </header>
+
       <section className="hero" aria-labelledby="hero-title">
         <HeroVideo src="/media/eldon-hero-film.mp4" poster="/media/eldon-hero-poster.jpg" />
         <div className="hero-scrim" />
-        <header className="site-header section-shell">
-          <a className="wordmark" href="#top" aria-label="Cinema Estate home">CINEMA ESTATE<span>™</span></a>
-          <a className="header-link" href="#pricing">Pricing <span aria-hidden="true">→</span></a>
-        </header>
         <div className="hero-content section-shell" id="top">
-          <p className="eyebrow hero-label">A real completed package · 255 Eldon Ave, Columbus</p>
+          <p className="eyebrow hero-label">A self-produced demo package · 255 Eldon Ave, Columbus</p>
           <h1 id="hero-title">Turn your real listing photos into cinematic marketing.</h1>
           <p className="hero-deck">Video tours, narration, a listing page, and a final film—built from photos you&rsquo;ve already approved, so buyers don&rsquo;t scroll past your listing.</p>
-          <p className="hero-price">Plans from <strong>$149</strong> per listing — delivered in 24 hours.</p>
+          <p className="hero-positioning">The third option between flat photos and booking a film crew—so every listing makes you look like the best-marketed agent in the room.</p>
+          <p className="hero-price">Plans from <strong>$149</strong> per listing — delivered in 24 hours, backed by the Review-First Guarantee.</p>
           <a className="button button-primary" href="#pricing">See pricing <span aria-hidden="true">→</span></a>
         </div>
       </section>
@@ -186,13 +191,20 @@ export default function Home() {
           <details open><summary>Will this look fake or gimmicky?</summary><p>No. The real listing images remain the source. Cinema Estate adds motion, narration, and a complete marketing package.</p></details>
           <details><summary>Who approves what goes live?</summary><p>You do. Agents approve their assets before anything is published or shared.</p></details>
           <details><summary>Will AI-enhanced visualization cause MLS or disclosure trouble?</summary><p>AI-enhanced visualization is disclosed. Local MLS and brokerage rules apply, and agents remain responsible for their listing requirements.</p></details>
+          <details><summary>What if I can get this for $10–$40 with a cheaper AI tool?</summary><p>Those tools generate a clip from your photos and hand it over. Cinema Estate builds a defined package around your real, already-approved photos—nothing invented or altered—and nothing publishes until you&rsquo;ve reviewed and approved it yourself. If it doesn&rsquo;t match your approved photos, you get a full refund within 7 days.</p></details>
         </div>
       </section>
 
       <section className="waitlist-section" id="early-access" aria-labelledby="waitlist-title">
         <div className="section-shell waitlist-grid">
           <div><p className="eyebrow">08 / Early access</p><h2 id="waitlist-title">Give your next listing a stronger next move.</h2><p className="guarantee-line"><strong>The Review-First Guarantee:</strong> nothing publishes to your listing until you&rsquo;ve reviewed and approved every asset yourself. If it doesn&rsquo;t match your approved photos, you get a full refund within 7 days. <a href="/terms">Full terms</a>.</p></div>
-          <div><p>For individual agents ready to turn approved listing photos into a cinematic marketing package.</p><EarlyAccessButton className="button button-dark" source="final-cta">Get early access <span aria-hidden="true">→</span></EarlyAccessButton></div>
+          <div>
+            <p>Ready to buy? Pricing is above. Not ready yet? Leave your email and I&rsquo;ll personally follow up about your listing.</p>
+            <div className="waitlist-actions">
+              <a className="button button-primary" href="#pricing">See pricing <span aria-hidden="true">→</span></a>
+              <EarlyAccessButton className="button button-dark" source="final-cta">Get early access <span aria-hidden="true">→</span></EarlyAccessButton>
+            </div>
+          </div>
         </div>
       </section>
 
@@ -203,6 +215,7 @@ export default function Home() {
         <a href="https://www.nar.realtor/about-nar/policies/mls-policy/use-of-photographs-in-a-multiple-listing-service">MLS policy reference ↗</a>
       </footer>
       <EarlyAccessModal />
+      <CheckoutStatus />
     </main>
   );
 }

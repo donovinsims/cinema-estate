@@ -47,15 +47,17 @@ Not "it has AI in it." Not "it looks cinematic." The real hook is simpler:
 
 Three things make this defensible instead of just another AI gimmick:
 
-- **We check who you are.** The listing page automatically pulls and verifies the agent's real name, brokerage, license, and contact info — nobody else in this price range does that.
-- **A second, independent pass checks the work before it ships.** Wrong facts, invented details, or anything misleading gets caught and blocked — it doesn't just get generated and handed over.
+- **Nothing publishes until you approve it.** Every asset is built from your real, already-approved photos — nothing invented or altered — and goes live only after you've reviewed and approved it yourself.
+- **You're covered if it doesn't match.** If the delivered package doesn't accurately reflect your approved photos, you get a full refund within 7 days — no questions asked.
 - **We stay inside the rules.** Real-estate advertising has real legal guardrails (Fair Housing, MLS rules, "no misleading images"). We build inside those, not around them.
+
+*(Corrected 2026-08-06: the previous version of this list claimed automatic agent identity/license/brokerage verification and an independent internal QA pass before delivery. Neither is built or documented in `docs/PRODUCT.md` or the product guardrails — this was an unsupported claim from an earlier draft and must not be used in copy. See `.claude/skills/sales-page-upgrade/references/product-guardrails.md`.)*
 
 ---
 
 ## The safety net
 
-If you approve the preview and the final result doesn't actually match the real photos you gave us, you get your money back. Full stop.
+If the final result doesn't actually match the real photos you gave us, tell us within 7 days of delivery and you get your money back. Full stop.
 
 We do **not** promise your listing will sell faster, get more showings, or get more offers — nobody can honestly promise that, and we're not going to pretend otherwise. The guarantee covers what we control (did we build what we said we'd build), not what we don't (whether a buyer shows up).
 

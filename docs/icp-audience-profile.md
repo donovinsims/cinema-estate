@@ -155,7 +155,7 @@ Not just other "AI real estate video" tools. The real competition for this job i
 | Objection | Answer |
 |---|---|
 | "This will look fake or gimmicky." | Every scene starts from a real approved photo; nothing is invented — and we show the before/after so you can see it yourself. |
-| "I can get this for $10–$40 with [cheap AI tool]." | Those tools generate and hand it over. We verify your facts, verify your identity as the agent, and independently check the result before you ever see it — that's a different service, not the same thing at a higher price. |
+| "I can get this for $10–$40 with [cheap AI tool]." | Those tools generate a clip and hand it over. Cinema Estate builds a defined package around your real, already-approved photos — nothing invented or altered — and nothing publishes until you review and approve it yourself. If it doesn't match your approved photos, you get a full refund within 7 days. |
 | "My photographer already includes video." | Great — this is for the listings where they didn't, or where you need something extra after the shoot's already done. |
 | "My brokerage already gives me tools for this." | Worth checking first — if they've got you covered, you don't need this. If what they give you isn't premium enough for a specific listing, that's exactly when this fits. |
 | "I don't know if I'm even allowed to reuse these photos." | Published terms require the buyer to have authorization to use the photos; no custom hosted-checkout checkbox is configured. |

@@ -1,7 +1,12 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 
-export const metadata: Metadata = { title: "Terms & refund policy — Cinema Estate" };
+export const metadata: Metadata = {
+  title: "Terms & refund policy — Cinema Estate",
+  description:
+    "Cinema Estate's terms and refund policy: the one-time per-listing fee, 24-hour delivery timeline, the Review-First Guarantee, revision rounds, and your responsibilities.",
+  alternates: { canonical: "/terms" },
+};
 
 export default function TermsPage() {
   return <main className="policy-page section-shell">
@@ -38,8 +43,8 @@ export default function TermsPage() {
     <h2>Governing law</h2>
     <p>These terms are governed by the laws of the State of Illinois, without regard to conflict-of-laws principles.</p>
 
-    <h2>Changes and contact</h2>
-    <p>We may update these terms as the product changes; the version in effect at the time of your order applies to that order. Questions about an order or these terms can be sent through the contact path on this site.</p>
+    <h2>Changes</h2>
+    <p>We may update these terms as the product changes; the version in effect at the time of your order applies to that order.</p>
 
     <p>Last updated: August 6, 2026.</p>
   </main>;

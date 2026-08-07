@@ -1,13 +1,28 @@
 "use client";
 /* eslint-disable @next/next/no-img-element -- the full-size local image layer must align exactly with the clipped video layer. */
 
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState, useSyncExternalStore } from "react";
 import {
   clampComparisonPosition,
   comparisonPositionFromKey,
 } from "./comparison-state.mjs";
+import { track } from "./analytics";
 
 const initialPosition = 18;
+
+function subscribeReducedMotion(onStoreChange: () => void) {
+  const media = window.matchMedia("(prefers-reduced-motion: reduce)");
+  media.addEventListener("change", onStoreChange);
+  return () => media.removeEventListener("change", onStoreChange);
+}
+
+function usePrefersReducedMotion() {
+  return useSyncExternalStore(
+    subscribeReducedMotion,
+    () => window.matchMedia("(prefers-reduced-motion: reduce)").matches,
+    () => false,
+  );
+}
 
 export function ComparisonExperience() {
   const [position, setPosition] = useState(initialPosition);
@@ -15,8 +30,16 @@ export function ComparisonExperience() {
   const [hasRevealed, setHasRevealed] = useState(false);
   const [hasInteracted, setHasInteracted] = useState(false);
   const [mobileView, setMobileView] = useState<"before" | "after">("before");
+  const reducedMotion = usePrefersReducedMotion();
   const comparisonRef = useRef<HTMLDivElement>(null);
   const afterVideoRef = useRef<HTMLVideoElement>(null);
+  const interactionTrackedRef = useRef(false);
+
+  const trackFirstInteraction = (method: "drag" | "keyboard" | "button") => {
+    if (interactionTrackedRef.current) return;
+    interactionTrackedRef.current = true;
+    track("comparison_slider_interacted", { method });
+  };
 
   const setPositionFromPointer = (clientX: number) => {
     const bounds = comparisonRef.current?.getBoundingClientRect();
@@ -47,6 +70,7 @@ export function ComparisonExperience() {
   }, [hasRevealed]);
 
   const revealFully = () => {
+    trackFirstInteraction("button");
     setHasRevealed(true);
     setHasInteracted(true);
     setPosition(100);
@@ -60,9 +84,11 @@ export function ComparisonExperience() {
           <p className="eyebrow">01 / The transformation</p>
           <h2 id="comparison-title">One real photo. One cinematic move.</h2>
         </div>
-        <button className="text-control" type="button" onClick={revealFully}>
-          Watch the transformation <span aria-hidden="true">→</span>
-        </button>
+        {!reducedMotion && (
+          <button className="text-control" type="button" onClick={revealFully}>
+            Watch the transformation <span aria-hidden="true">→</span>
+          </button>
+        )}
       </div>
 
       <div className="comparison-desktop" aria-label="Before and after comparison">
@@ -113,6 +139,7 @@ export function ComparisonExperience() {
               } catch {
                 // Synthetic and assistive pointer events do not always expose an active pointer to capture.
               }
+              trackFirstInteraction("drag");
               setDragging(true);
               setHasInteracted(true);
               setPositionFromPointer(event.clientX);
@@ -125,6 +152,7 @@ export function ComparisonExperience() {
               const nextPosition = comparisonPositionFromKey(position, event.key);
               if (nextPosition !== position) {
                 event.preventDefault();
+                trackFirstInteraction("keyboard");
                 setHasRevealed(true);
                 setHasInteracted(true);
                 setPosition(nextPosition);
