@@ -1,6 +1,6 @@
 # Cinema Estate Handoff
 
-Last updated: 2026-08-06
+Last updated: 2026-08-07
 
 ## Current state (read this first)
 
@@ -12,7 +12,8 @@ UX closeout branch: `codex/ux-conversion-closeout`, based on `origin/ux-review/c
 - **Owner-only operational follow-up:** Polar Finance payouts are not yet confirmed connected/verified. The owner alone enters any bank/tax details; no agent handles payout credentials. This is not a merge, deployment, or release blocker.
 - **Production deployment:** Vercel deployment `dpl_EqVSxHvSJKg9xoEDaNADivV5SoQC` is Ready at [cinema-estate-rhhfytwjx-teamdonovin.vercel.app](https://cinema-estate-rhhfytwjx-teamdonovin.vercel.app), with the canonical [cinema-estate.vercel.app](https://cinema-estate.vercel.app) alias attached.
 - **Live verification (2026-08-06):** the canonical site returned HTTP 200. At 1440px, the header and hero pricing links reached `#pricing` and all three intended Polar links rendered. At 375px, pricing was single-column and reduced motion hid the hero video control. After viewing pricing, the 35-second automatic-modal rule remained suppressed. No email was submitted and no checkout was opened.
-- **Sales-page-upgrade — MERGED (2026-08-07):** PR **[#13](https://github.com/donovinsims/cinema-estate/pull/13)** was merged by the owner into `main` as `fef7b24a6c4b14020a93e5c131a925635af941d5` on 2026-08-07. The merged branch `codex/sales-page-upgrade-2026-08-06` was then deleted. Post-merge live verification on `cinema-estate.vercel.app`: `/robots.txt` (user-agent `*`, Disallow `/api/`, sitemap ref), `/sitemap.xml` (3 routes: `/`, `/terms`, `/privacy`), homepage `<link rel="canonical">`, and Organization + FAQPage JSON-LD all serving correctly. See the workflow section below for the full record.
+- **Sales-page-upgrade — MERGED (2026-08-07):** PR **[#13](https://github.com/donovinsims/cinema-estate/pull/13)** was merged by the owner into `main` as `fef7b24a6c4b14020a93e5c131a925635af941d5` on 2026-08-07. Post-merge live verification on `cinema-estate.vercel.app`: `/robots.txt` (user-agent `*`, Disallow `/api/`, sitemap ref), `/sitemap.xml` (3 routes: `/`, `/terms`, `/privacy`), homepage `<link rel="canonical">`, and Organization + FAQPage JSON-LD all serving correctly. See the workflow section below for the full record.
+- **Post-merge fixes — MERGED (2026-08-07):** an independent review of PR #13 (performed by a fresh session with no access to the implementation session's context) found 7 issues: 1 MAJOR (the early-access modal's "See pricing" escape hatch fought its own `#pricing` navigation via an unconditional focus-restore `setTimeout`) and 6 MINOR/NIT (this HANDOFF.md's own stale "not merged" language; a `HeroVideo` reduced-motion race against async autoplay; `CheckoutStatus` over-stripping the return-URL query string; a `ComparisonExperience` Safari<14 `MediaQueryList` compat gap; a root-canonical trailing-slash mismatch against what's actually live in production; and a missing once-guard on `checkout_cta_clicked`). All 7 fixed in PR **[#14](https://github.com/donovinsims/cinema-estate/pull/14)**, merged into `main` as `efeea1a02fc19040172e6b6033fa8ec5753ddec0` on 2026-08-07. `npm run lint`, `npm test` (12/12), and `git diff --check` all passed; live-verified afterward that the modal no longer restores focus to the trigger element and that the root canonical now matches production. The branch `codex/sales-page-upgrade-2026-08-06` was deleted post-merge.
 
 ## Sales-page-upgrade workflow — 2026-08-06/07 (complete, merged)
 
