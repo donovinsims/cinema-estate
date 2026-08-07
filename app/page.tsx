@@ -104,7 +104,7 @@ export default function Home() {
         </div>
       </section>
 
-      <section className="package-section" aria-labelledby="package-title">
+      <section className="package-section" id="package" aria-labelledby="package-title">
         <div className="section-shell package-grid">
           <div className="section-intro">
             <p className="eyebrow">03 / The package</p>
@@ -119,7 +119,7 @@ export default function Home() {
         </div>
       </section>
 
-      <section className="quality-section section-shell" aria-labelledby="quality-title">
+      <section className="quality-section section-shell" id="how-it-works" aria-labelledby="quality-title">
         <p className="eyebrow">04 / How it works</p>
         <div className="quality-grid">
           <h2 id="quality-title">From approved photos to a finished package.</h2>
