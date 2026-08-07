@@ -20,6 +20,7 @@ UX closeout branch: `codex/ux-conversion-closeout`, based on `origin/ux-review/c
   - `2f52cfc`: `.tier-cta` border-radius changed from `999px` (pill) to `8px` to match every other `.button` on the site (owner's explicit request — "make the buttons the same border-radius as the other buttons"); `.tier-note` color changed from `var(--muted)` to `#c4c4cb` (the site's existing secondary-copy tone, already used by `.comparison-caption`/`.about-copy p`) for more contrast on the dark cards; and a new `@property --tier-border-angle` + `@keyframes tier-border-spin` + `.tier-card.is-recommended::before` conic-gradient ring were added — a slowly rotating blue border animation on the recommended (Story) card only, automatically gated by the site's existing `prefers-reduced-motion` override.
   - `6403f3e`: `.tier-cta` background changed from flat `var(--blue)` (inherited from `.button-primary`) to a vertical glossy gradient (`var(--blue-light)` → `var(--blue)` → `#3f5fd9`) with inset highlight/shadow layers and a `:hover` variant — the owner asked for the CTA to have the same glossy, dimensional finish as a 21st.dev reference button image, adapted to the site's own blue tokens instead of copying that reference's white/gray gradient. `.button`/`.button-primary`/`.button-dark` themselves are untouched — this is scoped to `.tier-cta` only.
   - If another session sees these `.tier-*` values differ from what PR #16 originally shipped, that's expected — these are two intentional, owner-requested follow-ups, verified with `npm run lint` + `npm test` (12/12) + `git diff --check` after each, not drift to fix. Note: PR #17 was rebased onto `b04fa6c` (post-PR-#18) before merging, so the `.tier-*` polish now sits on top of PR #18's interface-polish CSS — both are present in `main`.
+- **8-skill UX/UI audit + Priority-1 fixes — UNCOMMITTED (2026-08-07):** an independent 8-skill audit (ux-review 10-expert panel + ux-heuristics, refactoring-ui, web-typography, design-taste, responsive, visual-foundations, web-component) produced a 3-tier action plan. Priority 1 is implemented in the working tree, uncommitted (see the "UX/UI audit Priority-1 fixes" section below): exit-intent-gated modal, direct Buy Story in the final section, collapsed hero, visible checkout confirmation, spinning-border removal. `npm run lint` + `npm test` (12/12) pass.
 
 ## Sales-page-upgrade workflow — 2026-08-06/07 (complete, merged)
 
@@ -344,3 +345,45 @@ Partway through implementation, every edit made via the Edit tool to `page.tsx`,
 5. **Nothing committed or pushed.** All of the above is uncommitted working-tree state only.
 
 Once 1–4 are done and green, this becomes a normal `/commit-push-pr`-shaped unit of work (single feature: "conversion-focused UX fixes from the 10-expert panel review").
+
+## UX/UI audit Priority-1 fixes — 2026-08-07 (uncommitted)
+
+An independent 8-skill audit (ux-review 10-expert panel + ux-heuristics, refactoring-ui, web-typography, design-taste, responsive, visual-foundations, web-component) ran against `main` and produced a 3-tier action plan. Priority 1 (conversion-blocking) is implemented in the working tree, uncommitted. `git status --short` shows:
+
+```
+ M app/CheckoutButton.tsx
+ M app/CheckoutStatus.tsx
+ M app/ComparisonExperience.tsx
+ M app/EarlyAccessModal.tsx
+ M app/globals.css
+ M app/page.tsx
+ M tests/rendered-html.test.mjs
+```
+
+### What changed (Priority 1 + two small Priority 2 items)
+
+1. **Auto-popup modal gated to exit-intent after pricing.** `app/EarlyAccessModal.tsx` no longer auto-opens on a 35s timer or 45% scroll. It now opens only on exit-intent (`mouseout` with `clientY <= 0` and no `relatedTarget`), and only after the buyer has actually seen `#pricing` (`sawPricingRef`), has not already interacted with the modal, and has not auto-opened before. Auto-open is skipped entirely under `prefers-reduced-motion` and on coarse-pointer (touch) devices. When auto-opened (`source="engaged"`), the modal no longer steals focus into the email input — `focusOnOpenRef` keeps focus where it was (dialog gets `tabIndex={-1}` so it can hold focus without an element). Explicit CTA opens still focus the email input.
+2. **Checkout feedback fixed** (`app/CheckoutButton.tsx`, `app/CheckoutStatus.tsx`): the buy buttons no longer open Polar in a new tab with a fake 2.5s "Opening checkout…" state. They now navigate same-tab (so Polar's `?checkout=success|cancelled` return lands on the origin page), use a synchronous `trackedRef` double-click guard, and `CheckoutStatus` renders a visible fixed banner ("Order confirmed…" / "Checkout cancelled — no charge was made. Back to pricing") instead of `null`. Banner styled as `.checkout-status` in `app/globals.css` (z-index 45, below the header).
+3. **Hero collapsed** (`app/page.tsx`): removed the `hero-positioning` and `hero-price` paragraphs (the "third option" line and the `$149` teaser) — hero is now eyebrow + H1 + deck + CTA. The pricing teaser and 24-hour claim still live in the pricing section; the "third option" positioning survives in the About copy. Removed the now-unused `.hero-positioning`/`.hero-price` CSS.
+4. **Duplicate guarantee removed** (`app/page.tsx`): the Review-First Guarantee paragraph was duplicated verbatim in the pricing section and the final section. It now appears once (pricing); the final section references the 24-hour delivery instead. Final-section eyebrow renamed "08 / Early access" → "08 / The next step".
+5. **Direct buy path in the final section** (`app/page.tsx`): the final section's primary CTA is now a real `Buy Story` checkout button (Story tier, the recommended one) instead of a "See pricing" anchor; email capture is demoted to the secondary dark button.
+6. **Spinning recommended-tier border removed** (`app/globals.css`): the conic-gradient `@property --tier-border-angle` + `@keyframes tier-border-spin` + `.tier-card.is-recommended::before` animation (added in PR #17) is removed per the panel (Rams/Ive: perpetual motion, GPU cost). The static blue border/glow on the recommended card remains. Also removed the misleading `backdrop-filter: blur(16px)` on `.tier-card` (near-opaque cards don't need it).
+7. **Mid-funnel pricing path** (`app/ComparisonExperience.tsx`): added a "Skip to pricing" text-control link next to "Watch the transformation" in the comparison heading (wrapped both in a new `.text-control-group` flex container).
+
+### Verification
+
+- `npm run lint` — clean.
+- `npm test` — 12/12 pass (build + node suite). `tests/rendered-html.test.mjs` updated for the collapsed hero (removed the two hero-positioning/hero-price assertions), the single guarantee (regex now matches the pricing-section wording), the new final-section copy, and the `Buy Story` checkout anchor in the waitlist section.
+- `git diff --check` — clean.
+
+### Not done (deferred)
+
+- Priority 2/3 items from the audit are NOT implemented: FAQ/About-before-pricing section reorder (deliberately deferred — high blast radius, re-numbers all 8 eyebrows, and the prior session already rejected it for the same reason), comparison auto-reveal removal, touch-target/tablet-breakpoint work, spacing/radius/type tokenization, contrast fixes on `.tier-cta`/input borders, icon-glyph unification, and the `::first-letter` `$` hack.
+- No visual/browser verification yet (no dev-server pass at 360/768/1024px).
+- Nothing committed or pushed.
+
+### Resume point
+
+1. Optionally implement remaining Priority 2/3 audit items (see the audit report in the session transcript).
+2. Visually verify at 360/768/1024px (hero, comparison heading with the new two-link group, final-section Buy Story button, checkout-status banner).
+3. Commit as a single unit ("conversion-focused UX fixes from the 8-skill audit") and open a PR.

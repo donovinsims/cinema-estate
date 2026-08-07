@@ -71,8 +71,6 @@ export default function Home() {
           <p className="eyebrow hero-label">A self-produced demo package · 255 Eldon Ave, Columbus</p>
           <h1 id="hero-title">Turn your real listing photos into cinematic marketing.</h1>
           <p className="hero-deck">Video tours, narration, a listing page, and a final film—built from photos you&rsquo;ve already approved, so buyers don&rsquo;t scroll past your listing.</p>
-          <p className="hero-positioning">The third option between flat photos and booking a film crew—so every listing makes you look like the best-marketed agent in the room.</p>
-          <p className="hero-price">Plans from <strong>$149</strong> per listing — delivered in 24 hours, backed by the Review-First Guarantee.</p>
           <a className="button button-primary" href="#pricing">See pricing <ArrowIcon /></a>
         </div>
       </section>
@@ -203,11 +201,11 @@ export default function Home() {
 
       <section className="waitlist-section" id="early-access" aria-labelledby="waitlist-title">
         <div className="section-shell waitlist-grid">
-          <div><p className="eyebrow">08 / Early access</p><h2 id="waitlist-title">Give your next listing a stronger next move.</h2><p className="guarantee-line"><strong>The Review-First Guarantee:</strong> nothing publishes to your listing until you&rsquo;ve reviewed and approved every asset yourself. If it doesn&rsquo;t match your approved photos, you get a full refund within 7 days. <a href="/terms">Full terms</a>.</p></div>
+          <div><p className="eyebrow">08 / The next step</p><h2 id="waitlist-title">Give your next listing a stronger next move.</h2><p>Delivered within 24 hours from your approved photos, reviewed by you before anything publishes.</p></div>
           <div>
-            <p>Ready to buy? Pricing is above. Not ready yet? Leave your email and I&rsquo;ll personally follow up about your listing.</p>
+            <p>Ready to buy? Start with the package most agents choose. Not ready yet? Leave your email and I&rsquo;ll personally follow up about your listing.</p>
             <div className="waitlist-actions">
-              <a className="button button-primary" href="#pricing">See pricing <ArrowIcon /></a>
+              <CheckoutButton className="button button-primary" href={tiers[1].checkoutUrl} tier={tiers[1].name} price={tiers[1].price}>Buy Story <ArrowIcon direction="up-right" /></CheckoutButton>
               <EarlyAccessButton className="button button-dark" source="final-cta">Get early access <ArrowIcon /></EarlyAccessButton>
             </div>
           </div>

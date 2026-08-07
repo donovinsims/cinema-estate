@@ -44,11 +44,6 @@ test("server-renders Cinema Estate with an accessible comparison and waitlist", 
     html,
     /Video tours, narration, a listing page, and a final film—built from photos you.{1,2}ve already approved, so buyers don.{1,2}t scroll past your listing\./i,
   );
-  assert.match(
-    html,
-    /The third option between flat photos and booking a film crew—so every listing makes you look like the best-marketed agent in the room\./i,
-  );
-  assert.match(html, /Plans from <strong>\$149<\/strong> per listing — delivered in 24 hours, backed by the Review-First Guarantee\./i);
   const siteHeaderPosition = html.indexOf('class="site-header"');
   const heroMediaTogglePosition = html.indexOf('class="hero-media-toggle"');
   const heroPricingAnchorPosition = html.indexOf('id="top"');
@@ -93,7 +88,7 @@ test("server-renders Cinema Estate with an accessible comparison and waitlist", 
   assert.ok(aboutPosition < answersPosition, "About must render before FAQ");
   assert.match(html, /Give your next listing a stronger next move\./i);
   assert.match(html, /The Review-First Guarantee/i);
-  assert.match(html, /nothing publishes to your listing until you.{1,2}ve reviewed and approved every asset yourself/i);
+  assert.match(html, /nothing publishes until you.{1,2}ve reviewed and approved every asset yourself/i);
   assert.match(html, /If it doesn.{1,2}t match your approved photos, you get a full refund within 7 days\./i);
   assert.match(html, /<a href="\/terms">Full terms<\/a>/i);
   assert.match(html, /<a href="\/terms">Terms<\/a>/i);
@@ -109,10 +104,11 @@ test("server-renders Cinema Estate with an accessible comparison and waitlist", 
   assert.match(html, /name="email"/i);
   assert.match(html, /name="website"/i);
   assert.match(html, /You’re on the early-access list\. I’ll personally follow up with next steps — or see pricing and buy anytime\./i);
-  assert.match(html, /Ready to buy\? Pricing is above\. Not ready yet\? Leave your email and I.{1,2}ll personally follow up about your listing\./i);
+  assert.match(html, /Ready to buy\? Start with the package most agents choose\. Not ready yet\? Leave your email and I.{1,2}ll personally follow up about your listing\./i);
   const waitlistSection = html.match(/<section class="waitlist-section"[\s\S]*?<\/section>/);
   assert.ok(waitlistSection, "Waitlist section must render");
-  assert.match(waitlistSection[0], /<a class="button button-primary" href="#pricing">See pricing/i);
+  assert.match(waitlistSection[0], /<a href="https:\/\/buy\.polar\.sh\/polar_cl_2qd3HGz4AhmpQCLcqKpYXzVFsWmyoM39lwg3s4BXGZi"[^>]*>Buy Story/i);
+  assert.match(waitlistSection[0], /class="button button-primary"/);
   assert.doesNotMatch(html, /\$99|next week|Unsubscribe anytime|privacy@sequenzy\.com/i);
   assert.match(html, /local MLS and brokerage rules apply/i);
   assert.match(html, /Will this look fake or gimmicky\?/i);

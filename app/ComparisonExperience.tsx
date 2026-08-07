@@ -6,6 +6,7 @@ import {
   clampComparisonPosition,
   comparisonPositionFromKey,
 } from "./comparison-state.mjs";
+import { ArrowIcon } from "./ArrowIcon";
 import { track } from "./analytics";
 
 const initialPosition = 18;
@@ -88,11 +89,14 @@ export function ComparisonExperience() {
           <p className="eyebrow">01 / The transformation</p>
           <h2 id="comparison-title">One real photo. One cinematic move.</h2>
         </div>
-        {!reducedMotion && (
-          <button className="text-control" type="button" onClick={revealFully}>
-            Watch the transformation <span aria-hidden="true">→</span>
-          </button>
-        )}
+        <div className="text-control-group">
+          {!reducedMotion && (
+            <button className="text-control" type="button" onClick={revealFully}>
+              Watch the transformation <span aria-hidden="true">→</span>
+            </button>
+          )}
+          <a className="text-control" href="#pricing">Skip to pricing <ArrowIcon /></a>
+        </div>
       </div>
 
       <div className="comparison-desktop" aria-label="Before and after comparison">
