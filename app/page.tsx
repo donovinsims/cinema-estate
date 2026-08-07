@@ -139,7 +139,7 @@ export default function Home() {
               <article className={tier.recommended ? "tier-card is-recommended" : "tier-card"} key={tier.name}>
                 {tier.recommended && <p className="tier-flag">Most listings choose this</p>}
                 <h3>{tier.name}</h3>
-                <p className="tier-price">{`$${tier.price}`}</p>
+                <p className="tier-price">{`$${tier.price}`}<span className="tier-price-caption">One-time payment</span></p>
                 <p className="tier-note">{tier.note}</p>
                 <ul>
                   {tier.items.map((item) => (
