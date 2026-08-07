@@ -1,10 +1,14 @@
 import type { Metadata } from "next";
+import { AnswersAccordion } from "./AnswersAccordion";
+import { ArrowIcon } from "./ArrowIcon";
 import { CheckoutButton } from "./CheckoutButton";
 import { CheckoutStatus } from "./CheckoutStatus";
 import { ComparisonExperience } from "./ComparisonExperience";
 import { EarlyAccessButton } from "./EarlyAccessButton";
 import { EarlyAccessModal } from "./EarlyAccessModal";
 import { HeroVideo } from "./HeroVideo";
+import { ScrollDepthTracker } from "./ScrollDepthTracker";
+import { TierImpressionTracker } from "./TierImpressionTracker";
 
 export const metadata: Metadata = {
   title: "Cinema Estate — Real listing photos, cinematic marketing",
@@ -56,7 +60,7 @@ export default function Home() {
       <header className="site-header">
         <div className="site-header-inner section-shell">
           <a className="wordmark" href="#top" aria-label="Cinema Estate home">CINEMA ESTATE<span>™</span></a>
-          <a className="header-link" href="#pricing">Pricing <span aria-hidden="true">→</span></a>
+          <a className="header-link" href="#pricing">Pricing <ArrowIcon /></a>
         </div>
       </header>
 
@@ -69,7 +73,7 @@ export default function Home() {
           <p className="hero-deck">Video tours, narration, a listing page, and a final film—built from photos you&rsquo;ve already approved, so buyers don&rsquo;t scroll past your listing.</p>
           <p className="hero-positioning">The third option between flat photos and booking a film crew—so every listing makes you look like the best-marketed agent in the room.</p>
           <p className="hero-price">Plans from <strong>$149</strong> per listing — delivered in 24 hours, backed by the Review-First Guarantee.</p>
-          <a className="button button-primary" href="#pricing">See pricing <span aria-hidden="true">→</span></a>
+          <a className="button button-primary" href="#pricing">See pricing <ArrowIcon /></a>
         </div>
       </section>
 
@@ -80,6 +84,7 @@ export default function Home() {
           <p className="eyebrow">02 / Real-media fidelity</p>
           <h2 id="proof-title">The proof is in the source material.</h2>
           <p>Every frame below begins with approved photography from the actual listing. The camera moves, but the property remains the property.</p>
+          <p>It does not invent rooms, move walls, replace finishes, or change what the property is—your already-approved listing photos remain the source.</p>
         </div>
         <div className="proof-grid">
           {proofClips.map((clip) => (
@@ -117,7 +122,11 @@ export default function Home() {
               <li>Cinema Estate builds the four-part package around them.</li>
               <li>You review every asset before anything is published or shared.</li>
             </ol>
-            <ul><li>Agent approval before publishing</li><li>Real listing imagery remains the source</li><li>Disclosure and delivery review</li></ul>
+            <ul className="checklist">
+              <li><ArrowIcon />Agent approval before publishing</li>
+              <li><ArrowIcon />Real listing imagery remains the source</li>
+              <li><ArrowIcon />Disclosure and delivery review</li>
+            </ul>
           </div>
         </div>
       </section>
@@ -132,11 +141,15 @@ export default function Home() {
             <div>
               <p>Delivered within 24 hours from your approved photos. Reviewed by you before anything publishes, and backed by the Review-First Guarantee.</p>
               <p className="guarantee-line"><strong>The Review-First Guarantee:</strong> nothing publishes until you&rsquo;ve reviewed and approved every asset yourself. If it doesn&rsquo;t match your approved photos, you get a full refund within 7 days. <a href="/terms">Full terms</a>.</p>
+              <ul className="price-reassurance">
+                <li>Agents approve their assets before anything is published or shared.</li>
+                <li>Cinema Estate builds a defined package around your real, already-approved photos—nothing invented or altered.</li>
+              </ul>
             </div>
           </div>
           <div className="tier-grid">
             {tiers.map((tier) => (
-              <article className={tier.recommended ? "tier-card is-recommended" : "tier-card"} key={tier.name}>
+              <TierImpressionTracker className={tier.recommended ? "tier-card is-recommended" : "tier-card"} tier={tier.name} price={tier.price} key={tier.name}>
                 {tier.recommended && <p className="tier-flag">Most listings choose this</p>}
                 <h3>{tier.name}</h3>
                 <p className="tier-price">{`$${tier.price}`}<span className="tier-price-caption">One-time payment</span></p>
@@ -146,8 +159,8 @@ export default function Home() {
                     <li key={item}>{item}</li>
                   ))}
                 </ul>
-                <CheckoutButton className="button button-primary tier-cta" href={tier.checkoutUrl} tier={tier.name} price={tier.price}>{`Buy ${tier.name}`}<span aria-hidden="true">↗</span></CheckoutButton>
-              </article>
+                <CheckoutButton className="button button-primary tier-cta" href={tier.checkoutUrl} tier={tier.name} price={tier.price}>{`Buy ${tier.name}`}<ArrowIcon direction="up-right" /></CheckoutButton>
+              </TierImpressionTracker>
             ))}
           </div>
         </div>
@@ -173,13 +186,11 @@ export default function Home() {
             <p className="eyebrow">06 / Why Cinema Estate</p>
             <h2 id="about-title">Give your listing a cinematic story without another shoot.</h2>
             <div className="about-copy">
-              <p>Your listing photos can be accurate, approved, and still feel flat on a screen. Static images show the rooms one frame at a time. Real video adds motion, but it also means finding a crew, coordinating property access, and managing another production schedule for every listing.</p>
-              <p>Cinema Estate uses AI to handle the repetitive production work behind the motion, narration, listing page, and final film. It does not invent rooms, move walls, replace finishes, or change what the property is. Your already-approved listing photos remain the source.</p>
+              <p>Listing photos can be accurate and approved, and still feel flat on a screen—real video adds motion, but usually means booking a crew, coordinating property access, and managing another production schedule for every listing. Cinema Estate uses AI to handle that production work instead: the motion, narration, listing page, and final film. It does not invent rooms, move walls, replace finishes, or change what the property is—your already-approved listing photos remain the source.</p>
               <p>You send the photos you already have. Cinema Estate builds the four-part package, then you review every asset before anything is published. There is no reshoot, no crew to book, and no property-access schedule to coordinate.</p>
-              <p>I’m Donovin, from Northern Illinois. After talking with 15–20 individual agents over the past year, I kept hearing the same tradeoff: use static photos or add another production to an already busy listing. I started Cinema Estate to give agents a third option: a stronger visual story built from work they have already approved.</p>
-              <p>The 255 Eldon package on this page is a demo listing, not client work. It is here to show you a realistic example of what to expect and let you judge the source photos, the cinematic treatment, and the complete package for yourself. AI-enhanced visualization is disclosed, local MLS and brokerage rules still apply, and nothing is published until you approve it.</p>
+              <p>I’m Donovin, from Northern Illinois. After talking with 15–20 individual agents over the past year, I kept hearing the same tradeoff: use static photos or add another production to an already busy listing. I started Cinema Estate to give agents a third option: a stronger visual story built from work they have already approved. The 255 Eldon package on this page is a demo listing, not client work—here to show you a realistic example of what to expect, so you can judge the source photos, the cinematic treatment, and the complete package for yourself. AI-enhanced visualization is disclosed, local MLS and brokerage rules still apply, and nothing is published until you approve it.</p>
             </div>
-            <EarlyAccessButton className="button button-dark about-cta" intent="listing" source="about">Start with your listing <span aria-hidden="true">→</span></EarlyAccessButton>
+            <EarlyAccessButton className="button button-dark about-cta" intent="listing" source="about">Start with your listing <ArrowIcon /></EarlyAccessButton>
           </div>
         </div>
       </section>
@@ -187,12 +198,7 @@ export default function Home() {
       <section className="answers-section section-shell" aria-labelledby="answers-title">
         <p className="eyebrow">07 / Clear answers</p>
         <h2 id="answers-title">Marketing with the right guardrails.</h2>
-        <div className="answer-list">
-          <details open><summary>Will this look fake or gimmicky?</summary><p>No. The real listing images remain the source. Cinema Estate adds motion, narration, and a complete marketing package.</p></details>
-          <details><summary>Who approves what goes live?</summary><p>You do. Agents approve their assets before anything is published or shared.</p></details>
-          <details><summary>Will AI-enhanced visualization cause MLS or disclosure trouble?</summary><p>AI-enhanced visualization is disclosed. Local MLS and brokerage rules apply, and agents remain responsible for their listing requirements.</p></details>
-          <details><summary>What if I can get this for $10–$40 with a cheaper AI tool?</summary><p>Those tools generate a clip from your photos and hand it over. Cinema Estate builds a defined package around your real, already-approved photos—nothing invented or altered—and nothing publishes until you&rsquo;ve reviewed and approved it yourself. If it doesn&rsquo;t match your approved photos, you get a full refund within 7 days.</p></details>
-        </div>
+        <AnswersAccordion />
       </section>
 
       <section className="waitlist-section" id="early-access" aria-labelledby="waitlist-title">
@@ -201,8 +207,8 @@ export default function Home() {
           <div>
             <p>Ready to buy? Pricing is above. Not ready yet? Leave your email and I&rsquo;ll personally follow up about your listing.</p>
             <div className="waitlist-actions">
-              <a className="button button-primary" href="#pricing">See pricing <span aria-hidden="true">→</span></a>
-              <EarlyAccessButton className="button button-dark" source="final-cta">Get early access <span aria-hidden="true">→</span></EarlyAccessButton>
+              <a className="button button-primary" href="#pricing">See pricing <ArrowIcon /></a>
+              <EarlyAccessButton className="button button-dark" source="final-cta">Get early access <ArrowIcon /></EarlyAccessButton>
             </div>
           </div>
         </div>
@@ -212,10 +218,11 @@ export default function Home() {
         <span>CINEMA ESTATE™</span><span>Built from real listing media.</span>
         <a href="/privacy">Privacy</a>
         <a href="/terms">Terms</a>
-        <a href="https://www.nar.realtor/about-nar/policies/mls-policy/use-of-photographs-in-a-multiple-listing-service">MLS policy reference ↗</a>
+        <a href="https://www.nar.realtor/about-nar/policies/mls-policy/use-of-photographs-in-a-multiple-listing-service">MLS policy reference <ArrowIcon direction="up-right" /></a>
       </footer>
       <EarlyAccessModal />
       <CheckoutStatus />
+      <ScrollDepthTracker />
     </main>
   );
 }

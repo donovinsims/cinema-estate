@@ -21,8 +21,11 @@ function canShowAutomaticPopup() {
   }
 }
 
+const closeAnimationMs = 180;
+
 export function EarlyAccessModal() {
   const [isOpen, setIsOpen] = useState(false);
+  const [isClosing, setIsClosing] = useState(false);
   const [openedBy, setOpenedBy] = useState("cta");
   const [presentationIntent, setPresentationIntent] = useState<PresentationIntent>("early-access");
   const [hasConverted, setHasConverted] = useState(false);
@@ -34,13 +37,25 @@ export function EarlyAccessModal() {
   const hasInteractedRef = useRef(false);
   const sawPricingRef = useRef(false);
   const pricingTrackedRef = useRef(false);
+  const closeTimerRef = useRef<number | null>(null);
+
+  useEffect(() => {
+    return () => {
+      if (closeTimerRef.current !== null) window.clearTimeout(closeTimerRef.current);
+    };
+  }, []);
 
   function open(source: string, intent: PresentationIntent = "early-access") {
+    if (closeTimerRef.current !== null) {
+      window.clearTimeout(closeTimerRef.current);
+      closeTimerRef.current = null;
+    }
     if (source !== "engaged") hasInteractedRef.current = true;
     lastFocusedElement.current = document.activeElement instanceof HTMLElement ? document.activeElement : null;
     setOpenedBy(source);
     setPresentationIntent(intent);
     setHasConverted(false);
+    setIsClosing(false);
     setIsOpen(true);
     track("early_access_modal_viewed", { intent, source });
   }
@@ -51,8 +66,14 @@ export function EarlyAccessModal() {
         localStorage.setItem(dismissalKey, String(Date.now()));
       } catch {}
     }
-    setIsOpen(false);
     track("early_access_modal_dismissed", { intent: presentationIntent, source: openedBy });
+    setIsClosing(true);
+    if (closeTimerRef.current !== null) window.clearTimeout(closeTimerRef.current);
+    closeTimerRef.current = window.setTimeout(() => {
+      setIsOpen(false);
+      setIsClosing(false);
+      closeTimerRef.current = null;
+    }, closeAnimationMs);
     if (restoreFocus) window.setTimeout(() => lastFocusedElement.current?.focus(), 0);
   }
 
@@ -154,7 +175,7 @@ export function EarlyAccessModal() {
   const presentation = getEarlyAccessPresentation(presentationIntent);
 
   return (
-    <div className="early-access-backdrop" style={{ zIndex: 40 }} onMouseDown={closeFromBackdrop} hidden={!isOpen}>
+    <div className={isClosing ? "early-access-backdrop is-closing" : "early-access-backdrop"} style={{ zIndex: 40 }} onMouseDown={closeFromBackdrop} hidden={!isOpen && !isClosing}>
       <div ref={dialogRef} className="early-access-modal" role="dialog" aria-modal="true" aria-labelledby="early-access-modal-title" aria-describedby="early-access-modal-description" onKeyDown={trapFocus} data-opened-by={openedBy} data-presentation-intent={presentationIntent}>
         <button className="modal-close" type="button" onClick={() => close()} aria-label="Close early-access form">×</button>
         <p className="eyebrow">{presentation.eyebrow}</p>

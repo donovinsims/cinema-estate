@@ -3,13 +3,11 @@ import test from "node:test";
 
 const expectedAboutHeading = "Give your listing a cinematic story without another shoot.";
 const expectedAboutParagraphs = [
-  "Your listing photos can be accurate, approved, and still feel flat on a screen. Static images show the rooms one frame at a time. Real video adds motion, but it also means finding a crew, coordinating property access, and managing another production schedule for every listing.",
-  "Cinema Estate uses AI to handle the repetitive production work behind the motion, narration, listing page, and final film. It does not invent rooms, move walls, replace finishes, or change what the property is. Your already-approved listing photos remain the source.",
+  "Listing photos can be accurate and approved, and still feel flat on a screen—real video adds motion, but usually means booking a crew, coordinating property access, and managing another production schedule for every listing. Cinema Estate uses AI to handle that production work instead: the motion, narration, listing page, and final film. It does not invent rooms, move walls, replace finishes, or change what the property is—your already-approved listing photos remain the source.",
   "You send the photos you already have. Cinema Estate builds the four-part package, then you review every asset before anything is published. There is no reshoot, no crew to book, and no property-access schedule to coordinate.",
-  "I’m Donovin, from Northern Illinois. After talking with 15–20 individual agents over the past year, I kept hearing the same tradeoff: use static photos or add another production to an already busy listing. I started Cinema Estate to give agents a third option: a stronger visual story built from work they have already approved.",
-  "The 255 Eldon package on this page is a demo listing, not client work. It is here to show you a realistic example of what to expect and let you judge the source photos, the cinematic treatment, and the complete package for yourself. AI-enhanced visualization is disclosed, local MLS and brokerage rules still apply, and nothing is published until you approve it.",
+  "I’m Donovin, from Northern Illinois. After talking with 15–20 individual agents over the past year, I kept hearing the same tradeoff: use static photos or add another production to an already busy listing. I started Cinema Estate to give agents a third option: a stronger visual story built from work they have already approved. The 255 Eldon package on this page is a demo listing, not client work—here to show you a realistic example of what to expect, so you can judge the source photos, the cinematic treatment, and the complete package for yourself. AI-enhanced visualization is disclosed, local MLS and brokerage rules still apply, and nothing is published until you approve it.",
 ];
-const expectedAboutCta = 'Start with your listing <span aria-hidden="true">→</span>';
+const expectedAboutCtaText = "Start with your listing";
 
 async function render(pathname = "/") {
   const workerUrl = new URL("../dist/server/index.js", import.meta.url);
@@ -80,10 +78,10 @@ test("server-renders Cinema Estate with an accessible comparison and waitlist", 
   assert.ok(aboutCopy, "About copy wrapper must render");
   const renderedAboutParagraphs = [...aboutCopy[1].matchAll(/<p>([\s\S]*?)<\/p>/g)].map((match) => match[1]);
   assert.deepEqual(renderedAboutParagraphs, expectedAboutParagraphs, "About paragraphs must match the approved copy exactly and in order");
-  assert.ok(
-    aboutSection[0].includes(`>${expectedAboutCta}</button>`),
-    "About CTA must match the approved copy exactly",
-  );
+  const aboutCta = aboutSection[0].match(/class="button button-dark about-cta"[^>]*>([\s\S]*?)<\/button>/);
+  assert.ok(aboutCta, "About CTA button must render");
+  assert.match(aboutCta[1], new RegExp(`^${expectedAboutCtaText}\\s*<svg`, "i"), "About CTA text must match the approved copy exactly, followed by the arrow icon");
+  assert.doesNotMatch(aboutCta[1], />→</, "About CTA arrow must render as the shared SVG icon, not a raw arrow character");
   assert.match(html, /src="\/media\/donovin-sims-640\.webp"/i);
   assert.match(html, /srcSet="\/media\/donovin-sims-320\.webp 320w, \/media\/donovin-sims-640\.webp 640w"/i);
   assert.match(html, /sizes="\(max-width: 720px\) calc\(100vw - 32px\), \(max-width: 1100px\) 38vw, 420px"/i);
@@ -124,8 +122,11 @@ test("server-renders Cinema Estate with an accessible comparison and waitlist", 
     html,
     /Cinema Estate builds a defined package around your real, already-approved photos—nothing invented or altered/i,
   );
+  assert.match(html, /It does not invent rooms, move walls, replace finishes, or change what the property is—your already-approved listing photos remain the source\./i);
   assert.match(html, /Plans from <span>\$149<\/span> per listing\./i);
   assert.match(html, /Delivered within 24 hours from your approved photos/i);
+  assert.match(html, /Agents approve their assets before anything is published or shared\./i);
+  assert.match(html, /Cinema Estate builds a defined package around your real, already-approved photos—nothing invented or altered\./i);
   assert.match(html, />Proof</);
   assert.match(html, />Story</);
   assert.match(html, />Signature</);
