@@ -1,10 +1,10 @@
 # Cinema Estate Handoff
 
-Last updated: 2026-08-07
+Last updated: 2026-08-08
 
-## Production hardening — OPEN PR (2026-08-07)
+## Production hardening — MERGED (2026-08-08)
 
-Branch: `production-hardening/lead-magnet-mobile-posthog`. Base: main (`b3a28af`).
+Branch: `production-hardening/lead-magnet-mobile-posthog`. Base: main (`b3a28af`). Merged as [PR #25](https://github.com/donovinsims/cinema-estate/pull/25) into `main` at `0105eb7`.
 
 **What changed:**
 
