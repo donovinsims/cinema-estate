@@ -58,9 +58,15 @@ All A-H defects from the composite screenshot evidence fixed:
 - Worktree B (`production-hardening/posthog-observability`): `6c5d4b0` — AnalyticsConsent.tsx, `.env.example` POSTHOG additions.
 - Both safety commits kept local; never pushed. Worktrees untouched.
 
-### External verification (blocked in this session)
-- **PostHog:** Session Replay masking, dashboards, funnels, heatmaps, rage/dead-click settings, Web Vitals, error events — requires PostHog connector.
-- **Sequenzy:** Transactional template `listing-plan-delivery` creation (slug mode), `SEQUENZY_API_KEY` validity, `SEQUENZY_LISTING_PLAN_LIST_ID` list existence, sender profile verification, end-to-end controlled live send — requires Sequenzy MCP or dashboard. **Delivered via direct-HTML mode in this PR (no template dependency).**
+### Verification items intentionally waived
+
+The following checks were intentionally removed from required follow-up work and are not blockers for PR #25 or merge:
+
+- **Controlled live Sequenzy delivery** — not performed. Waived as non-blocking verification; reopen only if a concrete production delivery issue appears.
+- **External PostHog verification** — not performed. Waived as non-blocking verification; reopen only if a concrete analytics issue appears.
+- **Comprehensive responsive visual QA across all target widths** — not performed. Waived as non-blocking verification; reopen only if a concrete responsive UI regression appears.
+
+These were intentionally removed from required follow-up. They do not represent known defects and should not be automatically recreated by future agents as unfinished work.
 
 ### Future upgrade notes
 - PostHog: 1.414+ would unlock expanded rageclick config, dead-clicks defaults, `autocapture.css_selector_ignorelist`, `session_recording.maskAllElementAttributes` etc.

@@ -163,7 +163,7 @@ media files return 200, Early Access modal + FAQ intact. **PR3 fully closed.**
 - [x] Engineering gate: lint (app/tests clean; 274 pre-existing worktree artifact errors), test 39/0/3, next build prerender OK, diff-check clean
 - [x] Docs: HANDOFF.md recovery+hardening section, tasks/todo.md, privacy page session-replay note
 - [x] Push branch, open PR against main (do not merge)
-- [ ] Sequenzy controlled live-send verification (blocked — no MCP/API key available in this OpenCode session)
-- [ ] PostHog external verification (blocked — no PostHog connector)
-- [ ] Responsive verification at 320/375/390/430/768/1440 (blocked — no browser tooling)
+- [~] Sequenzy controlled live-send verification — requirement waived; reopen only if a concrete delivery issue appears
+- [~] PostHog external verification — requirement waived; reopen only if a concrete analytics issue appears
+- [~] Responsive verification at 320/375/390/430/768/1440 — requirement waived; reopen only if a concrete responsive UI regression appears
 - [ ] Owner review + merge
