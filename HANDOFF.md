@@ -2,6 +2,20 @@
 
 Last updated: 2026-08-08
 
+## Listing-plan template delivery — MERGED (2026-08-08)
+
+Branch: `donovinsims/wire-listing-plan-template`. Base: main (`6ac8788`). Merged as [PR #27](https://github.com/donovinsims/cinema-estate/pull/27) into `main` at `3e4c081`.
+
+**What changed:**
+
+### Wire /listing-plan lead magnet to Sequenzy template delivery
+- `sendTransactionalPlan` in `app/api/listing-plan/route.ts` now sends via the Sequenzy transactional template `listing-plan-delivery` (template id `a389150e7cc427e8dae8d78`) instead of building raw HTML. Payload: `{ to, templateId: "listing-plan-delivery", variables: { score, tier, readinessInterpretation, summary, propertyType, cityState, topGaps: [{gap}], doNow: [{action}] } }` posted to `https://api.sequenzy.com/api/v1/transactional/send`.
+- Dead `buildPlanEmailBody()` and `escapeHtml()` removed from route.ts.
+- Sequenzy template enriched (via MCP): `{{readinessInterpretation}}` paragraph after the score line, "Start here" heading, and a `doNow` repeat block (itemAlias `action`). Variables: SCORE, TIER, READINESS_INTERPRETATION, SUMMARY, PROPERTY_TYPE, CITY_STATE, topGaps, doNow. emailPreset minimal, enabled.
+- `tests/listing-plan-api.test.mjs` updated to assert `txn.body.templateId === "listing-plan-delivery"` and the `variables` object (was: `to/subject/body` direct-HTML shape). Tags/lists-absent invariants preserved.
+- Verification: `npm test` 39 pass / 0 fail / 3 skipped (live smoke gated on `SEQUENZY_SMOKE_URL`); lint clean for source. Live E2E passed — real send delivered via Sequenzy (send `vdo5cawhwnj4alt417hz7z3f`, subject "Your listing readiness plan: 35/100 (Early)", no bounce).
+- Vercel: `SEQUENZY_LISTING_PLAN_LIST_ID=f29666c4eadc44c8994ed835` added to Production and Preview (takes effect on next deployment). Note: Preview env does NOT have `SEQUENZY_API_KEY` — preview deploys of `/api/listing-plan` and `/api/early-access` would return 401 until it is added.
+
 ## Production hardening — MERGED (2026-08-08)
 
 Branch: `production-hardening/lead-magnet-mobile-posthog`. Base: main (`b3a28af`). Merged as [PR #25](https://github.com/donovinsims/cinema-estate/pull/25) into `main` at `0105eb7`.
