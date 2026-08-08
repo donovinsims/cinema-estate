@@ -96,8 +96,13 @@ export async function POST(request: Request) {
   if (!profile) return NextResponse.json({ error }, { status: 400 });
 
   if (action === "preview") {
-    const preview = generatePreview(profile);
-    return NextResponse.json(preview);
+    try {
+      const preview = generatePreview(profile);
+      return NextResponse.json(preview);
+    } catch (err) {
+      console.error("listing-plan: generatePreview threw", err instanceof Error ? err.message : "unknown error");
+      return NextResponse.json({ error: "Failed to generate preview. Please try again." }, { status: 500 });
+    }
   }
 
   if (action === "generate") {
@@ -112,7 +117,13 @@ export async function POST(request: Request) {
     if (!emailPattern.test(email)) return NextResponse.json({ error: "Enter a valid email address." }, { status: 400 });
 
     // Run full plan generation (deterministic only)
-    const plan = generateFullPlan(profile);
+    let plan: ReturnType<typeof generateFullPlan>;
+    try {
+      plan = generateFullPlan(profile);
+    } catch (err) {
+      console.error("listing-plan: generateFullPlan threw", err instanceof Error ? err.message : "unknown error");
+      return NextResponse.json({ error: "Failed to generate plan. Please try again." }, { status: 500 });
+    }
 
     // Transactional delivery — always attempted, regardless of marketing consent. A transactional
     // send may itself create/touch a Sequenzy subscriber record; that is not a marketing action.
