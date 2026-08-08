@@ -25,6 +25,15 @@ export function CheckoutStatus() {
     queueMicrotask(() => setOutcome(status));
   }, []);
 
+  // The banner is fixed near the top of the viewport, same as the hero — on
+  // narrow screens its wrapped text can grow tall enough to cover the H1.
+  // Marking <html> lets globals.css push the hero down to clear it.
+  useEffect(() => {
+    if (outcome === "none") return;
+    document.documentElement.setAttribute("data-checkout-banner", outcome);
+    return () => document.documentElement.removeAttribute("data-checkout-banner");
+  }, [outcome]);
+
   if (outcome === "none") return null;
 
   return (
