@@ -79,12 +79,30 @@ test("JSON-LD prices match the rendered tier prices (anti-drift guard)", async (
   }
 });
 
+test("homepage Product/FAQ JSON-LD is not emitted on unrelated routes", async () => {
+  for (const pathname of ["/listing-plan", "/villa-siena"]) {
+    const response = await render(pathname);
+    assert.equal(response.status, 200, `${pathname} must respond 200`);
+    const html = await response.text();
+
+    const nodes = jsonLdNodes(html);
+    const products = nodes.filter((node) => node["@type"] === "Product");
+    const faqPage = nodes.find((node) => node["@type"] === "FAQPage");
+    const organization = nodes.find((node) => node["@type"] === "Organization");
+
+    assert.equal(products.length, 0, `${pathname} must not emit homepage Product JSON-LD`);
+    assert.equal(faqPage, undefined, `${pathname} must not emit homepage FAQPage JSON-LD`);
+    assert.equal(organization, undefined, `${pathname} must not emit homepage Organization JSON-LD`);
+  }
+});
+
 test("each public route declares its own canonical URL", async () => {
   const expected = [
     ["/", "https://cinema-estate.vercel.app"],
     ["/terms", "/terms"],
     ["/privacy", "/privacy"],
     ["/villa-siena", "/villa-siena"],
+    ["/listing-plan", "/listing-plan"],
   ];
   for (const [pathname, canonicalPath] of expected) {
     const response = await render(pathname);

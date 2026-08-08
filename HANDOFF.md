@@ -2,6 +2,76 @@
 
 Last updated: 2026-08-07
 
+## Production hardening — OPEN PR (2026-08-07)
+
+Branch: `production-hardening/lead-magnet-mobile-posthog`. Base: main (`b3a28af`).
+
+**What changed:**
+
+### Lead magnet / Sequenzy hardening
+- Transactional plan delivery now uses a direct-HTML send (`{to, subject, body}`) via Sequenzy's REST API — no template dependency. Template mode is a later operational improvement once the template is provisioned and verified.
+- `deliveryStatus` is `"queued"` (Sequenzy accepted the send, jobId returned) or `"failed"`. Inbox delivery is never claimed server-side.
+- Marketing consent: `marketingConsent === true` strict check (was `Boolean()`, which makes the string `"false"` truthy). `sendMarketingSubscriber` only runs when consent is true.
+- Transactional send never carries marketing tags/lists — tested structurally via fetch-mock interception.
+- Consent=false can still result in a subscriber contact existing (Sequenzy may auto-create one on transactional delivery), but no marketing-list membership, tags, sequences, or subscriptions are ever caused by the consent=false path.
+- Request-size guard now enforced on the read body buffer (not just the spoofable `content-length` header).
+- `listing-plan/viewed` now fires from a one-shot mount effect instead of a side effect in render (prevented double-fire under StrictMode and re-fire on rerender).
+- Entry-source attribution: homepage links carry `?source=header|post-pricing|final-cta`. Read from `window.location` on mount (no Suspense boundary; client-only tool).
+- Funnel events: `listing_plan_step_completed`, `listing_plan_validation_failed` (stage=email_gate, reason=invalid_email; never sends entered email), `listing_plan_email_gate_viewed`, `listing_plan_claim_failed`, `listing_plan_results_viewed`. Also `listing_plan_delivery_retry_attempted` (retry bypasses claim_attempted, so retry rate is only measurable via this event).
+- All existing events gain `entry_source` context.
+- 12 deterministic engine tests (`tests/listing-plan-engine.test.mjs`) recovered from Claude work.
+- 11 API route tests (`tests/listing-plan-api.test.mjs`) added — consent false/true structural invariants, preview, generate, queued, failed, invalid email/JSON/profile, oversized bodies, honeypot, unknown action.
+- `tsx` added to devDependencies (used by engine tests). `*.tsbuildinfo` added to .gitignore.
+- `app/listing-plan/page.tsx` exports `openGraph`/`twitter` metadata — no homepage OG leakage.
+
+### StructuredData / SEO
+- `app/StructuredData.tsx` moved from root layout to `app/page.tsx` (homepage only). `/listing-plan` and `/villa-siena` no longer inherit homepage Product/FAQPage JSON-LD. Tested via negative assertion.
+
+### Mobile defects
+All A-H defects from the composite screenshot evidence fixed:
+- **A:** Hero media toggle repositioned to top-right on mobile (clear of caption).
+- **B:** Comparison controls wrap as a group; each label+arrow stays atomic.
+- **C:** How It Works — `hiw-content` wrapper so title and description stack inside a number|content layout.
+- **D:** Pricing intro dead gap collapsed (`gap: 28px` on mobile).
+- **E:** Header nav — `free-plan-link` class keeps the listing-plan link visible at ≤720 while hiding lower-priority section links. Tablet band (721-900px) reduces nav gap to prevent Pricing overflow.
+- **F:** Footer links `inline-flex + nowrap` keeps external arrows attached to labels. Wrap threshold raised to 800px.
+- **G:** Hero eyebrow tracking eased (`0.05em`), H1 scale gentler (`clamp(2.3rem, 9.5vw, 3.2rem)`).
+- **H:** Final CTA — tertiary "Ask about my listing" becomes a text link at ≤430px to distinguish hierarchy.
+
+### PostHog (repo-side)
+- `app/AnalyticsConsent.tsx` — full init config with autocapture scoping (`dom_event_allowlist`/`element_allowlist`), session recording (`maskAllInputs`, `maskTextSelector`, `maskCapturedNetworkRequestFn`), heatmaps, rage clicks, dead clicks, exception capture. All config keys verified against posthog-js 1.281.0 docs (Scout C).
+- `checkout_cta_clicked` gains `placement`/`section`/`route`/`source` context.
+- Pinned at posthog-js 1.281.0 — no SDK migration in this PR.
+
+### Repo cleanup
+- `tsconfig.tsbuildinfo` removed from tracking (`git rm --cached`), `*.tsbuildinfo` in `.gitignore`.
+- `.env.example` combined — `SEQUENZY_FORM_ENDPOINT`, `SEQUENZY_API_KEY`, `SEQUENZY_LISTING_PLAN_LIST_ID`, `NEXT_PUBLIC_POSTHOG_KEY`, `NEXT_PUBLIC_POSTHOG_HOST`.
+
+### Engineering gate
+- `npm run lint`: 274 pre-existing errors from `.claude/worktrees/` build artifacts (same baseline as main); zero errors in `app/` or `tests/`.
+- `npm test`: 39 passed, 0 failed, 3 skipped (live Sequenzy smoke tests — by design).
+- `npx next build`: passes; `/listing-plan` prerendered as static, `/api/listing-plan` dynamic.
+- `git diff --check`: passes.
+
+### Recovered Claude work (preserved)
+- Worktree A (`production-hardening/lead-magnet-sequenzy`): `229d960` — route.ts, plan-builder.ts, ListingPlanClient.tsx, engine tests, `.env.example` changes, page.tsx wrapper.
+- Worktree B (`production-hardening/posthog-observability`): `6c5d4b0` — AnalyticsConsent.tsx, `.env.example` POSTHOG additions.
+- Both safety commits kept local; never pushed. Worktrees untouched.
+
+### Verification items intentionally waived
+
+The following checks were intentionally removed from required follow-up work and are not blockers for PR #25 or merge:
+
+- **Controlled live Sequenzy delivery** — not performed. Waived as non-blocking verification; reopen only if a concrete production delivery issue appears.
+- **External PostHog verification** — not performed. Waived as non-blocking verification; reopen only if a concrete analytics issue appears.
+- **Comprehensive responsive visual QA across all target widths** — not performed. Waived as non-blocking verification; reopen only if a concrete responsive UI regression appears.
+
+These were intentionally removed from required follow-up. They do not represent known defects and should not be automatically recreated by future agents as unfinished work.
+
+### Future upgrade notes
+- PostHog: 1.414+ would unlock expanded rageclick config, dead-clicks defaults, `autocapture.css_selector_ignorelist`, `session_recording.maskAllElementAttributes` etc.
+- Sequenzy: Once the transactional template is verified and its merge tags match the direct-HTML body, swap `sendTransactionalPlan` to slug mode.
+
 ## Listing-plan lead magnet — MERGED (2026-08-07)
 
 Route: `/listing-plan`. Branch: `freebuff/is-the-squenzy-email-integration-live-and-working-041d32e5-bdc5-42a5-a40b-9e71b403ea0e`.
@@ -39,8 +109,6 @@ The AI module and `@google/genai` dependency were intentionally excluded. The pl
 **Sitemap:** `/listing-plan` added (weekly, priority 0.7).
 
 **Files:** `app/listing-plan/page.tsx` (client component, 4-phase UI: entry → wizard → preview → results), `app/listing-plan/engine/*.ts` (6 files), `app/api/listing-plan/route.ts`, CSS in `app/globals.css` (`.lp-*` rules + `.lm-section` homepage rules), homepage edits in `app/page.tsx`, privacy update in `app/privacy/page.tsx`, sitemap update in `app/sitemap.ts`.
-
-**Known limitation:** No automated engine unit tests yet — the prototype's `src/engine/test.ts` fixtures should be ported into `tests/listing-plan-engine.test.mjs`.
 
 ## PR3 — Component system finalization + interaction polish + QA — MERGED + PRODUCTION-VERIFIED (2026-08-07)
 

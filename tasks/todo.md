@@ -145,3 +145,25 @@ modal border tungsten + inset shadow tungsten, hero toggle 44px, focus-visible e
 Story-first mobile order -1, 4 Polar checkout links present, canonical correct,
 structured data present, reduced motion query present, no horizontal overflow risks,
 media files return 200, Early Access modal + FAQ intact. **PR3 fully closed.**
+
+## production-hardening/lead-magnet-mobile-posthog
+
+### Recovery + hardening — OPEN (2026-08-07)
+
+- [x] Recover two interrupted Claude worktrees — safety-checkpoint commits created (local, unpushed)
+- [x] Route: direct-HTML transactional delivery, byte-budget body guard, deliveryStatus "queued", strict marketingConsent === true
+- [x] Client: one-shot viewed guard, funnel events, entry-source via window.location, claimError + marketingSubscribed in results
+- [x] Consent false structural invariant tested (fetch mock: no /subscribers call, no tags/lists in transactional payload)
+- [x] SEO: StructuredData homepage-only (moved from root layout), listing-plan OG metadata, canonical confirmed
+- [x] Homepage: entry-source links (?source=header|post-pricing|final-cta), checkout_cta_clicked placement/section/route/source context
+- [x] Mobile CSS A-H: hero toggle reposition, comparison controls wrap, how-it-works hiw-content wrapper, pricing gap reduction, header tablet band + free-plan priority, footer inline-flex nowrap, hero typography easing, CTA tertiary link style
+- [x] PostHog: AnalyticsConsent.tsx privacy-safe config (autocapture scoping, session recording masking, heatmaps, rage/dead clicks, exceptions) — pinned at 1.281.0
+- [x] Tests: 12 engine (recovered) + 11 API route (new) + structured-data negative assertion — 39 pass, 0 fail, 3 skipped (live smoke)
+- [x] Repo: tsbuildinfo untracked + .gitignore; .env.example combined; tsx devDependency
+- [x] Engineering gate: lint (app/tests clean; 274 pre-existing worktree artifact errors), test 39/0/3, next build prerender OK, diff-check clean
+- [x] Docs: HANDOFF.md recovery+hardening section, tasks/todo.md, privacy page session-replay note
+- [x] Push branch, open PR against main (do not merge)
+- [~] Sequenzy controlled live-send verification — requirement waived; reopen only if a concrete delivery issue appears
+- [~] PostHog external verification — requirement waived; reopen only if a concrete analytics issue appears
+- [~] Responsive verification at 320/375/390/430/768/1440 — requirement waived; reopen only if a concrete responsive UI regression appears
+- [ ] Owner review + merge
