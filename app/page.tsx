@@ -9,6 +9,7 @@ import { EarlyAccessModal } from "./EarlyAccessModal";
 import { HeroVideo } from "./HeroVideo";
 import { ProofReel } from "./ProofReel";
 import { ScrollDepthTracker } from "./ScrollDepthTracker";
+import { StructuredData } from "./StructuredData";
 import { TierImpressionTracker } from "./TierImpressionTracker";
 
 export const metadata: Metadata = {
@@ -95,7 +96,7 @@ export default function Home() {
             <a className="header-link header-link-secondary" href="#transformation">Example</a>
             <a className="header-link header-link-secondary" href="#package">What you get</a>
             <a className="header-link header-link-secondary" href="#how-it-works">How it works</a>
-            <a className="header-link header-link-secondary" href="/listing-plan">Free listing plan</a>
+            <a className="header-link header-link-secondary free-plan-link" href="/listing-plan?source=header">Free listing plan</a>
             <a className="header-link" href="#pricing">Pricing <ArrowIcon /></a>
           </nav>
         </div>
@@ -162,10 +163,10 @@ export default function Home() {
           <div>
             <p>One path from checkout to a package you review and approve before anything goes live.</p>
             <ol className="how-it-works">
-              <li><strong>Choose your package.</strong> One-time, secure checkout for Proof, Story, or Signature.</li>
-              <li><strong>Submit your listing.</strong> Send the approved photos and listing details required to build your package.</li>
-              <li><strong>We build.</strong> Cinema Estate builds the package around your real, already-approved photos.</li>
-              <li><strong>Review and approve.</strong> You review every asset. Nothing publishes until you approve it.</li>
+              <li><span className="hiw-content"><strong>Choose your package.</strong> One-time, secure checkout for Proof, Story, or Signature.</span></li>
+              <li><span className="hiw-content"><strong>Submit your listing.</strong> Send the approved photos and listing details required to build your package.</span></li>
+              <li><span className="hiw-content"><strong>We build.</strong> Cinema Estate builds the package around your real, already-approved photos.</span></li>
+              <li><span className="hiw-content"><strong>Review and approve.</strong> You review every asset. Nothing publishes until you approve it.</span></li>
             </ol>
             <p className="turnaround-note">Your 24-hour build window starts once we have your approved photos and the listing details required to build your package&mdash;not when you place the order.</p>
             <ul className="checklist">
@@ -205,7 +206,7 @@ export default function Home() {
                     <li key={item}>{item}</li>
                   ))}
                 </ul>
-                <CheckoutButton className="button button-primary tier-cta" href={tier.checkoutUrl} tier={tier.name} price={tier.price}>{`Buy ${tier.name}`}<ArrowIcon direction="up-right" /></CheckoutButton>
+                <CheckoutButton className="button button-primary tier-cta" href={tier.checkoutUrl} tier={tier.name} price={tier.price} placement="pricing-card" section="pricing" route="/" source="pricing">{`Buy ${tier.name}`}<ArrowIcon direction="up-right" /></CheckoutButton>
               </TierImpressionTracker>
             ))}
           </div>
@@ -255,7 +256,7 @@ export default function Home() {
           </div>
           <div>
             <p>Answer a few questions and get a free seller-ready listing marketing plan with your readiness score, launch priorities, and next steps.</p>
-            <a className="button button-dark" href="/listing-plan" style={{marginTop: 24}}>Build my free listing plan <ArrowIcon /></a>
+            <a className="button button-dark" href="/listing-plan?source=post-pricing" style={{marginTop: 24}}>Build my free listing plan <ArrowIcon /></a>
           </div>
         </div>
       </section>
@@ -266,8 +267,8 @@ export default function Home() {
           <div>
             <p>Ready to buy? Story is the recommended starting point for a complete listing launch. Have a question first? Ask about your listing and I&rsquo;ll help you pick the right package.</p>
             <div className="waitlist-actions">
-              <CheckoutButton className="button button-primary" href={tiers[1].checkoutUrl} tier={tiers[1].name} price={tiers[1].price}>Buy Story <ArrowIcon direction="up-right" /></CheckoutButton>
-              <a className="button button-dark" href="/listing-plan">Build my free listing plan <ArrowIcon /></a>
+              <CheckoutButton className="button button-primary" href={tiers[1].checkoutUrl} tier={tiers[1].name} price={tiers[1].price} placement="final-cta" section="waitlist" route="/" source="final-cta">Buy Story <ArrowIcon direction="up-right" /></CheckoutButton>
+              <a className="button button-dark" href="/listing-plan?source=final-cta">Build my free listing plan <ArrowIcon /></a>
               <EarlyAccessButton className="button button-dark" source="final-cta">Ask about my listing <ArrowIcon /></EarlyAccessButton>
             </div>
           </div>
@@ -283,6 +284,7 @@ export default function Home() {
       <EarlyAccessModal />
       <CheckoutStatus />
       <ScrollDepthTracker />
+      <StructuredData />
     </main>
   );
 }
