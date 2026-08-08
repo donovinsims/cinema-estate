@@ -2,6 +2,22 @@
 
 Last updated: 2026-08-08
 
+## Listing-plan template delivery — DEPLOYED & VERIFIED (2026-08-08)
+
+Production deploy of main (post-PR #27) via `vercel deploy --prod`: build succeeded, aliased to `https://cinema-estate.vercel.app`. `/api/listing-plan` live on the template flow.
+
+**Deploy blocker fixed (local only, not in git):** a broken local symlink `.codegraph` (tool symlink ignored via `.git/info/exclude`) at the repo root was being uploaded by the Vercel CLI (which does not honor `.git/info/exclude`) and crashed `next build` with `ENOENT ... .codegraph`. Worked around by moving the symlink aside before deploy and restoring it after. If Vercel deploys break again with `.codegraph` ENOENT, move the symlink aside again (or add `.codegraph` to `.vercelignore`).
+
+**Post-deploy verification (all passed):**
+- `POST https://cinema-estate.vercel.app/api/listing-plan?action=generate` with realistic Austin single-family profile + `donovin@gmail.com` (marketingConsent false) → HTTP 200, `deliveryStatus: "queued"`.
+- Sequenzy confirmed **delivered**: send `nufdj5ob9f0i0lm57epvzx13` (sent 2026-08-08T17:20:47Z), subject "Your listing readiness plan: 35/100 (Early)", template `a389150e7cc427e8dae8d78` (listing-plan-delivery), no bounce. Dashboard: https://sequenzy.com/dashboard/company/v26iblogat0kdfyw581h1hb1/sent-emails/nufdj5ob9f0i0lm57epvzx13
+
+**Env key sync (2026-08-08):** Production and Preview now carry the SAME `SEQUENZY_API_KEY` (`seq_live_sNuy...`, added by user; Production overridden via `vercel env add ... production --force`). All Sequenzy vars (API_KEY, SEQUENZY_LISTING_PLAN_LIST_ID, SEQUENZY_FORM_ENDPOINT) present in both environments. Sequenzy account has exactly ONE API key (`real-estate-landing`, full_access, isCurrent) — it is the active production key; no orphaned key to revoke.
+
+**Smoke tests:** `tests/sequenzy-smoke.test.mjs` gained two opt-in `/listing-plan` tests (missing email → 400; valid request → 200 with `deliveryStatus: "queued"`) — PR [#28](https://github.com/donovinsims/cinema-estate/pull/28). Live run against the deployed origin: 5/5 pass. Offline `npm test`: 39 pass / 0 fail / 5 skipped.
+
+**Remaining:** merge PR #28; `tasks/todo.md` docs commit (`a107e69`) pushed to main.
+
 ## Listing-plan template delivery — MERGED (2026-08-08)
 
 Branch: `donovinsims/wire-listing-plan-template`. Base: main (`6ac8788`). Merged as [PR #27](https://github.com/donovinsims/cinema-estate/pull/27) into `main` at `3e4c081`.
