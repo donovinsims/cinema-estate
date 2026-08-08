@@ -26,11 +26,36 @@ const skip = baseUrl
   ? false
   : "Set SEQUENZY_SMOKE_URL to the deployed origin (e.g. SEQUENZY_SMOKE_URL=https://cinema-estate.vercel.app) to run the live Sequenzy smoke test.";
 const endpoint = `${baseUrl}/api/early-access`;
+const listingPlanEndpoint = `${baseUrl}/api/listing-plan?action=generate`;
 
 function post(email) {
   return fetch(endpoint, {
     method: "POST",
     body: new URLSearchParams(email ? { email } : {}),
+    cache: "no-store",
+  });
+}
+
+/**
+ * Minimal but valid /api/listing-plan payload. The route requires top-level
+ * `email`, `propertyType`, `listingStatus`, `launchTiming`; the rest is optional.
+ * `marketingConsent: false` keeps the smoke run from creating a subscriber.
+ */
+function listingPlanBody(email) {
+  return {
+    email,
+    propertyType: "Single-family",
+    listingStatus: "Pre-listing",
+    launchTiming: "Within 3 months",
+    marketingConsent: false,
+  };
+}
+
+function postListingPlan(body) {
+  return fetch(listingPlanEndpoint, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify(body),
     cache: "no-store",
   });
 }
@@ -59,4 +84,19 @@ test("accepts a valid email with 200, proving Sequenzy accepted the submission",
   assert.equal(response.status, 200);
   const payload = await readJson(response);
   assert.equal(payload.ok, true);
+});
+
+test("/listing-plan rejects a missing email with 400", { skip, timeout: 15000 }, async () => {
+  const response = await postListingPlan(listingPlanBody(""));
+  assert.equal(response.status, 400);
+  const payload = await readJson(response);
+  assert.equal(payload.error, "Enter a valid email address.");
+});
+
+test("/listing-plan accepts a valid request and queues the template email, proving the transactional template flow is live", { skip, timeout: 15000 }, async () => {
+  const response = await postListingPlan(listingPlanBody(`smoke-test-${Date.now()}@example.com`));
+  assert.equal(response.status, 200);
+  const payload = await readJson(response);
+  assert.equal(payload.deliveryStatus, "queued");
+  assert.equal(payload.marketingSubscribed, false);
 });
