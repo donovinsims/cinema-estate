@@ -159,7 +159,8 @@ test("consent=false never calls the marketing subscriber endpoint", async () => 
     assert.ok(txn, "transactional send must still be attempted");
     assert.equal(txn.body.tags, undefined, "transactional payload must not carry marketing tags");
     assert.equal(txn.body.lists, undefined, "transactional payload must not carry marketing lists");
-    assert.ok(txn.body.to === "agent@example.com" && txn.body.subject && txn.body.body, "direct-HTML payload: to/subject/body");
+    assert.equal(txn.body.templateId, "listing-plan-delivery", "transactional payload must use listing-plan-delivery template");
+    assert.ok(txn.body.to === "agent@example.com" && txn.body.variables && typeof txn.body.variables.score === "number", "transactional payload: to + variables");
   } finally {
     delete process.env.SEQUENZY_API_KEY;
     stub.restore();
@@ -181,6 +182,7 @@ test("consent=true enrolls the marketing subscriber with listing-plan tags and n
     const txn = stub.calls.find((c) => c.url.endsWith("/transactional/send"));
     assert.equal(txn.body.tags, undefined, "transactional payload must not carry tags even with consent");
     assert.equal(txn.body.lists, undefined, "transactional payload must not carry lists even with consent");
+    assert.equal(txn.body.templateId, "listing-plan-delivery", "transactional payload must use listing-plan-delivery template");
 
     const sub = stub.calls.find((c) => c.url.endsWith("/subscribers"));
     assert.ok(sub, "consent=true must create/merge the marketing subscriber");
