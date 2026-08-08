@@ -2,6 +2,10 @@
 
 Last updated: 2026-08-08
 
+## Listing-plan smoke tests — MERGED (2026-08-08)
+
+Branch: `donovinsims/listing-plan-smoke-test`. Merged as [PR #28](https://github.com/donovinsims/cinema-estate/pull/28) into `main` at `b58eab5` (2026-08-08T17:31:09Z). Adds two opt-in `/listing-plan` live smoke tests to `tests/sequenzy-smoke.test.mjs` (gated on `SEQUENZY_SMOKE_URL`): missing email → 400; valid request → 200 with `deliveryStatus: "queued"` and `marketingSubscribed: false`. Offline `npm test`: 39 pass / 0 fail / 5 skipped. Live run vs deployed origin: 5/5 pass. PR #28 fully closed — no further action.
+
 ## Listing-plan template delivery — DEPLOYED & VERIFIED (2026-08-08)
 
 Production deploy of main (post-PR #27) via `vercel deploy --prod`: build succeeded, aliased to `https://cinema-estate.vercel.app`. `/api/listing-plan` live on the template flow.
