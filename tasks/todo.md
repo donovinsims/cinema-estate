@@ -209,10 +209,7 @@ manual spot-checks) — findings pre-loaded into this session's context.
 - [x] What was fixed vs recommendation-only
 - [x] Prioritized audit findings (strategy/UX/growth/visual)
 
-**Results:** Branch `production-readiness/safe-fixes` (local, not pushed, not merged) has
-5 files changed: `app/api/listing-plan/route.ts`, `app/listing-plan/ListingPlanClient.tsx`,
-`next.config.ts`, plus this file. Full verdict delivered in chat. Key surprises worth
-remembering for next session:
+**Results:** Full verdict delivered in chat. Key surprises worth remembering for next session:
 
 - `vinext dev`'s Cloudflare Worker path (`worker/index.ts`) does **not** apply
   `next.config.ts`'s `headers()` — confirmed via curl (no CSP/security headers on
@@ -233,4 +230,33 @@ remembering for next session:
   fragment, so the fragment was literally `pricing?source=listing_plan`, matching no
   element id. The highest-intent link in the free-tool funnel silently 404'd its anchor
   jump. Fixed by reordering to `/?source=listing_plan#pricing`.
-- [ ] Prioritized audit findings (strategy/UX/growth/visual)
+
+## production-readiness-follow-up
+
+### Fix 3 visual/a11y overlap findings from the visual QA pass — merged (2026-08-08)
+
+User asked to address 3 specific findings from the Phase 3 visual-reviewer report, then
+open a PR and merge (explicit instruction, no further confirmation requested).
+
+- [x] Consent banner overlapping pricing CTAs + Villa Siena stat row/video controls —
+      `AnalyticsConsent.tsx` now fades the banner out (opacity + `pointer-events: none`)
+      via `IntersectionObserver` whenever any `data-consent-avoid`-marked element (tier
+      grid, hero media frame, Villa Siena hero) is in view. Verified via computed styles:
+      `opacity: 0`, `pointer-events: none` while `#pricing` in view.
+- [x] Checkout-status banner overlapping hero H1 on mobile — `CheckoutStatus.tsx` stamps
+      `<html data-checkout-banner>`; `globals.css`'s mobile hardening block (new item "I")
+      pushes `.hero` to `padding-top: 240px` while present. Verified: banner bottom edge
+      217px, H1 top 291px at 375px viewport — clear gap, no overlap.
+- [x] Header/footer nav tap targets under WCAG AA 24px minimum — `.wordmark`,
+      `.header-link`, `.header-link-secondary`, `.site-footer a` all given `min-height:
+      44px` (matches this file's existing convention). Verified via bounding rects: all
+      44px now (was ~17-29px).
+- [x] Gate: lint clean, 39/39 tests, `git diff --check` clean
+- [x] Branch `production-readiness/safe-fixes`, PR [#26](https://github.com/donovinsims/cinema-estate/pull/26),
+      waited for the Vercel preview-deploy check to pass (not just push-and-merge blind),
+      merged into `main` at `6ac8788`, branch deleted (local + remote)
+
+**Results:** Both commits on `production-readiness/safe-fixes` (the earlier safe-fixes
+commit `6136d36` plus this session's `ef91414`) are now in `main`. Live site will pick up
+the deploy via Vercel's normal git integration. No further action needed on this branch —
+fully closed out.
