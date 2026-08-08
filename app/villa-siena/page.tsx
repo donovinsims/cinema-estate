@@ -23,7 +23,7 @@ export default function VillaSienaPage() {
       />
       <RevealObserver />
 
-      <header className={styles.hero} id="film">
+      <header className={styles.hero} id="film" data-consent-avoid>
         <nav className={styles.nav}>
           <a className={styles.wordmark} href="#film">
             Villa Siena

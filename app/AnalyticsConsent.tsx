@@ -9,11 +9,32 @@ const consentKey = "cinema-estate.analytics-consent";
 
 export function AnalyticsConsent() {
   const [choice, setChoice] = useState<"granted" | "denied" | null>(null);
+  // True while a primary CTA or control marked `data-consent-avoid` (pricing
+  // tier cards, hero media controls, a page's own hero) is anywhere in view —
+  // the banner fades out rather than risking an overlap, and returns once the
+  // visitor scrolls past.
+  const [obscuring, setObscuring] = useState(false);
 
   useEffect(() => {
     const saved = window.localStorage.getItem(consentKey);
     if (saved === "granted" || saved === "denied") window.setTimeout(() => setChoice(saved), 0);
   }, []);
+
+  useEffect(() => {
+    if (choice !== null) return;
+    const targets = Array.from(document.querySelectorAll<HTMLElement>("[data-consent-avoid]"));
+    if (targets.length === 0) return;
+    const intersecting = new Set<Element>();
+    const observer = new IntersectionObserver((entries) => {
+      for (const entry of entries) {
+        if (entry.isIntersecting) intersecting.add(entry.target);
+        else intersecting.delete(entry.target);
+      }
+      setObscuring(intersecting.size > 0);
+    }, { threshold: 0 });
+    targets.forEach((el) => observer.observe(el));
+    return () => observer.disconnect();
+  }, [choice]);
 
   useEffect(() => {
     if (choice !== "granted" || !process.env.NEXT_PUBLIC_POSTHOG_KEY) return;
@@ -84,7 +105,7 @@ export function AnalyticsConsent() {
   return <>
     <Analytics />
     <SpeedInsights />
-    {choice === null && <aside className="analytics-consent" aria-label="Analytics privacy choice">
+    {choice === null && <aside className={`analytics-consent${obscuring ? " is-obscuring" : ""}`} aria-label="Analytics privacy choice">
       <p>Allow optional PostHog analytics to help us understand buyer interest. <a href="/privacy">Learn more</a>.</p>
       <div><button type="button" onClick={() => choose("denied")}>No thanks</button><button type="button" onClick={() => choose("granted")}>Allow analytics</button></div>
     </aside>}

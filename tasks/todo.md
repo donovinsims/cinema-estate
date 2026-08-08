@@ -167,3 +167,70 @@ media files return 200, Early Access modal + FAQ intact. **PR3 fully closed.**
 - [~] PostHog external verification — requirement waived; reopen only if a concrete analytics issue appears
 - [~] Responsive verification at 320/375/390/430/768/1440 — requirement waived; reopen only if a concrete responsive UI regression appears
 - [x] Owner review + merge — merged as PR #25 into `main` at `0105eb7` (2026-08-08)
+
+## production-readiness-review
+
+### Full production readiness review — 2026-08-08
+
+Context: 25 PRs merged; PR #25 waived 3 verification items as non-blocking. HANDOFF.md is
+append-only, no single up-to-date verdict exists. This session produces that verdict plus a
+bounded set of safe technical fixes. Exploration already done (3 parallel read-only agents +
+manual spot-checks) — findings pre-loaded into this session's context.
+
+#### Phase 1 — Purpose-built audit agents (parallel, read-only)
+- [x] cinema-estate-strategy-auditor
+- [x] cinema-estate-ux-auditor
+- [x] cinema-estate-growth-auditor
+
+#### Phase 2 — Technical gate + manual browser QA
+- [x] npm ci --include=dev / npm run lint / npm test / git diff --check — all clean
+- [x] Manual browser pass at 375px and 1440px (pricing anchors, CTA hierarchy, checkout
+      links load — no real checkout, safe form errors, exit-intent modal gating, modal close
+      animation, checkout-status banner, hero control absent under reduced motion)
+- [x] Load /listing-plan and /villa-siena, confirm render + form behavior — clean
+
+#### Phase 3 — cinema-estate-visual-reviewer
+- [x] Run against live dev server, desktop + mobile viewports
+
+#### Phase 4 — Safe code-only fixes (branch `production-readiness/safe-fixes` off main, not pushed)
+- [x] Security headers via next.config.ts headers() — confirmed via `next build && next start`
+      (the actual production path per vercel.json); vinext dev does NOT apply them (known gap)
+- [x] Try/catch around generatePreview/generateFullPlan in app/api/listing-plan/route.ts
+- [x] ListingPlanClient.tsx — stop surfacing raw fetch() exception message (mirrors WaitlistForm)
+- [x] Sanitize/whitelist ?source= before forwarding to track()
+- [x] Bonus: fixed broken `/#pricing?source=...` anchor (malformed URL, fragment before query
+      string never matched `id="pricing"`) found by the strategy audit — highest-intent CTA
+      in the free-tool funnel was silently broken
+- [x] Re-run lint/test/git diff --check — all clean after fixes
+
+#### Phase 5 — Consolidated verdict in chat (no artifact)
+- [x] Go/no-go split: safe-to-take-traffic vs blocked-on-owner-only
+- [x] Owner action checklist
+- [x] What was fixed vs recommendation-only
+- [x] Prioritized audit findings (strategy/UX/growth/visual)
+
+**Results:** Branch `production-readiness/safe-fixes` (local, not pushed, not merged) has
+5 files changed: `app/api/listing-plan/route.ts`, `app/listing-plan/ListingPlanClient.tsx`,
+`next.config.ts`, plus this file. Full verdict delivered in chat. Key surprises worth
+remembering for next session:
+
+- `vinext dev`'s Cloudflare Worker path (`worker/index.ts`) does **not** apply
+  `next.config.ts`'s `headers()` — confirmed via curl (no CSP/security headers on
+  `localhost:3002`). The real production path (`vercel.json` → `npx next build` /
+  `next start`) **does** apply them correctly — confirmed via a separate local
+  `next build && next start` run. Anyone testing security headers locally must use that
+  path, not `vinext dev`, or they'll wrongly conclude the fix doesn't work.
+  See [[vinext-headers-gap]].
+- The `cinema-estate-visual-reviewer` agent surfaced a self-inflicted CSP bug within the
+  same session: `va.vercel-scripts.com` was allow-listed in `connect-src` but not
+  `script-src`, which would have blocked Vercel Analytics' dev-mode debug script. Fixed
+  before finalizing. Lesson: when adding a CSP, allow-list a third-party origin in every
+  directive its actual runtime requests need (script tag src != beacon origin != image
+  origin), not just the one you're thinking about at the time.
+- The strategy-auditor agent found a real, previously-unknown functional bug via source
+  reading alone (not browser testing): `ListingPlanClient.tsx`'s CTA links were
+  `/#pricing?source=listing_plan` — `#` before `?` makes everything after `#` the URL
+  fragment, so the fragment was literally `pricing?source=listing_plan`, matching no
+  element id. The highest-intent link in the free-tool funnel silently 404'd its anchor
+  jump. Fixed by reordering to `/?source=listing_plan#pricing`.
+- [ ] Prioritized audit findings (strategy/UX/growth/visual)

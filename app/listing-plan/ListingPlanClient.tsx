@@ -105,7 +105,10 @@ export default function ListingPlanClient() {
   useEffect(() => {
     if (typeof window !== "undefined") {
       const src = new URLSearchParams(window.location.search).get("source");
-      if (src) entrySourceRef.current = src;
+      // Bound to a known-safe charset/length before it reaches analytics — this value is
+      // never rendered to the DOM, but an arbitrary query param shouldn't flow unsanitized
+      // into PostHog event properties.
+      if (src && /^[a-z0-9_-]{1,40}$/i.test(src)) entrySourceRef.current = src;
     }
   }, []);
 
@@ -163,15 +166,19 @@ export default function ListingPlanClient() {
         body: JSON.stringify(dataRef.current),
       });
       if (!res.ok) {
-        const err = await res.json() as { error?: string };
-        throw new Error(err.error ?? "Failed to generate preview.");
+        const payload: unknown = await res.json().catch(() => null);
+        const serverError = typeof payload === "object" && payload && "error" in payload && typeof payload.error === "string"
+          ? payload.error.trim()
+          : "";
+        setError(serverError || "Failed to generate preview. Please try again.");
+        return;
       }
       const result = await res.json() as PreviewResult;
       track("listing_plan_preview_generated", { readinessTier: result.score.totalScore >= 80 ? "Strong" : result.score.totalScore >= 60 ? "Solid" : result.score.totalScore >= 40 ? "Developing" : "Early", readinessScore: result.score.totalScore, cinemaEstateFit: result.cinemaEstateFit.strength, propertyType: dataRef.current.propertyType ?? "unknown", entry_source: entrySourceRef.current });
       setPreview(result);
       setPhase("preview");
-    } catch (err: unknown) {
-      setError(err instanceof Error ? err.message : "Something went wrong. Please try again.");
+    } catch {
+      setError("Something went wrong. Please try again.");
     } finally {
       setLoading(false);
     }
@@ -189,17 +196,22 @@ export default function ListingPlanClient() {
         body: JSON.stringify({ ...dataRef.current, email, marketingConsent }),
       });
       if (!res.ok) {
-        const err = await res.json() as { error?: string };
-        throw new Error(err.error ?? "Failed to generate plan.");
+        const payload: unknown = await res.json().catch(() => null);
+        const serverError = typeof payload === "object" && payload && "error" in payload && typeof payload.error === "string"
+          ? payload.error.trim()
+          : "";
+        setClaimError(serverError || "Failed to generate plan. Please try again.");
+        track("listing_plan_claim_failed", { reason: serverError || "unknown" });
+        return;
       }
       const plan = await res.json() as FullPlanResult;
       track("listing_plan_claimed", { marketingConsent, cinemaEstateFit: plan.cinemaEstateFit.strength, readinessScore: plan.score.totalScore, deliveryStatus: plan.deliveryStatus ?? "unknown", entry_source: entrySourceRef.current });
       track("listing_plan_full_plan_generated", { cinemaEstateFit: plan.cinemaEstateFit.strength });
       setFullPlan(plan);
       setPhase("results");
-    } catch (err: unknown) {
-      setClaimError(err instanceof Error ? err.message : "Something went wrong. Please try again.");
-      track("listing_plan_claim_failed", { reason: err instanceof Error ? err.message : "unknown" });
+    } catch {
+      setClaimError("Something went wrong. Please try again.");
+      track("listing_plan_claim_failed", { reason: "network_error" });
     } finally {
       setClaimLoading(false);
     }
@@ -470,8 +482,8 @@ export default function ListingPlanClient() {
                   <h2>Turn your approved photos into a complete visual package.</h2>
                   <p>{ceFit.reason}</p>
                   <div className="lp-ce-actions">
-                    <Link className="button button-primary" href="/#pricing?source=listing_plan" onClick={() => track("listing_plan_cinema_estate_cta_clicked", { cta: "story_package", fit: ceFit.strength })}>See the Story package &mdash; $299 <ArrowIcon direction="up-right" /></Link>
-                    <Link className="button button-dark" href="/#pricing?source=listing_plan">Compare all packages</Link>
+                    <Link className="button button-primary" href="/?source=listing_plan#pricing" onClick={() => track("listing_plan_cinema_estate_cta_clicked", { cta: "story_package", fit: ceFit.strength })}>See the Story package &mdash; $299 <ArrowIcon direction="up-right" /></Link>
+                    <Link className="button button-dark" href="/?source=listing_plan#pricing">Compare all packages</Link>
                   </div>
                 </>
               ) : (
@@ -479,7 +491,7 @@ export default function ListingPlanClient() {
                   <h2>See what Cinema Estate could add to your listing.</h2>
                   <p>{ceFit.reason}</p>
                   <div className="lp-ce-actions">
-                    <Link className="button button-dark" href="/#pricing?source=listing_plan" onClick={() => track("listing_plan_cinema_estate_cta_clicked", { cta: "explore_packages", fit: ceFit.strength })}>Explore packages <ArrowIcon direction="up-right" /></Link>
+                    <Link className="button button-dark" href="/?source=listing_plan#pricing" onClick={() => track("listing_plan_cinema_estate_cta_clicked", { cta: "explore_packages", fit: ceFit.strength })}>Explore packages <ArrowIcon direction="up-right" /></Link>
                     <Link className="button button-dark" href="/villa-siena">View the Villa Siena example <ArrowIcon direction="up-right" /></Link>
                   </div>
                 </>

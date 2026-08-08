@@ -111,7 +111,7 @@ export default function Home() {
             <p className="hero-meta">From $149 per listing &middot; delivered in 24 hours</p>
             <a className="button button-primary" href="#pricing">Choose your package <ArrowIcon /></a>
           </div>
-          <div className="hero-media-column">
+          <div className="hero-media-column" data-consent-avoid>
             <div className="hero-media-frame">
               <HeroVideo src="/media/villa-siena/01-Night-Arrival.mp4" poster="/media/villa-siena/01-Night-Aerial-Exterior.jpg" />
               <p className="hero-media-caption"><span>Real photo</span><ArrowIcon /><span>Cinematic scene</span></p>
@@ -194,7 +194,7 @@ export default function Home() {
               </ul>
             </div>
           </div>
-          <div className="tier-grid">
+          <div className="tier-grid" data-consent-avoid>
             {tiers.map((tier) => (
               <TierImpressionTracker className={tier.recommended ? "tier-card is-recommended" : "tier-card"} tier={tier.name} price={tier.price} key={tier.name}>
                 {tier.recommended && <p className="tier-flag">Recommended</p>}
