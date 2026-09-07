@@ -1,14 +1,6 @@
 import assert from "node:assert/strict";
 import test from "node:test";
 
-const expectedAboutHeading = "Give your listing a cinematic story without another shoot.";
-const expectedAboutParagraphs = [
-  "Listing photos can be accurate and approved, and still feel flat on a screen—real video adds motion, but usually means booking a crew, coordinating property access, and managing another production schedule for every listing. Cinema Estate uses AI to handle that production work instead: the motion, narration, listing page, and final film. It does not invent rooms, move walls, replace finishes, or change what the property is—your already-approved listing photos remain the source.",
-  "You send the photos you already have. Cinema Estate builds the four-part package, then you review every asset before anything is published. There is no reshoot, no crew to book, and no property-access schedule to coordinate.",
-  "I’m Donovin, from Northern Illinois. After talking with 15–20 individual agents over the past year, I kept hearing the same tradeoff: use static photos or add another production to an already busy listing. <span class=\"about-pullquote\">I started Cinema Estate to give agents a third option: a stronger visual story built from work they have already approved.</span> The Villa Siena package shown here is a real, permission-cleared listing used as a demonstration—its video and page were produced using a separate production tool, not delivered as paid Cinema Estate client work. AI-enhanced visualization is disclosed, local MLS and brokerage rules still apply, and nothing is published until you approve it.",
-];
-const expectedAboutCtaText = "Start with your listing";
-
 async function render(pathname = "/") {
   const workerUrl = new URL("../dist/server/index.js", import.meta.url);
   workerUrl.searchParams.set("test", `${process.pid}-${Date.now()}`);
@@ -68,29 +60,16 @@ test("server-renders Cinema Estate with an accessible comparison and waitlist", 
   assert.match(html, /Send the approved photos and listing details required to build your package\./i);
   assert.match(html, /Review and approve\./i);
   assert.match(html, /Your 24-hour build window starts once we have your approved photos/i);
-  const aboutSection = html.match(/<section class="about-section"[\s\S]*?<\/section>/);
-  assert.ok(aboutSection, "About section must render");
-  assert.ok(
-    aboutSection[0].includes(`<h2 id="about-title">${expectedAboutHeading}</h2>`),
-    "About heading must match the approved copy exactly",
-  );
-  const aboutCopy = aboutSection[0].match(/<div class="about-copy">([\s\S]*?)<\/div>/);
-  assert.ok(aboutCopy, "About copy wrapper must render");
-  const renderedAboutParagraphs = [...aboutCopy[1].matchAll(/<p>([\s\S]*?)<\/p>/g)].map((match) => match[1]);
-  assert.deepEqual(renderedAboutParagraphs, expectedAboutParagraphs, "About paragraphs must match the approved copy exactly and in order");
-  const aboutCta = aboutSection[0].match(/class="button button-dark about-cta"[^>]*>([\s\S]*?)<\/button>/);
-  assert.ok(aboutCta, "About CTA button must render");
-  assert.match(aboutCta[1], new RegExp(`^${expectedAboutCtaText}\\s*<svg`, "i"), "About CTA text must match the approved copy exactly, followed by the arrow icon");
-  assert.doesNotMatch(aboutCta[1], />→</, "About CTA arrow must render as the shared SVG icon, not a raw arrow character");
-  assert.match(html, /src="\/media\/donovin-sims-640\.webp"/i);
-  assert.match(html, /srcSet="\/media\/donovin-sims-320\.webp 320w, \/media\/donovin-sims-640\.webp 640w"/i);
-  assert.match(html, /sizes="\(max-width: 720px\) calc\(100vw - 32px\), \(max-width: 1100px\) 38vw, 420px"/i);
-  assert.match(html, /width="640"\s+height="798"\s+loading="lazy"\s+decoding="async"\s+alt="Donovin Sims, founder of Cinema Estate\."/i);
+  assert.doesNotMatch(html, /class="about-section"/i);
+  assert.doesNotMatch(html, /id="about-title"/i);
+  assert.doesNotMatch(html, /\/media\/donovin-sims-(?:320|640)\.webp/i);
+  assert.doesNotMatch(html, /href="#about"/i);
   const qualityPosition = html.indexOf('id="quality-title"');
-  const aboutPosition = html.indexOf('id="about-title"');
   const answersPosition = html.indexOf('id="answers-title"');
-  assert.ok(qualityPosition >= 0 && qualityPosition < aboutPosition, "Quality must render before About");
-  assert.ok(aboutPosition < answersPosition, "About must render before FAQ");
+  assert.ok(
+    qualityPosition >= 0 && answersPosition >= 0 && qualityPosition < answersPosition,
+    "Quality must render before FAQ after the About section is removed",
+  );
   assert.match(html, /Give your next listing a stronger next move\./i);
   assert.match(html, /The Review-First Guarantee/i);
   assert.match(html, /nothing publishes until you.{1,2}ve reviewed and approved every asset yourself/i);
