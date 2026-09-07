@@ -214,7 +214,7 @@ export default function Home() {
       </section>
 
       <section className="answers-section section-shell" aria-labelledby="answers-title">
-        <p className="eyebrow">07 / Clear answers</p>
+        <p className="eyebrow">06 / Clear answers</p>
         <h2 id="answers-title">Marketing with the right guardrails.</h2>
         <AnswersAccordion />
       </section>
@@ -234,7 +234,7 @@ export default function Home() {
 
       <section className="waitlist-section" id="early-access" aria-labelledby="waitlist-title">
         <div className="section-shell waitlist-grid">
-          <div><p className="eyebrow">08 / The next step</p><h2 id="waitlist-title">Give your next listing a stronger next move.</h2><p>Delivered within 24 hours from your approved photos, reviewed by you before anything publishes.</p></div>
+          <div><p className="eyebrow">07 / The next step</p><h2 id="waitlist-title">Give your next listing a stronger next move.</h2><p>Delivered within 24 hours from your approved photos, reviewed by you before anything publishes.</p></div>
           <div>
             <p>Ready to buy? Story is the recommended starting point for a complete listing launch. Have a question first? Ask about your listing and I&rsquo;ll help you pick the right package.</p>
             <div className="waitlist-actions">
