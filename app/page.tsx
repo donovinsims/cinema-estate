@@ -213,35 +213,6 @@ export default function Home() {
         </div>
       </section>
 
-      <section className="about-section" aria-labelledby="about-title">
-        <div className="section-shell about-grid">
-          <figure className="about-portrait">
-            {/* Native srcSet/sizes are intentional so the checked-in 320w and 640w assets remain explicit. */}
-            {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img
-              src="/media/donovin-sims-640.webp"
-              srcSet="/media/donovin-sims-320.webp 320w, /media/donovin-sims-640.webp 640w"
-              sizes="(max-width: 720px) calc(100vw - 32px), (max-width: 1100px) 38vw, 420px"
-              width="640"
-              height="798"
-              loading="lazy"
-              decoding="async"
-              alt="Donovin Sims, founder of Cinema Estate."
-            />
-          </figure>
-          <div className="about-story">
-            <p className="eyebrow">06 / Why Cinema Estate</p>
-            <h2 id="about-title">Give your listing a cinematic story without another shoot.</h2>
-            <div className="about-copy">
-              <p>Listing photos can be accurate and approved, and still feel flat on a screen—real video adds motion, but usually means booking a crew, coordinating property access, and managing another production schedule for every listing. Cinema Estate uses AI to handle that production work instead: the motion, narration, listing page, and final film. It does not invent rooms, move walls, replace finishes, or change what the property is—your already-approved listing photos remain the source.</p>
-              <p>You send the photos you already have. Cinema Estate builds the four-part package, then you review every asset before anything is published. There is no reshoot, no crew to book, and no property-access schedule to coordinate.</p>
-              <p>I’m Donovin, from Northern Illinois. After talking with 15–20 individual agents over the past year, I kept hearing the same tradeoff: use static photos or add another production to an already busy listing. <span className="about-pullquote">I started Cinema Estate to give agents a third option: a stronger visual story built from work they have already approved.</span> The Villa Siena package shown here is a real, permission-cleared listing used as a demonstration—its video and page were produced using a separate production tool, not delivered as paid Cinema Estate client work. AI-enhanced visualization is disclosed, local MLS and brokerage rules still apply, and nothing is published until you approve it.</p>
-            </div>
-            <EarlyAccessButton className="button button-dark about-cta" intent="listing" source="about">Start with your listing <ArrowIcon /></EarlyAccessButton>
-          </div>
-        </div>
-      </section>
-
       <section className="answers-section section-shell" aria-labelledby="answers-title">
         <p className="eyebrow">07 / Clear answers</p>
         <h2 id="answers-title">Marketing with the right guardrails.</h2>
